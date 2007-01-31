@@ -1,0 +1,37 @@
+<Project name="CompoundFile" fileversion="2.0" language="C#" clr-version="Net_1_1" ctype="DotNetProject">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="DotNetProjectConfiguration">
+      <Output directory="./bin/Debug/" assembly="Nix.CompoundFile" />
+      <Build debugmode="True" target="Library" />
+      <Execution runwithwarnings="False" consolepause="True" runtime="MsNet" clr-version="Net_1_1" />
+      <CodeGeneration compiler="Csc" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+    <Configuration name="Release" ctype="DotNetProjectConfiguration">
+      <Output directory="./bin/Release/" assembly="Nix.CompoundFile" />
+      <Build debugmode="False" target="Library" />
+      <Execution runwithwarnings="False" consolepause="True" runtime="MsNet" clr-version="Net_1_1" />
+      <CodeGeneration compiler="Csc" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+  </Configurations>
+  <DeployTargets />
+  <Contents>
+    <File name="./AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Common.cs" subtype="Code" buildaction="Compile" />
+    <File name="./EndianWriter.cs" subtype="Code" buildaction="Compile" />
+    <File name="./LittleEndianWriter.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Ole2CompoundFile.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Ole2DirectoryEntry.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Ole2Storage.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Ole2Stream.cs" subtype="Code" buildaction="Compile" />
+    <File name="./RedBlackEnumerator.cs" subtype="Code" buildaction="Compile" />
+    <File name="./RedBlackTree.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Managers/DirectoryManager.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Managers/MasterSectorAllocationManager.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Managers/SectorAllocationManager.cs" subtype="Code" buildaction="Compile" />
+  </Contents>
+  <References>
+    <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <ProjectReference type="Gac" localcopy="True" refto="System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <ProjectReference type="Gac" localcopy="True" refto="System.Xml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  </References>
+</Project>
