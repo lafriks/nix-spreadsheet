@@ -17,8 +17,7 @@
   <Contents>
     <File name="./App.ico" subtype="Code" buildaction="Exclude" />
     <File name="./AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
-    <File name="./Form1.cs" subtype="Code" buildaction="Compile" />
-    <File name="./Form1.resx" subtype="Code" buildaction="EmbedAsResource" dependson="Form1.cs" />
+    <File name="./Test.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
