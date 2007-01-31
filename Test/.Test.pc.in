@@ -1,0 +1,11 @@
+prefix=@prefix@
+exec_prefix=${prefix}
+pkglibdir=@libdir@/@PACKAGE@
+Libraries=  ${pkglibdir}/@TEST_DEBUG_LIB@@TEST_RELEASE_LIB@
+
+Name: .Test
+Description: 
+Version: @VERSION@
+
+Requires:  .SpreadSheet
+Libs:  -r:${pkglibdir}/@TEST_DEBUG_LIB@@TEST_RELEASE_LIB@
