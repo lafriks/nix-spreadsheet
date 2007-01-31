@@ -1,6 +1,6 @@
 /*
  * Library for writing OLE 2 Compount Document file format.
- * Copyright (C) 2007, Lauris Bukðis-Haberkorns
+ * Copyright (C) 2007, Lauris Bukðis-Haberkorns <lauris@nix.lv>
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
