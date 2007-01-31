@@ -1,0 +1,39 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompoundFile", "CompoundFile\CompoundFile.csproj", "{092F19A4-5A93-4F47-B0A1-C132A0FCDB22}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{58161230-5EF9-46A6-A2DE-73A3DE3C592E}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpreadSheet", "ExcelWriter\SpreadSheet.csproj", "{90F370AB-586A-473A-BAB1-002A808FB869}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{092F19A4-5A93-4F47-B0A1-C132A0FCDB22}.Debug.ActiveCfg = Debug|.NET
+		{092F19A4-5A93-4F47-B0A1-C132A0FCDB22}.Debug.Build.0 = Debug|.NET
+		{092F19A4-5A93-4F47-B0A1-C132A0FCDB22}.Release.ActiveCfg = Release|.NET
+		{092F19A4-5A93-4F47-B0A1-C132A0FCDB22}.Release.Build.0 = Release|.NET
+		{58161230-5EF9-46A6-A2DE-73A3DE3C592E}.Debug.ActiveCfg = Debug|.NET
+		{58161230-5EF9-46A6-A2DE-73A3DE3C592E}.Debug.Build.0 = Debug|.NET
+		{58161230-5EF9-46A6-A2DE-73A3DE3C592E}.Release.ActiveCfg = Release|.NET
+		{58161230-5EF9-46A6-A2DE-73A3DE3C592E}.Release.Build.0 = Release|.NET
+		{90F370AB-586A-473A-BAB1-002A808FB869}.Debug.ActiveCfg = Debug|.NET
+		{90F370AB-586A-473A-BAB1-002A808FB869}.Debug.Build.0 = Debug|.NET
+		{90F370AB-586A-473A-BAB1-002A808FB869}.Release.ActiveCfg = Release|.NET
+		{90F370AB-586A-473A-BAB1-002A808FB869}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
