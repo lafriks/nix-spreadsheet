@@ -45,7 +45,7 @@ namespace Nix.CompoundFile
         /// Constructor
         /// </summary>
         /// <param mame="stream">Stream to write output to</param>
-        /// <param name="encoder">String encoding</param>
+        /// <param name="encoding">String encoding</param>
         public EndianWriter(Stream stream, Encoding encoding)
         {
             this.Stream = stream;
@@ -57,25 +57,25 @@ namespace Nix.CompoundFile
         /// <summary>
         /// Write 2 bytes in the output
         /// </summary>
-        /// <param name="v"></param>
+        /// <param name="value"></param>
         public abstract void Write2(int value);
 
         /// <summary>
         /// Write 4 bytes in the output
         /// </summary>
-        /// <param name="v"></param>
+        /// <param name="value"></param>
         public abstract void Write4(long value);
 
         /// <summary>
         /// Write a 4 byte float in the output
         /// </summary>
-        /// <param name="v"></param>
+        /// <param name="value"></param>
         public abstract void WriteFloatIEEE(float value);
 
         /// <summary>
         /// Write a 8 byte double in the output
         /// </summary>
-        /// <param name="v"></param>
+        /// <param name="value"></param>
         public abstract void WriteDoubleIEEE(double value);
         #endregion
 

@@ -1,4 +1,4 @@
-<Combine fileversion="2.0">
+<Combine fileversion="2.0" MakePkgConfig="False" MakeLibPC="True">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="CombineConfiguration">
       <Entry build="True" name="CompoundFile" configuration="Debug" />

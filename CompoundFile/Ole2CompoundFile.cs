@@ -195,7 +195,7 @@ namespace Nix.CompoundFile
             int MSATSectorCount = 0;
 
             // First 109 SIDs of SAT are stored in header, check if we need more
-            /// TODO: Debug!!! Could be wrong
+            // TODO: Debug!!! Could be wrong
             if (SATSectorCount > 109)
             {
                 // Count how much do we need
@@ -362,3 +362,4 @@ namespace Nix.CompoundFile
         BigEndian
     }
 }
+

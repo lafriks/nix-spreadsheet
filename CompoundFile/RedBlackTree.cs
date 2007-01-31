@@ -1,6 +1,6 @@
 /*
  * Library for writing OLE 2 Compount Document file format.
- * Copyright (C) 2007, Lauris Bukðis-Haberkorns <lauris@nix.lv>
+ * Copyright (C) 2007, Lauris Bukï¿½s-Haberkorns <lauris@nix.lv>
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -180,9 +180,7 @@ namespace Nix.CompoundFile
                             x = x.Parent;
                             this.RotateLeft(x);
                         }
-                        ///
-                        /// TODO: Shouln't there be else?
-                        ///
+                        // TODO: Shouln't there be else?
                         // no, x is less than Parent
                         // make Parent black
                         x.Parent.Color			= NodeColor.Black;
@@ -212,9 +210,7 @@ namespace Nix.CompoundFile
                             x = x.Parent;
                             this.RotateRight(x);
                         }
-                        ///
-                        /// TODO: Shouln't there be else?
-                        ///
+                        // TODO: Shouln't there be else?
                         x.Parent.Color			= NodeColor.Black;
                         x.Parent.Parent.Color	= NodeColor.Red;
                         // rotate left
@@ -681,7 +677,7 @@ namespace Nix.CompoundFile
             }
         }
         #endregion
-        
+
         #region IEnumerable Members
         /// <summary>
         /// Keys in ascending order.
