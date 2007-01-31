@@ -1,17 +1,17 @@
 /*
  * Library for writing OLE 2 Compount Document file format.
- * Copyright (C) 2007, Lauris Bukðis-Haberkorns <lauris@nix.lv>
- * 
+ * Copyright (C) 2007, Lauris BukÅ¡is-Haberkorns <lauris@nix.lv>
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
@@ -23,11 +23,11 @@ using System.Text;
 
 namespace Nix.CompoundFile
 {
-	/// <summary>
-	/// Description of BaseWriter.
-	/// </summary>
-	public abstract class EndianWriter
-	{
+    /// <summary>
+    /// Description of BaseWriter.
+    /// </summary>
+    public abstract class EndianWriter
+    {
         protected Stream Stream;
 
         protected Encoding Encoding;
@@ -87,22 +87,22 @@ namespace Nix.CompoundFile
             this.Stream.Write(dest, 0, dest.GetLength(0));
             return dest.GetLength(0);
         }
-        
+
         public void Write(byte[] buffer, int offset, int count)
         {
             this.Stream.Write(buffer, offset, count);
         }
-        
+
         public void WriteByte(byte value)
         {
             this.Stream.WriteByte(value);
         }
 
-	    public void WriteBytes(byte value, int count)
+        public void WriteBytes(byte value, int count)
         {
             for(int i = 0; i < count; i++)
                 this.Stream.WriteByte(value);
         }
-	    #endregion
+        #endregion
     }
 }

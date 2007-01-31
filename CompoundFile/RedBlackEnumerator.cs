@@ -1,17 +1,17 @@
 /*
  * Library for writing OLE 2 Compount Document file format.
- * Copyright (C) 2007, Lauris Bukðis-Haberkorns <lauris@nix.lv>
- * 
+ * Copyright (C) 2007, Lauris BukÅ¡is-Haberkorns <lauris@nix.lv>
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
@@ -22,18 +22,18 @@ using System.Collections;
 
 namespace Nix.CompoundFile
 {
-	/// <summary>
-	/// RedBlackTree Enumerator.
-	/// </summary>
-	internal class RedBlackEnumerator : IEnumerator
-	{
+    /// <summary>
+    /// RedBlackTree Enumerator.
+    /// </summary>
+    internal class RedBlackEnumerator : IEnumerator
+    {
         #region Private variables and constructor
         // the treap uses the stack to order the nodes
         private Stack stack;
 
         // return in ascending order (true) or descending (false)
         private bool ascending;
-		
+
         // root node (needed for reset)
         private Ole2DirectoryEntry root = null;
 
@@ -98,7 +98,7 @@ namespace Nix.CompoundFile
         {
             if (stack.Count == 0)
                 return false;
-			
+
             // the top of stack will always have the next item
             // get top of stack but don't remove it as the next nodes in sequence
             // may be pushed onto the top
@@ -106,7 +106,7 @@ namespace Nix.CompoundFile
 
             //next node in sequence
             Ole2DirectoryEntry node = (Ole2DirectoryEntry)this.stack.Peek();
-			
+
             if (this.ascending)
             {
                 if (node.Right == RedBlackTree.SentinelNode)

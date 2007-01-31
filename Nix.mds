@@ -1,5 +1,5 @@
 <Combine fileversion="2.0" MakePkgConfig="False" MakeLibPC="True">
-  <Configurations active="Debug">
+  <Configurations active="Release">
     <Configuration name="Debug" ctype="CombineConfiguration">
       <Entry build="True" name="CompoundFile" configuration="Debug" />
       <Entry build="True" name="SpreadSheet" configuration="Debug" />

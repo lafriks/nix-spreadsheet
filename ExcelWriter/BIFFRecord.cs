@@ -1,17 +1,17 @@
 /*
  * Library for creating Microsoft Excel files.
- * Copyright (C) 2007, Lauris Bukðis-Haberkorns <lauris@nix.lv>
- * 
+ * Copyright (C) 2007, Lauris BukÅ¡is-Haberkorns <lauris@nix.lv>
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
@@ -32,7 +32,7 @@ namespace Nix.SpreadSheet
         protected BIFFRecord()
         {
         }
-		
+
         protected void Write(EndianWriter pWriter, int nRecNo, int nRecLen)
         {
             pWriter.Write2(nRecNo);
@@ -40,7 +40,7 @@ namespace Nix.SpreadSheet
         }
 
         public abstract void Write(EndianWriter pWriter);
-		
+
         // Supported excel version (BIFF8)
         public const int EXCEL_VERSION = 0x0600;
 
@@ -52,7 +52,7 @@ namespace Nix.SpreadSheet
         public const int OPCODE_CODEPAGE               = 0x0042;
 
         public const int OPCODE_EOF                    = 0x000A;
-        
+
         // TODO
         public const int OPCODE_FONT                   = 0x0231;
 
@@ -60,7 +60,7 @@ namespace Nix.SpreadSheet
         public const int OPCODE_FORMAT                 = 0x001E;
 
         public const int OPCODE_XF                     = 0x0243;
-        
+
         public const int OPCODE_NUMBER                 = 0x0203;
         public const int OPCODE_LABEL                  = 0x0204;
 
@@ -95,7 +95,7 @@ namespace Nix.SpreadSheet
         private byte m_nAttr1;
         private byte m_nAttr2;
         private byte m_nAttr3;
-        
+
         public excelValueAttributes() : this (0, 0)
         {
         }
@@ -108,11 +108,11 @@ namespace Nix.SpreadSheet
             this.m_nAttr2 = (byte)0;
             this.m_nAttr3 = (byte)0;
         }
-        
+
         ~excelValueAttributes()
         {
         }
-        
+
         public void CopyAttributes(excelValueAttributes v)
         {
             this.m_nRow = v.m_nRow;
@@ -121,7 +121,7 @@ namespace Nix.SpreadSheet
             this.m_nAttr2 = v.m_nAttr2;
             this.m_nAttr3 = v.m_nAttr3;
         }
-        
+
         public void WriteAttributes(EndianWriter pWriter)
         {
             pWriter.Write2(this.Row);
@@ -143,7 +143,7 @@ namespace Nix.SpreadSheet
                 this.m_nRow = value;
             }
         }
-				
+
         public int Column
         {
             set
@@ -155,9 +155,9 @@ namespace Nix.SpreadSheet
                 return this.m_nColumn;
             }
         }
-			
-        /* Tons and tons of attributes that can be set or not... */			
-  /*      public void setHidden (bool v)
+
+        /* Tons and tons of attributes that can be set or not... */
+        /*public void setHidden (bool v)
         {
             if (v)
             {
@@ -188,7 +188,7 @@ namespace Nix.SpreadSheet
         {
             return (m_nAttr1 & 0x40) != 0;
         }
-		
+
         public void setShaded (bool v)
         {
             if (v)
@@ -204,7 +204,7 @@ namespace Nix.SpreadSheet
         {
             return (m_nAttr3 & 0x80) != 0;
         }
-		
+
         public void setBorder (int type)
         {
             // clear existing border
@@ -216,7 +216,7 @@ namespace Nix.SpreadSheet
         {
             return m_nAttr3 & (char)0x78; 
         }
-				
+
         public void setAlignament (int type)
         {
             // clear previous value
@@ -228,7 +228,7 @@ namespace Nix.SpreadSheet
         {
             return m_nAttr3 & (char)0x07;
         }
-															
+
         public void setFontNum (int v)
         {
             // clear previous value
@@ -240,7 +240,7 @@ namespace Nix.SpreadSheet
         {
             return (m_nAttr2 >> 5) & (char)0x03;
         }
-			
+
         public void setFormatNum (int v)
         {
             // clear previous value
@@ -253,7 +253,7 @@ namespace Nix.SpreadSheet
             return m_nAttr2 & (char)0x3F;
         }*/
     }
-	
+
     public enum SheetType
     {
         WorkBookGlobals = 0x0005,
@@ -272,7 +272,7 @@ namespace Nix.SpreadSheet
         private SheetType m_nType;
         private int m_nBuildIdentifier;
         private long m_nHistoryFlags;
-	    
+
         public BOFRecord(SheetType nType, int nBuildIdentifier, long nHistoryFlags)
         {
             this.m_nType = nType;
@@ -350,16 +350,16 @@ namespace Nix.SpreadSheet
     internal class NUMBERRecord : excelValueAttributes
     {
         private double m_nValue;
-	    
+
         public NUMBERRecord () : this (0)
         {
         }
-	    
+
         public NUMBERRecord (double val)
         {
             this.m_nValue = val;
         }
-	    
+
         public double Value
         {
             set
@@ -371,7 +371,7 @@ namespace Nix.SpreadSheet
                 return this.m_nValue;
             }
         }
-	    
+
         public override void Write(EndianWriter pWriter)
         {
             base.Write(pWriter, OPCODE_NUMBER, 14);
@@ -382,7 +382,7 @@ namespace Nix.SpreadSheet
             pWriter.WriteDoubleIEEE(this.m_nValue);
         }
     }
-	
+
     /// <summary>
     /// Write a label
     /// </summary>
@@ -390,17 +390,17 @@ namespace Nix.SpreadSheet
     {
         private string m_pchValue;
         private Encoding m_nEncoding;
-	    
+
         public LABELRecord () : this (string.Empty, Encoding.Default)
         {
         }
-	    
+
         public LABELRecord (string val, Encoding encoding)
         {
             this.Value = val;
             this.m_nEncoding = encoding;
         }
-	    
+
         public string Value
         {
             set
@@ -412,7 +412,7 @@ namespace Nix.SpreadSheet
                 return this.m_pchValue;
             }
         }
-	    
+
         public override void Write(EndianWriter pWriter)
         {
             base.Write(pWriter, OPCODE_LABEL, 8 + this.Value.Length);
@@ -429,7 +429,7 @@ namespace Nix.SpreadSheet
             }
         }
     }
-	
+
     /// <summary>
     /// The EOF record
     /// </summary>

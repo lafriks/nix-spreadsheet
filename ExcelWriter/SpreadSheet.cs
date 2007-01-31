@@ -1,17 +1,17 @@
 /*
  * Library for creating Microsoft Excel files.
- * Copyright (C) 2007, Lauris Bukðis-Haberkorns <lauris@nix.lv>
- * 
+ * Copyright (C) 2007, Lauris BukÅ¡is-Haberkorns <lauris@nix.lv>
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
@@ -152,7 +152,6 @@ namespace Nix.SpreadSheet
             biffCODEPAGE.Write(writer);
             biffWINDOW1.Write(writer);
 
-            
 
             biffEOF.Write(writer);
 
@@ -192,7 +191,7 @@ namespace Nix.SpreadSheet
 
             file.Save(pWriter);
         }
-		
+
         public Cell this[int row, int column]
         {
             get

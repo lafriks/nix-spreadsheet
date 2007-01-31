@@ -1,17 +1,17 @@
 /*
  * Library for writing OLE 2 Compount Document file format.
- * Copyright (C) 2007, Lauris Bukðis-Haberkorns <lauris@nix.lv>
- * 
+ * Copyright (C) 2007, Lauris BukÅ¡is-Haberkorns <lauris@nix.lv>
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
@@ -22,28 +22,28 @@ using System.Collections;
 
 namespace Nix.CompoundFile
 {
-	/// <summary>
-	/// Summary description for Ole2Storage.
-	/// </summary>
-	public class Ole2Storage : Ole2DirectoryEntry, IEnumerable
-	{
+    /// <summary>
+    /// Summary description for Ole2Storage.
+    /// </summary>
+    public class Ole2Storage : Ole2DirectoryEntry, IEnumerable
+    {
         private RedBlackTree entries;
 
         #region Constructor
-		internal Ole2Storage(Ole2CompoundFile owner) : base("Root Entry", EntryType.RootStorage, owner)
-		{
+        internal Ole2Storage(Ole2CompoundFile owner) : base("Root Entry", EntryType.RootStorage, owner)
+        {
             // Root storage is allways black!
             this.Color = NodeColor.Black;
             this.entries = new RedBlackTree();
         }
 
-		public Ole2Storage(string name, Ole2CompoundFile owner, Ole2DirectoryEntry parent) : base(name, EntryType.UserStorage, owner, parent)
-		{
+        public Ole2Storage(string name, Ole2CompoundFile owner, Ole2DirectoryEntry parent) : base(name, EntryType.UserStorage, owner, parent)
+        {
             this.entries = new RedBlackTree();
         }
-		#endregion
+        #endregion
 
-		#region Indexers
+        #region Indexers
         public Ole2DirectoryEntry this[int DID]
         {
             get

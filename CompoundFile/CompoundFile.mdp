@@ -1,5 +1,5 @@
 <Project name="CompoundFile" fileversion="2.0" language="C#" clr-version="Net_1_1" ctype="DotNetProject">
-  <Configurations active="Debug">
+  <Configurations active="Release">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <Output directory="./bin/Debug/" assembly="Nix.CompoundFile" />
       <Build debugmode="True" target="Library" />

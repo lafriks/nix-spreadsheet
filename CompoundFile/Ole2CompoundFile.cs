@@ -1,17 +1,17 @@
 /*
  * Library for writing OLE 2 Compount Document file format.
- * Copyright (C) 2007, Lauris Bukðis-Haberkorns <lauris@nix.lv>
- * 
+ * Copyright (C) 2007, Lauris BukÅ¡is-Haberkorns <lauris@nix.lv>
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
@@ -26,12 +26,12 @@ using Nix.CompoundFile.Managers;
 
 namespace Nix.CompoundFile
 {
-	/// <summary>
-	/// Summary description for Ole2CompoundFile.
-	/// </summary>
-	public sealed class Ole2CompoundFile
-	{
-	    #region Private variables
+    /// <summary>
+    /// Summary description for Ole2CompoundFile.
+    /// </summary>
+    public sealed class Ole2CompoundFile
+    {
+        #region Private variables
         private Ole2Storage root = null;
 
         private ByteOrder byteOrder = ByteOrder.LittleEndian;
@@ -163,7 +163,7 @@ namespace Nix.CompoundFile
                 this.ewriter = new LittleEndianWriter(output);
             else
                 throw new NotImplementedException();
-            
+
             #region Calculate sizes, allocate SAT, SSAT, MSAT, write header
             // Create sector allocation table (SAT)
             this.SAT = new SectorAllocationManager(this.sectorSize);
@@ -182,14 +182,14 @@ namespace Nix.CompoundFile
             int SSATSectorCount = Convert.ToInt32(Math.Ceiling((double)SSATSize / this.sectorSize));
             int DirectorySteamSize = this.DirectoryManager.Directories.GetLength(0) * 128;
             int DirectorySteamSectorCount = Convert.ToInt32(Math.Ceiling((double)DirectorySteamSize / this.sectorSize));
-            
+
             int SectorCount = ShortStreamSectorCount + LongStreamSectorCount + SSATSectorCount + DirectorySteamSectorCount;
-            
+
             // Calculate SAT size
             int SATSize = (SectorCount * 4);
             //int SATLastSectorFreeBlocks = SATSize % (this.sectorSize / 4);
             int SATSectorCount = Convert.ToInt32(Math.Ceiling((double)SATSize / this.sectorSize));
-            
+
             int MSATNextSector = -2;
 
             int MSATSectorCount = 0;
@@ -268,7 +268,7 @@ namespace Nix.CompoundFile
             this.SSAT.WriteData(shmem);
             this.SAT.AllocateStream(ShortStreamStart, shmem.ToArray());
             shmem.Close();
-            
+
             // Create long stream
             this.AllocateLongStreamsData();
             #endregion

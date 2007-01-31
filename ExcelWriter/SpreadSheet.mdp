@@ -1,5 +1,5 @@
 <Project name="SpreadSheet" fileversion="2.0" language="C#" clr-version="Net_1_1" ctype="DotNetProject">
-  <Configurations active="Debug">
+  <Configurations active="Release">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <Output directory="./bin/Debug/" assembly="Nix.ExcelWriter" />
       <Build debugmode="True" target="Library" />
