@@ -19,7 +19,7 @@
   </StartMode>
   <Entries>
     <Entry filename="./CompoundFile/CompoundFile.mdp" />
-    <Entry filename="./ExcelWriter/SpreadSheet.mdp" />
+    <Entry filename="./SpreadSheet/SpreadSheet.mdp" />
     <Entry filename="./Test/Test.mdp" />
   </Entries>
 </Combine>

@@ -4,7 +4,7 @@
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = mcs
 ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -debug -d:DEBUG
-ASSEMBLY = ./bin/Debug/Nix.ExcelWriter.dll
+ASSEMBLY = ./bin/Debug/Nix.SpreadSheet.dll
 COMPILE_TARGET = library
 PC_FILES_IN = .SpreadSheet.pc.in
 PROJECT_REFERENCES =  \
@@ -14,7 +14,7 @@ endif
 if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = mcs
 ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4
-ASSEMBLY = ./bin/Release/Nix.ExcelWriter.dll
+ASSEMBLY = ./bin/Release/Nix.SpreadSheet.dll
 COMPILE_TARGET = library
 PC_FILES_IN = .SpreadSheet.pc.in
 PROJECT_REFERENCES =  \

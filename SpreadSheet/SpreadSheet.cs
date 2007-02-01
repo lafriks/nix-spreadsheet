@@ -33,93 +33,14 @@ namespace Nix.SpreadSheet
         String = 2
     }
 
-    public class Cell
-    {
-        private object m_nValue;
-        private CellType m_nType;
-
-        // Row of the value
-        private int m_nRow;
-        // Column of the value
-        private int m_nColumn;
-
-        public Cell ()
-        {
-            this.m_nValue = null;
-            this.m_nType = CellType.None;
-        }
-
-        public Cell (Cell v)
-        {
-            this.m_nType = v.m_nType;
-            this.m_nValue = v.m_nValue;
-            //this.CopyAttributes(v);
-        }
-
-        public CellType getType()
-        {
-            return this.m_nType;
-        }
-
-        public void setValue(double val)
-        {
-            this.m_nType = CellType.Number;
-            this.m_nValue = val;
-        }
-
-        public void setValue(string val)
-        {
-            this.m_nType = CellType.String;
-            this.m_nValue = val;
-        }
-
-        public object getValue()
-        {
-            return this.m_nValue;
-        }
-
-        public void Clear()
-        {
-            this.m_nType = CellType.None;
-            this.m_nValue = null;
-        }
-
-        /// <summary>
-        /// Cell row
-        /// </summary>
-        public int Row
-        {
-            get
-            {
-                return this.m_nRow;
-            }
-            set
-            {
-                this.m_nRow = value;
-            }
-        }
-
-        /// <summary>
-        /// Cell column
-        /// </summary>
-        public int Column
-        {
-            set
-            {
-                this.m_nColumn = value;
-            }
-            get
-            {
-                return this.m_nColumn;
-            }
-        }
-    }
-
     /// <summary>
     /// Summary description for Excel.
     /// </summary>
     public class SpreadSheet
     {
+        public const int MaxRows = 65536;
+        public const int MaxColumns = 256;
+
         private Hashtable m_table = new Hashtable();
 	    
         public SpreadSheet()
@@ -196,17 +117,36 @@ namespace Nix.SpreadSheet
         {
             get
             {
-                string key = row.ToString() + ":" + column.ToString();
+                if (row >= MaxRows || column >= MaxColumns)
+                    throw new ArgumentOutOfRangeException();
+                string key = Utils.CellName(row, column);
                 if (this.m_table.ContainsKey(key))
                 {
                     return (Cell)this.m_table[key];
                 }
                 else
                 {
-                    Cell nc = new Cell();
-                    nc.Row = row;
-                    nc.Column = column;
+                    Cell nc = new Cell(row, column);
                     this.m_table.Add(key, nc);
+                    return nc;
+                }
+            }
+        }
+
+        public Cell this[string name]
+        {
+            get
+            {
+                if (this.m_table.ContainsKey(name))
+                {
+                    return (Cell)this.m_table[name];
+                }
+                else
+                {
+                    Cell nc = new Cell(name);
+                    if (nc.RowIndex >= MaxRows || nc.ColumnIndex >= MaxColumns)
+                        throw new ArgumentOutOfRangeException();
+                    this.m_table.Add(nc.Name, nc);
                     return nc;
                 }
             }

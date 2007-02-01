@@ -19,6 +19,7 @@ namespace Test
         public static void Main(string[] args)
         {
             SpreadSheet sp = new SpreadSheet();
+            sp["IV65536"].Value = "MAX";
             sp.Save("test.xls");
         }
     }

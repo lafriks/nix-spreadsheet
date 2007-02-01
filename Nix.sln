@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", 
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpreadSheet", "ExcelWriter\SpreadSheet.csproj", "{90F370AB-586A-473A-BAB1-002A808FB869}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpreadSheet", "SpreadSheet\SpreadSheet.csproj", "{90F370AB-586A-473A-BAB1-002A808FB869}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
