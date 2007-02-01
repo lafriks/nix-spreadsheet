@@ -15,7 +15,7 @@
                 DefaultHTMLPageLayout = "Grid"
                 DefaultTargetSchema = "IE50"
                 DelaySign = "false"
-                OutputType = "WinExe"
+                OutputType = "Exe"
                 PreBuildEvent = ""
                 PostBuildEvent = ""
                 RootNamespace = "Test"
@@ -108,14 +108,9 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Form1.cs"
-                    SubType = "Form"
+                    RelPath = "Test.cs"
+                    SubType = "Code"
                     BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Form1.resx"
-                    DependentUpon = "Form1.cs"
-                    BuildAction = "EmbeddedResource"
                 />
             </Include>
         </Files>
