@@ -7,24 +7,8 @@
 using System;
 using System.Drawing;
 
-namespace SpreadSheet
+namespace Nix.SpreadSheet
 {
-    public enum UnderlineStyle
-    {
-        None,
-        Single,
-        Double,
-        SingleAccounting,
-        DoubleAccounting
-    }
-
-    public enum ScriptPosition
-    {
-        Normal,
-        Superscript,
-        Subscript
-    }
-
 	public class Font
 	{
         public const int NormalWeight = 400;
@@ -34,7 +18,28 @@ namespace SpreadSheet
         public const int MaxWeight = 1000;
 
         public const int MinWeight = 100;
+
+        #region Default and equals method
+        private static Font def = null;
+        public static Font Default
+        {
+            get
+            {
+                if (def == null)
+                    def = new Font();
+                return def;
+            }
+        }
         
+        internal bool Equals(Font obj)
+        {
+            return ! (this.color != obj.color || this.italic != obj.italic
+                      || this.weight != obj.weight || this.strikeout != obj.strikeout
+                      || this.name != obj.name || this.size != obj.size
+                      || this.underline != obj.underline || this.scriptpos != obj.scriptpos );
+        }
+        #endregion
+
         #region Color
         private Color color = Color.Black;
 
@@ -153,5 +158,21 @@ namespace SpreadSheet
             }
         }
         #endregion
+    }
+
+    public enum UnderlineStyle
+    {
+          None,
+          Single,
+          Double,
+          SingleAccounting,
+          DoubleAccounting
+    }
+
+    public enum ScriptPosition
+    {
+          Normal,
+          Superscript,
+          Subscript
     }
 }

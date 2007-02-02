@@ -43,9 +43,7 @@ namespace Nix.SpreadSheet
 
         internal bool Equals(Style comp)
         {
-            if (this.wraptext != comp.wraptext)
-                return false;
-            return true;
+            return ! (this.wraptext != comp.wraptext || ! this.Font.Equals(comp.Font));
         }
 
         private bool defaultStyle = true;
@@ -71,6 +69,22 @@ namespace Nix.SpreadSheet
             set
             {
                 this.wraptext = value;
+            }
+        }
+        #endregion
+        
+        #region Font
+        private Font font = Font.Default;
+
+        public Font Font
+        {
+            get
+            {
+                return this.font;
+            }
+            set
+            {
+                this.font = value;
             }
         }
         #endregion
