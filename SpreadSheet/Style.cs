@@ -43,7 +43,8 @@ namespace Nix.SpreadSheet
 
         internal bool Equals(Style comp)
         {
-            return ! (this.wraptext != comp.wraptext || ! this.Font.Equals(comp.Font));
+            return ! (this.wraptext != comp.wraptext || ! this.Font.Equals(comp.Font)
+                      || this.shrinkfit != comp.shrinkfit);
         }
 
         private bool defaultStyle = true;
@@ -69,6 +70,25 @@ namespace Nix.SpreadSheet
             set
             {
                 this.wraptext = value;
+            }
+        }
+        #endregion
+        
+        #region Shrink to fit
+        private bool shrinkfit = false;
+
+        /// <summary>
+        /// Gets or sets if cell value should shrunk to fit the cell.
+        /// </summary>
+        public bool ShrinkToFit
+        {
+            get
+            {
+                return this.shrinkfit;
+            }
+            set
+            {
+                this.shrinkfit = value;
             }
         }
         #endregion
