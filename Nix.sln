@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpreadSheet", "SpreadSheet\
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zip", "Zip\Zip.csproj", "{A00A7EDF-AEE4-4F56-ABBD-25BE3E6CA5E4}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -31,6 +35,10 @@ Global
 		{90F370AB-586A-473A-BAB1-002A808FB869}.Debug.Build.0 = Debug|.NET
 		{90F370AB-586A-473A-BAB1-002A808FB869}.Release.ActiveCfg = Release|.NET
 		{90F370AB-586A-473A-BAB1-002A808FB869}.Release.Build.0 = Release|.NET
+		{A00A7EDF-AEE4-4F56-ABBD-25BE3E6CA5E4}.Debug.ActiveCfg = Debug|.NET
+		{A00A7EDF-AEE4-4F56-ABBD-25BE3E6CA5E4}.Debug.Build.0 = Debug|.NET
+		{A00A7EDF-AEE4-4F56-ABBD-25BE3E6CA5E4}.Release.ActiveCfg = Release|.NET
+		{A00A7EDF-AEE4-4F56-ABBD-25BE3E6CA5E4}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

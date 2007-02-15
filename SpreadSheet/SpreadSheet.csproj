@@ -84,6 +84,11 @@
                     Project = "{092F19A4-5A93-4F47-B0A1-C132A0FCDB22}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
+                <Reference
+                    Name = "System.Drawing"
+                    AssemblyName = "System.Drawing"
+                    HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Drawing.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -110,6 +115,11 @@
                 />
                 <File
                     RelPath = "Comment.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Font.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
