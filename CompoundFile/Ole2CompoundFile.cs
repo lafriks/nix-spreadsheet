@@ -92,12 +92,13 @@ namespace Nix.CompoundFile
             // Total number of sectors of master sector allocation table
             this.ewriter.Write4(MSATCount);
             // First part of the master sector allocation table (MSAT) - max 109
-            for (int i = 0; i < Math.Min(this.MSAT.Allocations.GetLength(0), 110); i++)
+            for (int i = 0; i < Math.Min(this.MSAT.Count, 110); i++)
             {
-                this.ewriter.Write4(this.MSAT.Allocations[i]);
+                this.ewriter.Write4(this.MSAT[i]);
             }
+            // TODO: Should there be (this.MSAT.Count > 109)?
             if (SATCount < 110)
-                this.ewriter.WriteBytes(0xFF, 436 - (this.MSAT.Allocations.GetLength(0) * 4));
+                this.ewriter.WriteBytes(0xFF, 436 - (this.MSAT.Count * 4));
         }
         #endregion
 
@@ -122,7 +123,7 @@ namespace Nix.CompoundFile
         #region Write directory entries
         private void WriteDES(EndianWriter writer)
         {
-            foreach (Ole2DirectoryEntry entr in this.DirectoryManager.Directories)
+            foreach (Ole2DirectoryEntry entr in this.DirectoryManager)
             {
                 this.WriteDirectoryEntry(writer, entr);
             }
@@ -180,7 +181,7 @@ namespace Nix.CompoundFile
             int LongStreamSectorCount = Convert.ToInt32(Math.Ceiling((double)this.CalculateLongStreamSize() / this.sectorSize));
             int SSATSize = this.SSAT.Allocations.GetLength(0) * 4;
             int SSATSectorCount = Convert.ToInt32(Math.Ceiling((double)SSATSize / this.sectorSize));
-            int DirectorySteamSize = this.DirectoryManager.Directories.GetLength(0) * 128;
+            int DirectorySteamSize = this.DirectoryManager.Count * 128;
             int DirectorySteamSectorCount = Convert.ToInt32(Math.Ceiling((double)DirectorySteamSize / this.sectorSize));
 
             int SectorCount = ShortStreamSectorCount + LongStreamSectorCount + SSATSectorCount + DirectorySteamSectorCount;
@@ -289,7 +290,7 @@ namespace Nix.CompoundFile
         private int AllocateShortStreams()
         {
             int sum = 0;
-            foreach (Ole2DirectoryEntry e in this.DirectoryManager.Directories)
+            foreach (Ole2DirectoryEntry e in this.DirectoryManager)
             {
                 if (e is Ole2Stream)
                 {
@@ -307,7 +308,7 @@ namespace Nix.CompoundFile
 
         private void AllocateLongStreams()
         {
-            foreach (Ole2DirectoryEntry e in this.DirectoryManager.Directories)
+            foreach (Ole2DirectoryEntry e in this.DirectoryManager)
             {
                 if (e is Ole2Stream && ((Ole2Stream)e).Size >= this.minStreamSize && ((Ole2Stream)e).Sector == -2)
                 {
@@ -318,7 +319,7 @@ namespace Nix.CompoundFile
 
         private void AllocateLongStreamsData()
         {
-            foreach (Ole2DirectoryEntry e in this.DirectoryManager.Directories)
+            foreach (Ole2DirectoryEntry e in this.DirectoryManager)
             {
                 if (e is Ole2Stream && ((Ole2Stream)e).Size >= this.minStreamSize)
                 {
@@ -333,7 +334,7 @@ namespace Nix.CompoundFile
         {
             //sum += (real ? ((Ole2Stream)e).Size : (int)Math.Ceiling((double)((Ole2Stream)e).Size / this.sectorSize) * this.sectorSize);
             int sum = 0;
-            foreach (Ole2DirectoryEntry e in this.DirectoryManager.Directories)
+            foreach (Ole2DirectoryEntry e in this.DirectoryManager)
             {
                 // Calculate in full sectors
                 if (e is Ole2Stream && ((Ole2Stream)e).Size >= this.minStreamSize)

@@ -28,10 +28,10 @@ namespace Test
         [STAThread]
         public static void Main(string[] args)
         {
-            Adler32 ad32 = new Adler32();
+            /*Adler32 ad32 = new Adler32();
             HashData(ad32, "Wikipedia");
             CRC32 crc32 = new CRC32(CRC32.DefaultPolynomialLE);
-            HashData(crc32, "Wikipedia");
+            HashData(crc32, "Wikipedia");*/
             SpreadSheet sp = new SpreadSheet();
             sp["IV65536"].Value = "MAX";
             sp.Save("test.xls");

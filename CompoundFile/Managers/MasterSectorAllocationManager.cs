@@ -18,21 +18,18 @@
  */
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Nix.CompoundFile.Managers
 {
     /// <summary>
-    /// Description of ShortSectorAllocationManager.
+	/// Description of MasterSectorAllocationManager.
     /// </summary>
-    internal class MasterSectorAllocationManager
+    internal class MasterSectorAllocationManager : IEnumerable<int>
     {
         #region Private variables and constructor
-        private ArrayList Sectors = new ArrayList();
+		private List<int> Sectors = new List<int>();
         private SectorAllocationManager SAT;
-
-        private bool sync = false;
-        private int[] allocations;
 
         public MasterSectorAllocationManager(SectorAllocationManager sat)
         {
@@ -61,18 +58,47 @@ namespace Nix.CompoundFile.Managers
         #endregion
 
         #region Master table allocations
-        public int[] Allocations
+		/// <summary>
+		/// Gets the sector at the specified index.
+		/// </summary>
+		/// <value></value>
+        public int this[int index]
         {
             get
             {
-                if ( ! this.sync)
-                {
-                    this.allocations = (int[])this.Sectors.ToArray(typeof(int));
-                    this.sync = true;
-                }
-                return this.allocations;
+                return this.Sectors[index];
             }
         }
+
+		/// <summary>
+		/// Gets the sector count.
+		/// </summary>
+		/// <value>The count.</value>
+        public int Count
+        {
+			get
+			{
+				return this.Sectors.Count;
+			}
+        }
         #endregion
-    }
+
+		#region IEnumerable<int> Members
+
+		public IEnumerator<int> GetEnumerator()
+		{
+			return this.Sectors.GetEnumerator();
+		}
+
+		#endregion
+
+		#region IEnumerable Members
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return this.Sectors.GetEnumerator();
+		}
+
+		#endregion
+	}
 }
