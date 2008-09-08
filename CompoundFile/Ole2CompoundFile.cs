@@ -247,28 +247,24 @@ namespace Nix.CompoundFile
             MemoryStream smem = new MemoryStream();
             EndianWriter swriter = new LittleEndianWriter(smem);
             this.WriteSAT(swriter);
-            this.SAT.AllocateStream(SATStart, smem.ToArray(), 0xFF);
-            smem.Close();
+            this.SAT.AllocateStream(SATStart, smem, 0xFF);
 
             // Create directory stream (DES)
             MemoryStream mem = new MemoryStream();
             EndianWriter writer = new LittleEndianWriter(mem);
             this.WriteDES(writer);
-            this.SAT.AllocateStream(RootStart, mem.ToArray());
-            mem.Close();
+            this.SAT.AllocateStream(RootStart, mem);
 
             // Create SSAT stream
             MemoryStream ssmem = new MemoryStream();
             EndianWriter sswriter = new LittleEndianWriter(ssmem);
             this.WriteSSAT(sswriter);
-            this.SAT.AllocateStream(SSATStart, ssmem.ToArray(), 0xFF);
-            ssmem.Close();
+            this.SAT.AllocateStream(SSATStart, ssmem, 0xFF);
 
             // Create short stream
             MemoryStream shmem = new MemoryStream();
             this.SSAT.WriteData(shmem);
-            this.SAT.AllocateStream(ShortStreamStart, shmem.ToArray());
-            shmem.Close();
+            this.SAT.AllocateStream(ShortStreamStart, shmem);
 
             // Create long stream
             this.AllocateLongStreamsData();
@@ -276,7 +272,11 @@ namespace Nix.CompoundFile
 
             // Write sectors to the stream
             this.SAT.WriteData(output);
-        }
+			smem.Close();
+			mem.Close();
+			ssmem.Close();
+			shmem.Close();
+		}
 
         public void Save(string filename)
         {
@@ -298,7 +298,7 @@ namespace Nix.CompoundFile
                     {
                         int fsect = this.SSAT.Allocate(((Ole2Stream)e).Size);
                         ((Ole2Stream)e).Sector = fsect;
-                        this.SSAT.AllocateStream(fsect, ((Ole2Stream)e).GetData());
+                        this.SSAT.AllocateStream(fsect, ((Ole2Stream)e).BaseStream);
                     }
                     sum += (int)Math.Ceiling((double)((Ole2Stream)e).Size / this.shortSectorSize) * this.shortSectorSize;
                 }
@@ -323,7 +323,7 @@ namespace Nix.CompoundFile
             {
                 if (e is Ole2Stream && ((Ole2Stream)e).Size >= this.minStreamSize)
                 {
-                    this.SAT.AllocateStream(((Ole2Stream)e).Sector, ((Ole2Stream)e).GetData());
+                    this.SAT.AllocateStream(((Ole2Stream)e).Sector, ((Ole2Stream)e).BaseStream);
                 }
             }
         }

@@ -19,6 +19,7 @@
 
 using System;
 using System.Collections;
+using System.IO;
 
 namespace Nix.CompoundFile
 {
@@ -101,16 +102,28 @@ namespace Nix.CompoundFile
             return ne;
         }
 
-        public Ole2Stream AddStream(string name, byte[] data)
+		//TODO: Readd byte support
+        /*public Ole2Stream AddData(string name, byte[] data)
         {
             if (this.EntryExists(name))
                 throw new CompoundFileException("Entry with such name already exists!");
             Ole2Stream ne = new Ole2Stream(name, this.Owner, this);
-            ne.SetData(data);
+            ne.BaseStream = new MemoryStream();
+            ne.BaseStream.Write(data, 0, data.GetLength(0));
             this.entries.Add(ne);
             return ne;
-        }
-        #endregion
+        }*/
+
+		public Ole2Stream AddStream ( string name, System.IO.Stream stream )
+		{
+			if ( this.EntryExists(name) )
+				throw new CompoundFileException("Entry with such name already exists!");
+			Ole2Stream ne = new Ole2Stream(name, this.Owner, this);
+			ne.BaseStream = stream;
+			this.entries.Add(ne);
+			return ne;
+		}
+		#endregion
 
         #region Remove storage/stream
         private void Remove(Ole2DirectoryEntry obj)
@@ -147,6 +160,5 @@ namespace Nix.CompoundFile
         }
 
         #endregion
-
-    }
+	}
 }

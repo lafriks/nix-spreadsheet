@@ -20,6 +20,7 @@
 using System;
 using System.IO;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Nix.CompoundFile.Managers
 {
@@ -32,8 +33,8 @@ namespace Nix.CompoundFile.Managers
     {
         #region Private variables
         private int SectorSize = 0;
-        private ArrayList Sectors = new ArrayList();
-        private ArrayList SectorsData = new ArrayList();
+		private ArrayList Sectors = new ArrayList();
+		private List<ISector> SectorsData = new List<ISector>();
 
         private bool sync = false;
         private int[] allocations;
@@ -125,25 +126,26 @@ namespace Nix.CompoundFile.Managers
         #endregion
 
         #region Allocate stream data
-        public void AllocateStream(int start, byte[] data)
+		public void AllocateStream ( int start, Stream stream )
         {
-            this.AllocateStream(start, data, 0);
+			this.AllocateStream(start, stream, 0);
         }
 
-        public void AllocateStream(int start, byte[] data, byte def)
+		public void AllocateStream ( int start, Stream stream, byte def )
         {
             int offset = 0;
-            int steamSize = data.GetLength(0);
+            int steamSize = (int)stream.Length;
             while (start > -1)
             {
-                byte[] nd = new byte[this.SectorSize];
+                //byte[] nd = new byte[this.SectorSize];
+                ISector sector = new SectorStream(stream, offset, this.SectorSize, def);
                 // Copy one sector data
-                for (int i = 0; i < this.SectorSize; i++)
-                    if (i + offset < steamSize)
-                        nd[i] = data[i + offset];
-                    else
-                        nd[i] = def;
-                this.SectorsData[start] = nd;
+                //for (int i = 0; i < this.SectorSize; i++)
+                //    if (i + offset < steamSize)
+                //        nd[i] = data[i + offset];
+                //    else
+                //        nd[i] = def;
+                this.SectorsData[start] = sector;
                 offset += this.SectorSize;
                 // Go to next sector
                 start = (int)this.Sectors[start];
@@ -154,9 +156,9 @@ namespace Nix.CompoundFile.Managers
         #region Write sectors to stream
         public void WriteData(Stream writer)
         {
-            foreach(byte[]sector in this.SectorsData)
+            foreach(ISector sector in this.SectorsData)
             {
-                writer.Write(sector, 0, this.SectorSize);
+				sector.Write(writer);
             }
         }
         #endregion

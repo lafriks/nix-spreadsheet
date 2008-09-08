@@ -19,6 +19,7 @@
 
 using System;
 using System.Collections;
+using System.IO;
 
 namespace Nix.CompoundFile
 {
@@ -27,7 +28,7 @@ namespace Nix.CompoundFile
     /// </summary>
     public class Ole2Stream : Ole2DirectoryEntry
     {
-        private byte[] data = null;
+        private Stream stream = null;
 
         #region Constructor
         public Ole2Stream(string name, Ole2CompoundFile owner, Ole2DirectoryEntry parent) : base(name, EntryType.UserStream, owner, parent)
@@ -35,16 +36,18 @@ namespace Nix.CompoundFile
         }
         #endregion
 
-        #region Data
-        public void SetData(byte[] data)
-        {
-            this.data = data;
-        }
-
-        public byte[] GetData()
-        {
-            return this.data;
-        }
+        #region Stream
+		public Stream BaseStream
+		{
+			get
+			{
+				return this.stream;
+			}
+			set
+			{
+				this.stream = value;
+			}
+		}
         #endregion
 
         #region Size
@@ -52,7 +55,7 @@ namespace Nix.CompoundFile
         {
             get
             {
-                return (this.data == null ? 0 : this.data.GetLength(0));
+                return ((int)this.BaseStream.Length);
             }
         }
         #endregion

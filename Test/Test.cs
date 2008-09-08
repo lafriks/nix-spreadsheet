@@ -32,9 +32,10 @@ namespace Test
             HashData(ad32, "Wikipedia");
             CRC32 crc32 = new CRC32(CRC32.DefaultPolynomialLE);
             HashData(crc32, "Wikipedia");*/
-            SpreadSheet sp = new SpreadSheet();
-            sp["IV65536"].Value = "MAX";
-            sp.Save("test.xls");
+            SpreadSheetDocument doc = new SpreadSheetDocument();
+            Sheet s = doc.AddSheet();
+            //s["IV65536"].Value = "MAX";
+            doc.Save("test.xls", SpreadSheetFileFormat.ExcelBinary);
         }
     }
 }
