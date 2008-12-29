@@ -55,7 +55,7 @@ namespace Nix.SpreadSheet.Provider
 			return -1;
 		}
 		
-		protected void BuildFontTable( SpreadSheetDocument document )
+		protected void BuildFontTable ( SpreadSheetDocument document )
 		{
 			foreach(Sheet sheet in document)
 				foreach(Cell cell in sheet)
@@ -65,6 +65,98 @@ namespace Nix.SpreadSheet.Provider
 			for ( int i = fontTable.Count; i < 5; i++ )
 				fontTable.Add(Font.Default);
 		}
+
+		private Dictionary<int, string> formatTable = new Dictionary<int,string>();
+
+		private List<int> formatsToWrite = new List<int>();
+
+		private int formatTableSeq = 0;
+
+		protected void BuildFormatTable ( SpreadSheetDocument document )
+		{
+			// Add default formats
+			this.formatTable.Add(0x00, "General");
+			this.formatTable.Add(0x01, "0");
+			this.formatTable.Add(0x02, "0.00");
+			this.formatTable.Add(0x03, "#,##0");
+			this.formatTable.Add(0x04, "#,##0.00");
+			if ( document.Locale.TwoLetterISORegionName == "LV")
+			{
+				this.formatTable.Add(0x05, "#,##0\\ \"Ls\";\\-#,##0\\ \"Ls\"");
+				this.formatsToWrite.Add(0x05);
+				this.formatTable.Add(0x06, "#,##0\\ \"Ls\";[Red]\\-#,##0\\ \"Ls\"");
+				this.formatsToWrite.Add(0x06);
+				this.formatTable.Add(0x07, "#,##0.00\\ \"Ls\";\\-#,##0.00\\ \"Ls\"");
+				this.formatsToWrite.Add(0x07);
+				this.formatTable.Add(0x08, "#,##0.00\\ \"Ls\";[Red]\\-#,##0.00\\ \"Ls\"");
+				this.formatsToWrite.Add(0x08);
+			}
+			else
+			{
+				this.formatTable.Add(0x05, "($#,##0_);($#,##0)");
+				this.formatTable.Add(0x06, "($#,##0_);[Red]($#,##0)");
+				this.formatTable.Add(0x07, "($#,##0.00_);($#,##0.00)");
+				this.formatTable.Add(0x08, "($#,##0.00_);[Red]($#,##0.00)");
+			}
+			this.formatTable.Add(0x09, "0%");
+			this.formatTable.Add(0x0a, "0.00%");
+			this.formatTable.Add(0x0b, "0.00E+00");
+			this.formatTable.Add(0x0c, "# ?/?");
+			this.formatTable.Add(0x0d, "# ??/??");
+			this.formatTable.Add(0x0e, "m/d/yy");
+			this.formatTable.Add(0x0f, "d-mmm-yy");
+			this.formatTable.Add(0x10, "d-mmm");
+			this.formatTable.Add(0x11, "mmm-yy");
+			this.formatTable.Add(0x12, "h:mm AM/PM");
+			this.formatTable.Add(0x13, "h:mm:ss AM/PM");
+			this.formatTable.Add(0x14, "h:mm");
+			this.formatTable.Add(0x15, "h:mm:ss");
+			this.formatTable.Add(0x16, "m/d/yy h:mm");
+			this.formatTable.Add(0x25, "(#,##0_);(#,##0)");
+			this.formatTable.Add(0x26, "(#,##0_);[Red](#,##0)");
+			this.formatTable.Add(0x27, "(#,##0.00_);(#,##0.00)");
+			this.formatTable.Add(0x28, "(#,##0.00_);[Red](#,##0.00)");
+			if ( document.Locale.TwoLetterISORegionName == "LV")
+			{
+				this.formatTable.Add(0x29, "_-* #,##0\\ _L_s_-;\\-* #,##0\\ _L_s_-;_-* \"-\"\\ _L_s_-;_-@_-");
+				this.formatsToWrite.Add(0x29);
+				this.formatTable.Add(0x2a, "_-* #,##0\\ \"Ls\"_-;\\-* #,##0\\ \"Ls\"_-;_-* \"-\"\\ \"Ls\"_-;_-@_-");
+				this.formatsToWrite.Add(0x2a);
+				this.formatTable.Add(0x2b, "_-* #,##0.00\\ _L_s_-;\\-* #,##0.00\\ _L_s_-;_-* \"-\"??\\ _L_s_-;_-@_-");
+				this.formatsToWrite.Add(0x2b);
+				this.formatTable.Add(0x2c, "_-* #,##0.00\\ \"Ls\"_-;\\-* #,##0.00\\ \"Ls\"_-;_-* \"-\"??\\ \"Ls\"_-;_-@_-");
+				this.formatsToWrite.Add(0x2c);
+			}
+			else
+			{
+				this.formatTable.Add(0x29, "_(* #,##0_);_(* (#,##0);_(* \" - \"_);_(@_)");
+				this.formatTable.Add(0x2a, "_($* #,##0_);_($* (#,##0);_($* \" - \"_);_(@_)");
+				this.formatTable.Add(0x2b, "_(* #,##0.00_);_(* (#,##0.00);_(* \" - \"??_);_(@_)");
+				this.formatTable.Add(0x2c, "_($* #,##0.00_);_($* (#,##0.00);_($* \" - \"??_);_(@_)");
+			}
+			this.formatTable.Add(0x2d, "mm:ss");
+			this.formatTable.Add(0x2e, "[h]:mm:ss");
+			this.formatTable.Add(0x2f, "mm:ss.0");
+			this.formatTable.Add(0x30, "##0.0E+0");
+			this.formatTable.Add(0x31, "@");
+
+			this.formatTableSeq = 0x32;
+
+			// Add user defined formats if they are not in default format table
+			foreach ( Sheet sheet in document )
+			{
+				foreach ( Cell cell in sheet )
+				{
+					if ( ! this.formatTable.ContainsValue(cell.Format) )
+					{
+						this.formatTable.Add(this.formatTableSeq, cell.Format);
+						this.formatsToWrite.Add(this.formatTableSeq);
+						this.formatTableSeq++;
+					}
+				}
+			}
+		}
+
 		#region IFileFormatProvider Members
 
 		public void Save ( SpreadSheetDocument document, System.IO.Stream stream )
@@ -72,6 +164,7 @@ namespace Nix.SpreadSheet.Provider
 			Ole2CompoundFile cf = new Ole2CompoundFile();
 
 			this.BuildFontTable(document);
+			this.BuildFormatTable(document);
 			
 			#region Workbook stream
 			MemoryStream wbs = new MemoryStream();
@@ -83,6 +176,9 @@ namespace Nix.SpreadSheet.Provider
 			// Font table
 			foreach ( Font font in this.fontTable )
 				this.Write(new FONT() { Font = font });
+			// Format table
+			foreach ( int fi in this.formatsToWrite )
+				this.Write(new FORMAT() { Index = fi, Format = this.formatTable[fi] });
 			this.Write(new EOF());
 
 			// Sheets

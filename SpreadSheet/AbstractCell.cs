@@ -77,6 +77,16 @@ namespace Nix.SpreadSheet
         }
         #endregion
 
+		#region Format
+		private string format = "@";
+
+		public string Format
+		{
+			get { return format; }
+			set { format = value; }
+		}
+		#endregion
+
         #region Formula
         private string formula = string.Empty;
 

@@ -22,6 +22,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Globalization;
 
 namespace Nix.SpreadSheet
 {
@@ -152,6 +153,16 @@ namespace Nix.SpreadSheet
 			return this.sheets.Values.GetEnumerator();
 		}
 
+		#endregion
+
+		#region Locale
+		private RegionInfo locale = RegionInfo.CurrentRegion;
+
+		public RegionInfo Locale
+		{
+			get { return locale; }
+			set { locale = value; }
+		}
 		#endregion
 	}
 }
