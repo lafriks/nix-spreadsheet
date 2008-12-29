@@ -1,6 +1,6 @@
-/*
- * Library for creating Microsoft Excel files.
- * Copyright (C) 2007, Lauris Bukšis-Haberkorns <lauris@nix.lv>
+﻿/*
+ * Library for generating spreadsheet documents.
+ * Copyright (C) 2008, Lauris Bukšis-Haberkorns <lauris@nix.lv>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

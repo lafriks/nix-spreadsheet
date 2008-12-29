@@ -20,22 +20,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
-namespace Nix.SpreadSheet
+namespace Nix.SpreadSheet.Provider
 {
-	public enum SpreadSheetFileFormat
+	public interface IFileFormatProvider
 	{
-		/// <summary>
-		/// Microsoft compound binary file format.
-		/// </summary>
-		ExcelBinary,
-		/// <summary>
-		/// Microsoft Open XML document format.
-		/// </summary>
-		OpenXml,
-		/// <summary>
-		/// OASIS OpenDocument, ISO/IEC 26300 file format
-		/// </summary>
-		OpenDocument
+		void Save(SpreadSheetDocument document, Stream stream);
 	}
 }

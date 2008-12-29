@@ -115,11 +115,10 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Provider\Excel\BIFF\EOF.cs" />
-    <Compile Include="Provider\IFileFormatProvider.cs" />
-    <Compile Include="Provider\Excel\BIFFRecord.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Xls\Xls\BIFF\EOF.cs" />
+    <Compile Include="Xls\Xls\BIFF\FONT.cs" />
+    <Compile Include="Xls\Xls\BIFF\BIFFStringHelper.cs" />
+    <Compile Include="Xls\IFileFormatProvider.cs" />
     <Compile Include="Cell.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -129,16 +128,13 @@
     <Compile Include="Font.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Provider\Xls.cs" />
-    <Compile Include="Provider\Excel\BIFF\BIFF8.cs" />
-    <Compile Include="Provider\Excel\BIFF\BIFF8\BOF.cs" />
-    <Compile Include="Provider\Excel\BIFF\RecordHeader.cs" />
-    <Compile Include="Provider\Excel\SpreadSheet.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Xls\XlsProvider.cs" />
+    <Compile Include="Xls\Xls\BIFF\BIFF8\BOF.cs" />
+    <Compile Include="Xls\Xls\BIFF\BIFFRecord.cs" />
     <Compile Include="Sheet.cs" />
     <Compile Include="SpreadSheetDocument.cs" />
     <Compile Include="SpreadSheetFileFormat.cs" />
+    <Compile Include="StringFormating.cs" />
     <Compile Include="Style.cs">
       <SubType>Code</SubType>
     </Compile>

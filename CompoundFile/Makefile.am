@@ -26,8 +26,8 @@ all: $(ASSEMBLY)
 FILES = \
 	./AssemblyInfo.cs \
 	./Common.cs \
-	./EndianWriter.cs \
-	./LittleEndianWriter.cs \
+	./EndianStream.cs \
+	./LittleEndianStream.cs \
 	./Ole2CompoundFile.cs \
 	./Ole2DirectoryEntry.cs \
 	./Ole2Storage.cs \

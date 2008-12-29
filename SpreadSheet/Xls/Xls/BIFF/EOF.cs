@@ -20,22 +20,30 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Nix.CompoundFile;
 
-namespace Nix.SpreadSheet
+namespace Nix.SpreadSheet.Provider.Excel.BIFF
 {
-	public enum SpreadSheetFileFormat
+	internal class EOF : BIFFRecord
 	{
 		/// <summary>
-		/// Microsoft compound binary file format.
+		/// EOF record OPCODE.
 		/// </summary>
-		ExcelBinary,
-		/// <summary>
-		/// Microsoft Open XML document format.
-		/// </summary>
-		OpenXml,
-		/// <summary>
-		/// OASIS OpenDocument, ISO/IEC 26300 file format
-		/// </summary>
-		OpenDocument
+		protected override int OPCODE {
+			get {
+				return 0x000A;
+			}
+		}
+
+		public override void Write ( EndianStream stream )
+		{
+			this.WriteHeader(stream, 0);
+		}
+
+		public override void Read(EndianStream stream)
+		{
+			if ( this.ReadHeader(stream) != 0 )
+				throw new IndexOutOfRangeException("Invalid EOF record");
+		}
 	}
 }

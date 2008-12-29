@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Library for creating Microsoft Excel files.
  * Copyright (C) 2007, Lauris Bukšis-Haberkorns <lauris@nix.lv>
  *
@@ -29,60 +29,15 @@ namespace Nix.SpreadSheet
     /// </summary>
     internal abstract class BIFFRecord
     {
-        protected BIFFRecord()
-        {
-        }
-
-        protected void Write(EndianWriter pWriter, int nRecNo, int nRecLen)
+        protected void Write(EndianStream pWriter, int nRecNo, int nRecLen)
         {
             pWriter.Write2(nRecNo);
             pWriter.Write2(nRecLen);
         }
 
-        public abstract void Write(EndianWriter pWriter);
-
-        // Supported excel version (BIFF8)
-        public const int EXCEL_VERSION = 0x0600;
-
-        // BIFF8 opcodes
-        public const int OPCODE_BOF                    = 0x0809;
-
-        public const int OPCODE_WINDOW1                = 0x003D;
-
-        public const int OPCODE_CODEPAGE               = 0x0042;
-
-        public const int OPCODE_EOF                    = 0x000A;
-
-        // TODO
-        public const int OPCODE_FONT                   = 0x0231;
-
-        public const int OPCODE_BUILTINFMTCOUNT        = 0x0056;
-        public const int OPCODE_FORMAT                 = 0x001E;
-
-        public const int OPCODE_XF                     = 0x0243;
-
-        public const int OPCODE_NUMBER                 = 0x0203;
-        public const int OPCODE_LABEL                  = 0x0204;
-
-        // Alignment options for a cell
-        public const int ALIGN_GENERAL           = 0x00;
-        public const int ALIGN_LEFT              = 0x01;
-        public const int ALIGN_CENTER            = 0x02;
-        public const int ALIGN_RIGHT             = 0x03;
-        public const int ALIGN_FILL              = 0x04;
-
-        // Line styles
-        public const int LINE_NONE   = 0x00;
-        public const int LINE_THIN   = 0x01;
-        public const int LINE_MEDIUM = 0x02;
-        public const int LINE_DASHED = 0x03;
-        public const int LINE_DOTTED = 0x04;
-        public const int LINE_THICK  = 0x05;
-        public const int LINE_DOUBLE = 0x06;
-        public const int LINE_HAIR   = 0x07;
-
-        public const int BACKGROUND_NONE  = 0x00;
-        public const int BACKGROUND_SOLID = 0x01;
+        public abstract void Write(EndianStream pWriter);
+ 
+        public abstract void Read(EndianStream pStream);
     }
 
     internal abstract class excelValueAttributes : BIFFRecord
@@ -122,7 +77,7 @@ namespace Nix.SpreadSheet
             this.m_nAttr3 = v.m_nAttr3;
         }
 
-        public void WriteAttributes(EndianWriter pWriter)
+        public void WriteAttributes(EndianStream pWriter)
         {
             pWriter.Write2(this.Row);
             pWriter.Write2(this.Column);
@@ -280,7 +235,7 @@ namespace Nix.SpreadSheet
             this.m_nHistoryFlags = nHistoryFlags;
         }
 
-        public override void Write(EndianWriter pWriter)
+        public override void Write(EndianStream pWriter)
         {
             base.Write(pWriter, OPCODE_BOF, 14);
             pWriter.Write2(EXCEL_VERSION);
@@ -298,7 +253,7 @@ namespace Nix.SpreadSheet
         {
         }
 
-        public override void Write(EndianWriter pWriter)
+        public override void Write(EndianStream pWriter)
         {
             base.Write(pWriter, OPCODE_WINDOW1, 18);
             pWriter.Write2(0); // Hpos
@@ -315,7 +270,7 @@ namespace Nix.SpreadSheet
 
     internal class XFRecord : BIFFRecord
     {
-        public override void Write(EndianWriter pWriter)
+        public override void Write(EndianStream pWriter)
         {
             base.Write(pWriter, OPCODE_XF, 12);
             pWriter.WriteByte((byte)0); // font
@@ -337,7 +292,7 @@ namespace Nix.SpreadSheet
             this.m_nCodePage = CodePage;
         }
 
-        public override void Write(EndianWriter pWriter)
+        public override void Write(EndianStream pWriter)
         {
             base.Write(pWriter, OPCODE_CODEPAGE, 2);
             pWriter.Write2(m_nCodePage);
@@ -372,7 +327,7 @@ namespace Nix.SpreadSheet
             }
         }
 
-        public override void Write(EndianWriter pWriter)
+        public override void Write(EndianStream pWriter)
         {
             base.Write(pWriter, OPCODE_NUMBER, 14);
             pWriter.Write2(this.Row);
@@ -413,7 +368,7 @@ namespace Nix.SpreadSheet
             }
         }
 
-        public override void Write(EndianWriter pWriter)
+        public override void Write(EndianStream pWriter)
         {
             base.Write(pWriter, OPCODE_LABEL, 8 + this.Value.Length);
             pWriter.Write2(this.Row);
@@ -435,7 +390,7 @@ namespace Nix.SpreadSheet
     /// </summary>
     internal class EOFRecord : BIFFRecord
     {
-        public override void Write(EndianWriter pWriter)
+        public override void Write(EndianStream pWriter)
         {
             base.Write(pWriter, OPCODE_EOF, 0);
         }

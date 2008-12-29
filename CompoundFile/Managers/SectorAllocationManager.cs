@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Library for writing OLE 2 Compount Document file format.
  * Copyright (C) 2007, Lauris Bukšis-Haberkorns <lauris@nix.lv>
  *
@@ -72,7 +72,10 @@ namespace Nix.CompoundFile.Managers
                 if ((int)this.Sectors[i] == -1)
                     return i;
             }
-            return -1;
+            // No free sectors found
+    		// Keep in sync arrays
+    		this.SectorsData.Add(null);
+            return this.Sectors.Add(-1);
         }
 
         public int Allocate(int size)
@@ -83,30 +86,22 @@ namespace Nix.CompoundFile.Managers
         public int Allocate(int size, int val)
         {
             this.sync = false;
-            int f = this.FindFirstFree();
-            int n = f;
-            int nx = -2;
-            int count = Convert.ToInt32(Math.Ceiling((double)size / this.SectorSize));
-            for (int i = 0; i < count; i++)
+            // Allocate first record
+            int first = this.FindFirstFree();
+            int current = first;
+            int count = Convert.ToInt32(Math.Ceiling((double)size / this.SectorSize)) - 1;
+            // If we need more record alocate them
+            while ( count-- > 0 )
             {
-                nx = this.FindFirstFree(n + 1);
-                if (n == -1)
-                {
-                    n = this.Sectors.Add(-1);
-                    // keep in sync
-                    this.SectorsData.Add(null);
-                }
-                if (f == -1)
-                    f = n;
-                this.Sectors[n] = (val == -1 ? (nx == -1 ? -2 : nx) : val);
-                this.OnAllocation(this, n);
+            	int next = this.FindFirstFree(current + 1);
+            	this.Sectors[current] = ( val == -1 ? next : val );
+            	this.OnAllocation(this, current);
+            	current = next;
             }
-            if (nx >= 0)
-            {
-                this.Sectors[nx] = (val == -1 ? -2 : val);
-                this.OnAllocation(this, nx);
-            }
-            return f;
+            // Last sector
+            this.Sectors[current] = ( val == -1 ? -2 : val );
+            this.OnAllocation(this, current);
+            return first;
         }
         #endregion
 

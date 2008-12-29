@@ -1,15 +1,28 @@
-/*
- * Library for creating Microsoft Excel files. * Copyright (C) 2007, Lauris Bukšis-Haberkorns <lauris@nix.lv> *
- * This library is free software; you can redistribute it and/or * modify it under the terms of the GNU Lesser General Public * License as published by the Free Software Foundation; either * version 2.1 of the License, or (at your option) any later version. *
- * This library is distributed in the hope that it will be useful, * but WITHOUT ANY WARRANTY; without even the implied warranty of * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU * Lesser General Public License for more details. *
- * You should have received a copy of the GNU Lesser General Public * License along with this library; if not, write to the Free Software * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA */
+﻿/*
+ * Library for generating spreadsheet documents.
+ * Copyright (C) 2008, Lauris Bukšis-Haberkorns <lauris@nix.lv>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 
 using System;
 using System.Drawing;
 
 namespace Nix.SpreadSheet
 {
-	public class Font
+	public class Font : IEquatable<Font>
 	{
         public const int NormalWeight = 400;
 
@@ -30,13 +43,14 @@ namespace Nix.SpreadSheet
                 return def;
             }
         }
-        
-        internal bool Equals(Font obj)
+
+        public bool Equals(Font other)
         {
-            return ! (this.color != obj.color || this.italic != obj.italic
-                      || this.weight != obj.weight || this.strikeout != obj.strikeout
-                      || this.name != obj.name || this.size != obj.size
-                      || this.underline != obj.underline || this.scriptpos != obj.scriptpos );
+            return ! (this.color != other.color || this.italic != other.italic
+                      || this.weight != other.weight || this.strikeout != other.strikeout
+                      || this.name != other.name || this.size != other.size
+                      || this.underline != other.underline || this.scriptpos != other.scriptpos
+                      || this.fontFace != other.fontFace || this.charSet != other.charSet);
         }
         #endregion
 
@@ -94,6 +108,8 @@ namespace Nix.SpreadSheet
             }
             set
             {
+            	if ( value < MinWeight || value > MaxWeight )
+            		throw new ArgumentOutOfRangeException("Weight");
                 this.weight = value;
             }
         }
@@ -158,6 +174,24 @@ namespace Nix.SpreadSheet
             }
         }
         #endregion
+
+        #region Font face
+        private FontFace fontFace = FontFace.None;
+        
+		public FontFace FontFace {
+			get { return fontFace; }
+			set { fontFace = value; }
+		}
+        #endregion
+
+		#region Char set        
+        private CharSet charSet = CharSet.Default;
+        
+		public CharSet CharSet {
+			get { return charSet; }
+			set { charSet = value; }
+		}
+		#endregion
     }
 
     public enum UnderlineStyle
@@ -174,5 +208,37 @@ namespace Nix.SpreadSheet
           Normal,
           Superscript,
           Subscript
+    }
+
+    public enum FontFace
+    {
+    	None,
+    	Modern,
+    	Roman,
+    	Swiss,
+    	Script,
+    	Decorative
+    }
+
+    public enum CharSet
+    {
+		Ansi,
+		Arabic,
+		Baltic,
+		ChineseBig5,
+		Default,
+		EastEurope,
+		GB2312,
+		Greek,
+		Hangeul,
+		Hebrew,
+		Johab,
+		MAC,
+		OEM,
+		Russian,
+		Shiftjis,
+		Symbol,
+		Thai,
+		Turkish
     }
 }

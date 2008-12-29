@@ -27,8 +27,23 @@ all: $(ASSEMBLY)
 
 FILES = \
 	./AssemblyInfo.cs \
-	./BIFFRecord.cs \
-	./SpreadSheet.cs 
+	./AbstractCell.cs \
+	./Cell.cs \
+	./Comment.cs \
+	./Font.cs \
+	./SpreadSheetDocument.cs \
+	./SpreadSheetFileFormat.cs \
+	./StringFormating.cs \
+	./Sheet.cs \
+	./Style.cs \
+	./Utils.cs \
+	./Provider/IFileProvider.cs \
+	./Provider/XlsProvider.cs \
+	./Provider/BIFF/BIFFRecord.cs \
+	./Provider/BIFF/BIFFStringHelper.cs \
+	./Provider/BIFF/EOF.cs \
+	./Provider/BIFF/FONT.cs \
+	./Provider/BIFF/BIFF8/BOF.cs
 
 DATA_FILES = 
 

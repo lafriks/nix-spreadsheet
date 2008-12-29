@@ -1,6 +1,6 @@
-﻿/*
+/*
  * Library for generating spreadsheet documents.
- * Copyright (C) 2008, Lauris Bukšis-Haberkorns <lauris@nix.lv>
+ * Copyright (C) 2008, Lauris Buk�is-Haberkorns <lauris@nix.lv>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,24 +18,16 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Nix.SpreadSheet
 {
-	public enum SpreadSheetFileFormat
+	/// <summary>
+	/// Description of StringFormating.
+	/// </summary>
+	public class StringFormating
 	{
-		/// <summary>
-		/// Microsoft compound binary file format.
-		/// </summary>
-		ExcelBinary,
-		/// <summary>
-		/// Microsoft Open XML document format.
-		/// </summary>
-		OpenXml,
-		/// <summary>
-		/// OASIS OpenDocument, ISO/IEC 26300 file format
-		/// </summary>
-		OpenDocument
+		public StringFormating()
+		{
+		}
 	}
 }

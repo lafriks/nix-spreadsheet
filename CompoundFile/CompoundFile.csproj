@@ -107,10 +107,10 @@
     <Compile Include="Common.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EndianWriter.cs">
+    <Compile Include="EndianStream.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LittleEndianWriter.cs">
+    <Compile Include="LittleEndianStream.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Managers\DirectoryManager.cs">

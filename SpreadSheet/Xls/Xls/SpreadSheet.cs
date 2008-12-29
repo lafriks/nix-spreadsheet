@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Library for creating Microsoft Excel files.
  * Copyright (C) 2007, Lauris Bukšis-Haberkorns <lauris@nix.lv>
  *
@@ -61,7 +61,7 @@ namespace Nix.SpreadSheet
             #region Workbook
             MemoryStream mem = new MemoryStream();
 
-            EndianWriter writer = new LittleEndianWriter(mem);
+            EndianStream writer = new LittleEndianStream(mem);
 
             BOFRecord biffBOF = new BOFRecord(SheetType.WorkBookGlobals, 0, 0);
             // It's allways UTF-16

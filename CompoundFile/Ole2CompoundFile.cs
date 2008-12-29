@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Library for writing OLE 2 Compount Document file format.
  * Copyright (C) 2007, Lauris Bukšis-Haberkorns <lauris@nix.lv>
  *
@@ -44,7 +44,7 @@ namespace Nix.CompoundFile
 
         private MasterSectorAllocationManager MSAT;
 
-        private EndianWriter ewriter;
+        private EndianStream ewriter;
 
         private int sectorSizeC = 9;
         private int sectorSize = 512;
@@ -103,7 +103,7 @@ namespace Nix.CompoundFile
         #endregion
 
         #region Write SAT and SSAT
-        private void WriteSAT(EndianWriter writer)
+        private void WriteSAT(EndianStream writer)
         {
             foreach (int x in this.SAT.Allocations)
             {
@@ -111,7 +111,7 @@ namespace Nix.CompoundFile
             }
         }
 
-        private void WriteSSAT(EndianWriter writer)
+        private void WriteSSAT(EndianStream writer)
         {
             foreach (int x in this.SSAT.Allocations)
             {
@@ -121,7 +121,7 @@ namespace Nix.CompoundFile
         #endregion
 
         #region Write directory entries
-        private void WriteDES(EndianWriter writer)
+        private void WriteDES(EndianStream writer)
         {
             foreach (Ole2DirectoryEntry entr in this.DirectoryManager)
             {
@@ -129,7 +129,7 @@ namespace Nix.CompoundFile
             }
         }
 
-        private void WriteDirectoryEntry(EndianWriter writer, Ole2DirectoryEntry node)
+        private void WriteDirectoryEntry(EndianStream writer, Ole2DirectoryEntry node)
         {
             int c = writer.WriteString(node.Name);
             writer.WriteBytes(0x00, 64 - c);
@@ -161,7 +161,7 @@ namespace Nix.CompoundFile
         public void Save(Stream output)
         {
             if (this.byteOrder == ByteOrder.LittleEndian)
-                this.ewriter = new LittleEndianWriter(output);
+                this.ewriter = new LittleEndianStream(output);
             else
                 throw new NotImplementedException();
 
@@ -245,19 +245,19 @@ namespace Nix.CompoundFile
             #region Create and allocate streams
             // Create SAT stream
             MemoryStream smem = new MemoryStream();
-            EndianWriter swriter = new LittleEndianWriter(smem);
+            EndianStream swriter = new LittleEndianStream(smem);
             this.WriteSAT(swriter);
             this.SAT.AllocateStream(SATStart, smem, 0xFF);
 
             // Create directory stream (DES)
             MemoryStream mem = new MemoryStream();
-            EndianWriter writer = new LittleEndianWriter(mem);
+            EndianStream writer = new LittleEndianStream(mem);
             this.WriteDES(writer);
             this.SAT.AllocateStream(RootStart, mem);
 
             // Create SSAT stream
             MemoryStream ssmem = new MemoryStream();
-            EndianWriter sswriter = new LittleEndianWriter(ssmem);
+            EndianStream sswriter = new LittleEndianStream(ssmem);
             this.WriteSSAT(sswriter);
             this.SAT.AllocateStream(SSATStart, ssmem, 0xFF);
 
