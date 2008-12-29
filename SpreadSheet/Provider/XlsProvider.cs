@@ -23,8 +23,8 @@ using System.Text;
 using System.IO;
 
 using Nix.CompoundFile;
-using Nix.SpreadSheet.Provider.Excel.BIFF;
-using Nix.SpreadSheet.Provider.Excel.BIFF.BIFF8;
+using Nix.SpreadSheet.Provider.Xls.BIFF;
+using Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8;
 
 namespace Nix.SpreadSheet.Provider
 {

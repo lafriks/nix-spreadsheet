@@ -22,7 +22,7 @@ using System;
 using Nix.SpreadSheet;
 using Nix.CompoundFile;
 
-namespace Nix.SpreadSheet.Provider.Excel.BIFF
+namespace Nix.SpreadSheet.Provider.Xls.BIFF
 {
 	/// <summary>
 	/// Description of String.

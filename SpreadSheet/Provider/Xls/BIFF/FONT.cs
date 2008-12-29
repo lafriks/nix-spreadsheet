@@ -20,7 +20,7 @@
 using System;
 using System.Drawing;
 
-namespace Nix.SpreadSheet.Provider.Excel.BIFF
+namespace Nix.SpreadSheet.Provider.Xls.BIFF
 {
 	/// <summary>
 	/// Description of FONT.

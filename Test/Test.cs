@@ -35,7 +35,7 @@ namespace Test
             SpreadSheetDocument doc = new SpreadSheetDocument();
             Sheet s = doc.AddSheet();
             //s["IV65536"].Value = "MAX";
-            doc.Save(@"C:\test.xls", SpreadSheetFileFormat.ExcelBinary);
+            doc.Save(@"C:\test.xls", SpreadSheetFileFormat.XlsBinary);
         }
     }
 }

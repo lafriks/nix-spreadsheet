@@ -115,10 +115,6 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Xls\Xls\BIFF\EOF.cs" />
-    <Compile Include="Xls\Xls\BIFF\FONT.cs" />
-    <Compile Include="Xls\Xls\BIFF\BIFFStringHelper.cs" />
-    <Compile Include="Xls\IFileFormatProvider.cs" />
     <Compile Include="Cell.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -128,9 +124,13 @@
     <Compile Include="Font.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Xls\XlsProvider.cs" />
-    <Compile Include="Xls\Xls\BIFF\BIFF8\BOF.cs" />
-    <Compile Include="Xls\Xls\BIFF\BIFFRecord.cs" />
+    <Compile Include="Provider\IFileFormatProvider.cs" />
+    <Compile Include="Provider\XlsProvider.cs" />
+    <Compile Include="Provider\Xls\BIFF\BIFF8\BOF.cs" />
+    <Compile Include="Provider\Xls\BIFF\BIFFRecord.cs" />
+    <Compile Include="Provider\Xls\BIFF\BIFFStringHelper.cs" />
+    <Compile Include="Provider\Xls\BIFF\EOF.cs" />
+    <Compile Include="Provider\Xls\BIFF\FONT.cs" />
     <Compile Include="Sheet.cs" />
     <Compile Include="SpreadSheetDocument.cs" />
     <Compile Include="SpreadSheetFileFormat.cs" />
@@ -158,6 +158,10 @@
       <ProductName>.NET Framework 3.5</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+    <Folder Include="Provider" />
+    <Folder Include="Provider\Xls" />
+    <Folder Include="Provider\Xls\BIFF" />
+    <Folder Include="Provider\Xls\BIFF\BIFF8" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

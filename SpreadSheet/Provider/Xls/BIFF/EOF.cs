@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using Nix.CompoundFile;
 
-namespace Nix.SpreadSheet.Provider.Excel.BIFF
+namespace Nix.SpreadSheet.Provider.Xls.BIFF
 {
 	internal class EOF : BIFFRecord
 	{

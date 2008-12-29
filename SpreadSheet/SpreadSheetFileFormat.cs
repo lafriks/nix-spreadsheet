@@ -28,7 +28,7 @@ namespace Nix.SpreadSheet
 		/// <summary>
 		/// Microsoft compound binary file format.
 		/// </summary>
-		ExcelBinary,
+		XlsBinary,
 		/// <summary>
 		/// Microsoft Open XML document format.
 		/// </summary>

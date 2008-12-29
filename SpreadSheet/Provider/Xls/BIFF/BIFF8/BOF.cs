@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using Nix.CompoundFile;
 
-namespace Nix.SpreadSheet.Provider.Excel.BIFF.BIFF8
+namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
 {
 	internal class BOF : BIFFRecord
 	{

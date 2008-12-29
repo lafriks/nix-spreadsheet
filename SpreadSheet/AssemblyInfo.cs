@@ -21,11 +21,11 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle("Nix.SpreadSheet")]
-[assembly: AssemblyDescription("Library for creating Microsoft Excel files.")]
+[assembly: AssemblyDescription("Library for generating spreadsheet files.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("NIX Software")]
 [assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("Copyright (C) 2007, Lauris Bukšis-Haberkorns")]
+[assembly: AssemblyCopyright("Copyright (C) 2007-2008, Lauris Bukšis-Haberkorns")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 

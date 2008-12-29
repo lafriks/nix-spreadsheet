@@ -78,7 +78,7 @@ namespace Nix.SpreadSheet
 		{
 			switch(format)
 			{
-				case SpreadSheetFileFormat.ExcelBinary:
+				case SpreadSheetFileFormat.XlsBinary:
 					return new Provider.XlsProvider();
 				default:
 					throw new NotImplementedException("Unsupported spreadsheet file format.");
