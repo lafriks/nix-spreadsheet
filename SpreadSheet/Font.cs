@@ -22,7 +22,7 @@ using System.Drawing;
 
 namespace Nix.SpreadSheet
 {
-	public class Font : IEquatable<Font>
+	public class Font : IEquatable<Font>, ICloneable
 	{
         public const int NormalWeight = 400;
 
@@ -52,7 +52,23 @@ namespace Nix.SpreadSheet
                       || this.underline != other.underline || this.scriptpos != other.scriptpos
                       || this.fontFace != other.fontFace || this.charSet != other.charSet);
         }
-        #endregion
+
+		public object Clone()
+		{
+			Font font = new Font();
+			font.charSet = this.charSet;
+			font.color = this.color;
+			font.fontFace = this.fontFace;
+			font.italic = this.italic;
+			font.name = this.name;
+			font.scriptpos = this.scriptpos;
+			font.size = this.size;
+			font.strikeout = this.strikeout;
+			font.underline = this.underline;
+			font.weight = this.weight;
+			return font;
+		}
+		#endregion
 
         #region Color
         private Color color = Color.Black;

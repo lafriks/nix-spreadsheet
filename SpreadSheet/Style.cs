@@ -26,6 +26,22 @@ namespace Nix.SpreadSheet
     /// </summary>
     public sealed class Style
     {
+    	#region Cell protection
+		private bool cellLocked = false;
+		
+		public bool CellLocked {
+			get { return cellLocked; }
+			set { cellLocked = value; }
+		}
+
+		private bool hiddenFormula = false;
+		
+		public bool HiddenFormula {
+			get { return hiddenFormula; }
+			set { hiddenFormula = value; }
+		}
+		#endregion
+
         #region Default style
         private static Style defStyle = null;
 
@@ -94,7 +110,7 @@ namespace Nix.SpreadSheet
         #endregion
         
         #region Font
-        private Font font = Font.Default;
+        private Font font = new Font();
 
         public Font Font
         {
@@ -107,6 +123,15 @@ namespace Nix.SpreadSheet
                 this.font = value;
             }
         }
+        #endregion
+
+        #region Format
+        private string format = string.Empty;
+
+		public string Format {
+			get { return format; }
+			set { format = value; }
+		}
         #endregion
     }
 }

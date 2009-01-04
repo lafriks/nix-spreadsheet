@@ -147,9 +147,9 @@ namespace Nix.SpreadSheet.Provider
 			{
 				foreach ( Cell cell in sheet )
 				{
-					if ( ! this.formatTable.ContainsValue(cell.Format) )
+					if ( ! this.formatTable.ContainsValue(cell.Style.Format) )
 					{
-						this.formatTable.Add(this.formatTableSeq, cell.Format);
+						this.formatTable.Add(this.formatTableSeq, cell.Style.Format);
 						this.formatsToWrite.Add(this.formatTableSeq);
 						this.formatTableSeq++;
 					}
