@@ -18,6 +18,7 @@
  */
 
 using System;
+using System.Drawing;
 
 namespace Nix.SpreadSheet
 {
@@ -131,6 +132,107 @@ namespace Nix.SpreadSheet
 		public string Format {
 			get { return format; }
 			set { format = value; }
+		}
+        #endregion
+
+        #region Alignment
+		private bool wrapTextAtRightBorder = true;
+
+		public bool WrapTextAtRightBorder {
+			get { return wrapTextAtRightBorder; }
+			set { wrapTextAtRightBorder = value; }
+		}
+
+        private CellHorizontalAlignment horizontalAlignment = CellHorizontalAlignment.General;
+
+		public CellHorizontalAlignment HorizontalAlignment {
+			get { return horizontalAlignment; }
+			set { horizontalAlignment = value; }
+		}
+
+        private CellVerticalAlignment verticalAlignment = CellVerticalAlignment.Top;
+
+		public CellVerticalAlignment VerticalAlignment {
+			get { return verticalAlignment; }
+			set { verticalAlignment = value; }
+		}
+
+        private bool justifyLastLine = false;
+
+		public bool JustifyTextAtLastLine {
+			get { return justifyLastLine; }
+			set { justifyLastLine = value; }
+		}
+
+        private byte rotation = 0;
+
+        /// <summary>
+        /// 0 Not rotated
+		/// 1-90 1 to 90 degrees counterclockwise
+		/// 91-180 1 to 90 degrees clockwise
+		/// 255 Letters are stacked top-to-bottom, but not rotated
+        /// </summary>
+		public byte Rotation {
+			get { return rotation; }
+			set { rotation = value; }
+		}
+        #endregion
+
+        #region Borders
+        private BorderLineStyle topBorderLineStyle = BorderLineStyle.None;
+
+		public BorderLineStyle TopBorderLineStyle {
+			get { return topBorderLineStyle; }
+			set { topBorderLineStyle = value; }
+		}
+
+        private Color topBorderLineColor = Color.Black;
+
+		public Color TopBorderLineColor {
+			get { return topBorderLineColor; }
+			set { topBorderLineColor = value; }
+		}
+
+        private BorderLineStyle leftBorderLineStyle = BorderLineStyle.None;
+
+		public BorderLineStyle LeftBorderLineStyle {
+			get { return leftBorderLineStyle; }
+			set { leftBorderLineStyle = value; }
+		}
+
+        private Color leftBorderLineColor = Color.Black;
+
+		public Color LeftBorderLineColor {
+			get { return leftBorderLineColor; }
+			set { leftBorderLineColor = value; }
+		}
+
+        private BorderLineStyle rightBorderLineStyle = BorderLineStyle.None;
+
+		public BorderLineStyle RightBorderLineStyle {
+			get { return rightBorderLineStyle; }
+			set { rightBorderLineStyle = value; }
+		}
+
+        private Color rightBorderLineColor = Color.Black;
+
+		public Color RightBorderLineColor {
+			get { return rightBorderLineColor; }
+			set { rightBorderLineColor = value; }
+		}
+
+        private BorderLineStyle bottomBorderLineStyle = BorderLineStyle.None;
+
+		public BorderLineStyle BottomBorderLineStyle {
+			get { return bottomBorderLineStyle; }
+			set { bottomBorderLineStyle = value; }
+		}
+
+        private Color bottomBorderLineColor = Color.Black;
+
+		public Color BottomBorderLineColor {
+			get { return bottomBorderLineColor; }
+			set { bottomBorderLineColor = value; }
 		}
         #endregion
     }

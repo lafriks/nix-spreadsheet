@@ -115,9 +115,12 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BorderLineStyle.cs" />
     <Compile Include="Cell.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CellHorizontalAlignment.cs" />
+    <Compile Include="CellVerticalAlignment.cs" />
     <Compile Include="Comment.cs">
       <SubType>Code</SubType>
     </Compile>
