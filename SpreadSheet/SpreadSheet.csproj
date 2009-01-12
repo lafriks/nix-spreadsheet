@@ -141,7 +141,7 @@
     <Compile Include="SpreadSheetDocument.cs" />
     <Compile Include="SpreadSheetFileFormat.cs" />
     <Compile Include="StringFormating.cs" />
-    <Compile Include="Style.cs">
+    <Compile Include="CellStyle.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utils.cs">

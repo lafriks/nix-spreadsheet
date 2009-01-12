@@ -32,9 +32,9 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 			}
 		}
 		
-		private Style style = null;
+		private CellStyle style = null;
 		
-		public Style Style {
+		public CellStyle Style {
 			get { return style; }
 			set { style = value; }
 		}

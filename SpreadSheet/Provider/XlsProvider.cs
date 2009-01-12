@@ -59,8 +59,8 @@ namespace Nix.SpreadSheet.Provider
 		{
 			foreach(Sheet sheet in document)
 				foreach(Cell cell in sheet)
-					if ( FindFontIndex(cell.Style.Font) == -1 )
-						fontTable.Add(cell.Style.Font);
+					if ( FindFontIndex(cell.Formatting.Font) == -1 )
+						fontTable.Add(cell.Formatting.Font);
 			// There should be at least 5 fonts in the table
 			for ( int i = fontTable.Count; i < 5; i++ )
 				fontTable.Add(Font.Default);
@@ -147,9 +147,9 @@ namespace Nix.SpreadSheet.Provider
 			{
 				foreach ( Cell cell in sheet )
 				{
-					if ( ! this.formatTable.ContainsValue(cell.Style.Format) )
+					if ( ! this.formatTable.ContainsValue(cell.Formatting.Format) )
 					{
-						this.formatTable.Add(this.formatTableSeq, cell.Style.Format);
+						this.formatTable.Add(this.formatTableSeq, cell.Formatting.Format);
 						this.formatsToWrite.Add(this.formatTableSeq);
 						this.formatTableSeq++;
 					}

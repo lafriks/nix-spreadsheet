@@ -25,8 +25,17 @@ namespace Nix.SpreadSheet
     /// <summary>
     /// Describes how cell and its data will be displayed.
     /// </summary>
-    public sealed class Style
+    public sealed class CellStyle
     {
+    	#region Parent style
+    	private CellStyle style = CellStyle.Default;
+    	
+		public CellStyle Style {
+			get { return style; }
+			set { style = value; }
+		}
+    	#endregion
+
     	#region Cell protection
 		private bool cellLocked = false;
 		
@@ -44,21 +53,21 @@ namespace Nix.SpreadSheet
 		#endregion
 
         #region Default style
-        private static Style defStyle = null;
+        private static CellStyle defStyle = null;
 
-        public static Style Default
+        public static CellStyle Default
         {
             get
             {
                 if (defStyle == null)
                 {
-                    defStyle = new Style();
+                    defStyle = new CellStyle();
                 }
                 return defStyle;
             }
         }
 
-        internal bool Equals(Style comp)
+        internal bool Equals(CellStyle comp)
         {
             return ! (this.wraptext != comp.wraptext || ! this.Font.Equals(comp.Font)
                       || this.shrinkfit != comp.shrinkfit);

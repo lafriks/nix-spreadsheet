@@ -48,22 +48,22 @@ namespace Nix.SpreadSheet
         #endregion
 
         #region Style
-        private Style style = null;
+        private CellStyle formatting = null;
 
         /// <summary>
         /// Gets or sets cell style.
         /// </summary>
-        public Style Style
+        public CellStyle Formatting
         {
             get
             {
-                if (this.style == null)
-                    this.style = new Style();
-                return this.style;
+                if (this.formatting == null)
+                    this.formatting = new CellStyle();
+                return this.formatting;
             }
             set
             {
-                this.style = value;
+                this.formatting = value;
             }
         }
 
@@ -73,7 +73,7 @@ namespace Nix.SpreadSheet
         /// <returns>True if cell style is same as default.</returns>
         public bool IsDefaultStyle()
         {
-            return this.style.IsDefault();
+            return this.formatting.IsDefault();
         }
         #endregion
 
