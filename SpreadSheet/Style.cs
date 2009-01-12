@@ -235,5 +235,28 @@ namespace Nix.SpreadSheet
 			set { bottomBorderLineColor = value; }
 		}
         #endregion
+
+        #region Background
+        private Color backgroundColor = Color.White;
+
+		public Color BackgroundColor {
+			get { return backgroundColor; }
+			set { backgroundColor = value; }
+		}
+
+        private Color backgroundPatternColor = Color.White;
+
+		public Color BackgroundPatternColor {
+			get { return backgroundPatternColor; }
+			set { backgroundPatternColor = value; }
+		}
+
+        private CellBackgroundPattern backgroundPattern = CellBackgroundPattern.None;
+
+		public CellBackgroundPattern BackgroundPattern {
+			get { return backgroundPattern; }
+			set { backgroundPattern = value; }
+		}
+        #endregion
     }
 }
