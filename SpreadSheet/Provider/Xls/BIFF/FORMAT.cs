@@ -26,15 +26,15 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 	/// </summary>
 	internal class FORMAT : BIFFRecord
 	{
-		protected override int OPCODE {
+		protected override ushort OPCODE {
 			get {
 				return 0x41E;
 			}
 		}
 
-		private int index = 0;
+		private ushort index = 0;
 		
-		public int Index {
+		public ushort Index {
 			get { return index; }
 			set { index = value; }
 		}
@@ -48,8 +48,8 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 
 		public override void Write(Nix.CompoundFile.EndianStream stream)
 		{
-			this.WriteHeader(stream, 2 + BIFFStringHelper.GetStringByteCount(this.Format));
-			stream.Write2(this.Index);
+			this.WriteHeader(stream, (ushort)(2 + BIFFStringHelper.GetStringByteCount(this.Format)));
+			stream.WriteUInt16(this.Index);
 			BIFFStringHelper.WriteString(stream, this.Format);
 		}
 

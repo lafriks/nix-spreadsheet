@@ -29,7 +29,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
 		/// <summary>
 		/// BOF OPCODE
 		/// </summary>
-		protected override int OPCODE {
+		protected override ushort OPCODE {
 			get {
 				return 0x0809;
 			}
@@ -73,22 +73,22 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
 			set { type = value; }
 		}
 
-		private int buildIdentifier = 0x0DBB;
+		private ushort buildIdentifier = 0x0DBB;
 
 		/// <summary>
 		/// Build identifier (Default for Excel 97).
 		/// </summary>
-		public int BuildIdentifier {
+		public ushort BuildIdentifier {
 			get { return buildIdentifier; }
 			set { buildIdentifier = value; }
 		}
 
-		private int buildYear = 1996;
+		private ushort buildYear = 1996;
 
 		/// <summary>
 		/// Build year. Defaults to 1996 (Excel 97).
 		/// </summary>
-		public int BuildYear {
+		public ushort BuildYear {
 			get { return buildYear; }
 			set { buildYear = value; }
 		}
@@ -110,12 +110,12 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
 		public override void Write ( EndianStream stream )
 		{
 			this.WriteHeader(stream, 16);
-			stream.Write2(VERSION); // BIFF Version
-			stream.Write2((int)this.Type); // Sheet type
-			stream.Write2(this.BuildIdentifier); // Build identifier
-			stream.Write2(this.BuildYear); // Build year
-			stream.Write4((long)this.HistoryFlags); // File history flags
-			stream.Write4(VERSION); // Lowest Excel version that can read all records
+			stream.WriteUInt16(VERSION); // BIFF Version
+			stream.WriteUInt16((ushort)this.Type); // Sheet type
+			stream.WriteUInt16(this.BuildIdentifier); // Build identifier
+			stream.WriteUInt16(this.BuildYear); // Build year
+			stream.WriteUInt32((uint)this.HistoryFlags); // File history flags
+			stream.WriteUInt32(VERSION); // Lowest Excel version that can read all records
 		}
 
 		/// <summary>

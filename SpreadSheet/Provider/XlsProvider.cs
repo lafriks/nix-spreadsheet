@@ -66,11 +66,11 @@ namespace Nix.SpreadSheet.Provider
 				fontTable.Add(Font.Default);
 		}
 
-		private Dictionary<int, string> formatTable = new Dictionary<int,string>();
+		private Dictionary<ushort, string> formatTable = new Dictionary<ushort,string>();
 
-		private List<int> formatsToWrite = new List<int>();
+		private List<ushort> formatsToWrite = new List<ushort>();
 
-		private int formatTableSeq = 0;
+		private ushort formatTableSeq = 0;
 
 		protected void BuildFormatTable ( SpreadSheetDocument document )
 		{
@@ -169,7 +169,7 @@ namespace Nix.SpreadSheet.Provider
 			#region Workbook stream
 			MemoryStream wbs = new MemoryStream();
 
-			this.activeStream = new LittleEndianStream(wbs);
+			this.activeStream = cf.CreateEndianStream(wbs);
 
 			// Workbook globals
 			this.Write(new BOF() { Type = BOF.SheetType.WorkBookGlobals });
@@ -177,7 +177,7 @@ namespace Nix.SpreadSheet.Provider
 			foreach ( Font font in this.fontTable )
 				this.Write(new FONT() { Font = font });
 			// Format table
-			foreach ( int fi in this.formatsToWrite )
+			foreach ( ushort fi in this.formatsToWrite )
 				this.Write(new FORMAT() { Index = fi, Format = this.formatTable[fi] });
 			this.Write(new EOF());
 
@@ -193,13 +193,13 @@ namespace Nix.SpreadSheet.Provider
 
 			#region Summary information stream
 			MemoryStream ss = new MemoryStream();
-			this.activeStream = new LittleEndianStream(ss);
+			this.activeStream = cf.CreateEndianStream(ss);
 			cf.Root.AddStream((char)0x05 + "SummaryInformation", ss);
 			#endregion
 
 			#region Document summary information stream
 			MemoryStream dss = new MemoryStream();
-			this.activeStream = new LittleEndianStream(dss);
+			this.activeStream = cf.CreateEndianStream(dss);
 			cf.Root.AddStream((char)0x05 + "DocumentSummaryInformation", dss);
 			#endregion
 

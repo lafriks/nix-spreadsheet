@@ -69,21 +69,21 @@ namespace Nix.CompoundFile.Managers
         {
             for (int i = from; i < this.Sectors.Count; i++)
             {
-                if ((int)this.Sectors[i] == -1)
+            	if ((int)this.Sectors[i] == -1)
                     return i;
             }
             // No free sectors found
     		// Keep in sync arrays
     		this.SectorsData.Add(null);
-            return this.Sectors.Add(-1);
+    		return this.Sectors.Add(-1);
         }
 
-        public int Allocate(int size)
+        public int Allocate(uint size)
         {
             return this.Allocate(size, -1);
         }
 
-        public int Allocate(int size, int val)
+        public int Allocate(uint size, int val)
         {
             this.sync = false;
             // Allocate first record

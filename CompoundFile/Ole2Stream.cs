@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Library for writing OLE 2 Compount Document file format.
  * Copyright (C) 2007, Lauris Bukšis-Haberkorns <lauris@nix.lv>
  *
@@ -51,11 +51,11 @@ namespace Nix.CompoundFile
         #endregion
 
         #region Size
-        public override int Size
+        public override uint Size
         {
             get
             {
-                return ((int)this.BaseStream.Length);
+                return ((uint)this.BaseStream.Length);
             }
         }
         #endregion

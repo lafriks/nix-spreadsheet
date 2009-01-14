@@ -27,7 +27,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 	/// </summary>
 	internal class FONT : BIFFRecord
 	{
-		protected override int OPCODE {
+		protected override ushort OPCODE {
 			get {
 				return 0x231;
 			}
@@ -40,7 +40,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 			set { font = value; }
 		}
 
-		private int ScriptPositionToInt(ScriptPosition sp)
+		private ushort ScriptPositionToInt(ScriptPosition sp)
 		{
 			switch (sp)
 			{
@@ -138,18 +138,18 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 
 		public override void Write(Nix.CompoundFile.EndianStream stream)
 		{
-			this.WriteHeader(stream, 14 + BIFFStringHelper.GetStringByteCount(this.Font.Name, false));
-			stream.Write2(this.Font.Size);
-			int grbit = 0;
+			this.WriteHeader(stream, (ushort)(14 + BIFFStringHelper.GetStringByteCount(this.Font.Name, false)));
+			stream.WriteUInt16(this.Font.Size);
+			ushort grbit = 0;
 			if ( this.Font.Italic )
 				grbit |= 0x02;
 			if ( this.Font.Strikeout )
 				grbit |= 0x08;
 			// TODO: Outline and Shadow grbit
-			stream.Write2(grbit); // Font options
-			stream.Write2(ColorTranslator.ToOle(this.Font.Color)); // Color index
-			stream.Write2(this.Font.Weight); // Font weight
-			stream.Write2(ScriptPositionToInt(this.Font.ScriptPosition)); // Script position
+			stream.WriteUInt16(grbit); // Font options
+			stream.WriteUInt16((ushort)ColorTranslator.ToOle(this.Font.Color)); // Color index
+			stream.WriteUInt16(this.Font.Weight); // Font weight
+			stream.WriteUInt16(ScriptPositionToInt(this.Font.ScriptPosition)); // Script position
 			stream.WriteByte(UnderlineStyleToByte(this.Font.UnderlineStyle)); // Underline style
 			stream.WriteByte(FontFaceToByte(this.Font.FontFace)); // Font face
 			stream.WriteByte(CharSetToByte(this.Font.CharSet)); // Font charset

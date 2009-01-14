@@ -40,28 +40,28 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 			return grbit;
 		}
 
-		public static int GetStringByteCount(string text, StringFormating[] formating, bool stringLengthInt)
+		public static ushort GetStringByteCount(string text, StringFormating[] formating, bool stringLengthInt)
 		{
 			byte grbit = GetGRBIT(text, formating, stringLengthInt);
 			// String length byte(s) + grbit byte
-			int length = (stringLengthInt ? 3 : 2);
+			ushort length = (ushort)(stringLengthInt ? 3 : 2);
 			 // Formating run count bytes
 			if ( (grbit & 0x08) == 0x08 )
 				length += 2;
 			if ( (grbit & 0x01) == 0x01 )
-				length += (text.Length * 2);
+				length += (ushort)(text.Length * 2);
 			else
-				length += text.Length;
+				length += (ushort)text.Length;
 			// TODO: formating
 			return length;
 		}
 
-		public static int GetStringByteCount(string text, bool stringLengthInt)
+		public static ushort GetStringByteCount(string text, bool stringLengthInt)
 		{
 			return GetStringByteCount(text, null, stringLengthInt);
 		}
 
-		public static int GetStringByteCount(string text)
+		public static ushort GetStringByteCount(string text)
 		{
 			return GetStringByteCount(text, null, true);
 		}
@@ -70,7 +70,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 		{
 			// Text length
 			if ( stringLengthInt )
-				stream.Write2(text.Length);
+				stream.WriteUInt16((ushort)text.Length);
 			else
 				stream.WriteByte((byte)text.Length);
 
@@ -79,13 +79,13 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 			stream.WriteByte(grbit); // String options
 
 			if ( (grbit & 0x08) == 0x08 )
-				stream.Write2(formating.Length); // Formating run count
+				stream.WriteUInt16((ushort)formating.Length); // Formating run count
 
 			if ( (grbit & 0x01) == 0x01 )
 			{
 				// Write uncompressed string
 				foreach ( char c in text )
-					stream.Write2((int)c);
+					stream.WriteUInt16((ushort)c);
 			}
 			else
 			{

@@ -29,7 +29,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 		/// <summary>
 		/// EOF record OPCODE.
 		/// </summary>
-		protected override int OPCODE {
+		protected override ushort OPCODE {
 			get {
 				return 0x000A;
 			}

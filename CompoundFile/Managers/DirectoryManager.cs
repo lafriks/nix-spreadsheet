@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Library for writing OLE 2 Compount Document file format.
  * Copyright (C) 2007, Lauris Bukšis-Haberkorns <lauris@nix.lv>
  *
@@ -61,11 +61,11 @@ namespace Nix.CompoundFile.Managers
 		/// Gets the directory count.
 		/// </summary>
 		/// <value>The count.</value>
-        public int Count
+        public uint Count
         {
 			get
 			{
-				return this.directories.Count;
+				return (uint)this.directories.Count;
 			}
         }
 

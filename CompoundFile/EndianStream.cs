@@ -58,13 +58,17 @@ namespace Nix.CompoundFile
         /// Write 2 bytes in the output
         /// </summary>
         /// <param name="value"></param>
-        public abstract void Write2(int value);
+        public abstract void WriteUInt16(ushort value);
+
+        public abstract void WriteInt16(short value);
 
         /// <summary>
         /// Write 4 bytes in the output
         /// </summary>
         /// <param name="value"></param>
-        public abstract void Write4(long value);
+        public abstract void WriteUInt32(uint value);
+
+        public abstract void WriteInt32(int value);
 
         /// <summary>
         /// Write a 4 byte float in the output
@@ -83,13 +87,13 @@ namespace Nix.CompoundFile
         /// <summary>
         /// Read 2 bytes from the input
         /// </summary>
-        public abstract int Read2();
+        public abstract ushort Read2();
 
         /// <summary>
         /// Read 2 bytes from the input
         /// </summary>
         /// <param name="value"></param>
-        public abstract long Read4();
+        public abstract uint Read4();
 
         /// <summary>
         /// Read a 4 byte float from the input
@@ -118,6 +122,11 @@ namespace Nix.CompoundFile
             this.Stream.Write(buffer, offset, count);
         }
 
+        public void Write(byte[] value)
+        {
+        	this.Write(value, 0, value.GetLength(0));
+        }
+
         public void WriteByte(byte value)
         {
             this.Stream.WriteByte(value);
@@ -142,6 +151,15 @@ namespace Nix.CompoundFile
         public int Read(byte[] buffer, int offset, int count)
         {
             return this.Stream.Read(buffer, offset, count);
+        }
+        
+        public byte[] ReadBytes(int count)
+        {
+        	byte[] buffer = new byte[count];
+        	if ( this.Stream.Read(buffer, 0, count) == count )
+        		return buffer;
+        	else
+        		throw new EndOfStreamException();
         }
 
         public byte ReadByte()

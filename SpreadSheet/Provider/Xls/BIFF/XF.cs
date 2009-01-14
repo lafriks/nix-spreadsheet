@@ -26,7 +26,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 	/// </summary>
 	internal class XF : BIFFRecord
 	{
-		protected override int OPCODE {
+		protected override ushort OPCODE {
 			get {
 				return 0xE0;
 			}
@@ -39,23 +39,23 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 			set { style = value; }
 		}
 
-		private int fontIndex = 0;
+		private ushort fontIndex = 0;
 		
-		public int FontIndex {
+		public ushort FontIndex {
 			get { return fontIndex; }
 			set { fontIndex = value; }
 		}
 
-		private int formatIndex = 0;
+		private ushort formatIndex = 0;
 		
-		public int FormatIndex {
+		public ushort FormatIndex {
 			get { return formatIndex; }
 			set { formatIndex = value; }
 		}
 
-		private int? parentStyleIndex = null;
+		private ushort? parentStyleIndex = null;
 		
-		public int? ParentStyleIndex {
+		public ushort? ParentStyleIndex {
 			get { return parentStyleIndex; }
 			set { parentStyleIndex = value; }
 		}
@@ -63,18 +63,18 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 		public override void Write(Nix.CompoundFile.EndianStream stream)
 		{
 			this.WriteHeader(stream, 20);
-			stream.Write2(this.FontIndex);
-			stream.Write2(this.FormatIndex);
-			int prot_bit = 0;
+			stream.WriteUInt16(this.FontIndex);
+			stream.WriteUInt16(this.FormatIndex);
+			ushort prot_bit = 0;
 			if ( this.Style.CellLocked )
 				prot_bit &= 0x01;
 			if ( this.Style.HiddenFormula )
 				prot_bit &= 0x02;
 			if ( ! this.ParentStyleIndex.HasValue )
 				prot_bit &= 0x04;
-			prot_bit = ((this.ParentStyleIndex.HasValue ? this.ParentStyleIndex.Value : 0xFFF) << 3)
-							& prot_bit;
-			stream.Write2(prot_bit);
+			prot_bit = (ushort)(((this.ParentStyleIndex.HasValue ? this.ParentStyleIndex.Value : 0xFFF) << 3)
+			                    & prot_bit);
+			stream.WriteUInt16(prot_bit);
 		}
 
 		public override void Read(Nix.CompoundFile.EndianStream stream)

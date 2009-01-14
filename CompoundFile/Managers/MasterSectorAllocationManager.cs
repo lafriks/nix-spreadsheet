@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Library for writing OLE 2 Compount Document file format.
  * Copyright (C) 2007, Lauris Bukšis-Haberkorns <lauris@nix.lv>
  *
@@ -38,12 +38,12 @@ namespace Nix.CompoundFile.Managers
         #endregion
 
         #region Allocate SAT sectors
-        public int Allocate(int size)
+        public int Allocate(uint size)
         {
             return this.Allocate(size, -1);
         }
 
-        public int Allocate(int size, int val)
+        public int Allocate(uint size, int val)
         {
             this.SAT.Allocation += new SectorEventHandler(SAT_Allocation);
             int res = this.SAT.Allocate(size, val);

@@ -32,7 +32,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 		/// <summary>
 		/// Record OPCODE.
 		/// </summary>
-		protected abstract int OPCODE
+		protected abstract ushort OPCODE
 		{
 			get;
 		}
@@ -43,10 +43,10 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 		/// </summary>
 		/// <param name="stream">The stream.</param>
 		/// <param name="nRecLen">The record length.</param>
-        protected void WriteHeader (EndianStream stream, int recordLength)
+        protected void WriteHeader (EndianStream stream, ushort recordLength)
         {
-			stream.Write2(this.OPCODE);
-			stream.Write2(recordLength);
+			stream.WriteUInt16(this.OPCODE);
+			stream.WriteUInt16(recordLength);
         }
 
         /// <summary>

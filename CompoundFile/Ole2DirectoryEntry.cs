@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Library for writing OLE 2 Compount Document file format.
  * Copyright (C) 2007, Lauris Bukšis-Haberkorns <lauris@nix.lv>
  *
@@ -102,9 +102,9 @@ namespace Nix.CompoundFile
             }
         }
 
-        private int size = 0;
+        private uint size = 0;
 
-        public virtual int Size
+        public virtual uint Size
         {
             get
             {
@@ -112,7 +112,7 @@ namespace Nix.CompoundFile
             }
         }
 
-        internal void SetSize(int size)
+        internal void SetSize(uint size)
         {
             this.size = size;
         }

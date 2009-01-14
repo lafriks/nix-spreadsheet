@@ -115,8 +115,8 @@ namespace Nix.SpreadSheet
         #endregion
 
         #region Weight
-        private int weight = NormalWeight;
-        public int Weight
+        private ushort weight = NormalWeight;
+        public ushort Weight
         {
             get
             {
@@ -147,8 +147,8 @@ namespace Nix.SpreadSheet
         #endregion
 
         #region Size
-        private int size = 200;
-        public int Size
+        private ushort size = 200;
+        public ushort Size
         {
             get
             {
