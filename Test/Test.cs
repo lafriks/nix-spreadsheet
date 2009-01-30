@@ -34,6 +34,7 @@ namespace Test
             HashData(crc32, "Wikipedia");*/
             SpreadSheetDocument doc = new SpreadSheetDocument();
             Sheet s = doc.AddSheet();
+            s["A1"].Formatting.WrapText = true;
             //s["IV65536"].Value = "MAX";
             doc.Save(@"C:\test.xls", SpreadSheetFileFormat.XlsBinary);
         }

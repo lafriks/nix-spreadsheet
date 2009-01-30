@@ -1,0 +1,147 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<textarea id="generated" style="width: 100%; height: 100%"></textarea>
+<script type="text/javascript">
+var Class = {className: "Style", description: "Describes how cell and its data will be displayed.",
+                groups: [
+                  {name: "Cell protection",
+                  properties: [
+                    {name: "CellLocked", type: "bool", defVal: "false"},
+                    {name: "HiddenFormula", type: "bool", defVal: "false"}
+                  ]},
+                  {name: "Text properties",
+                  properties: [
+                    {name: "WrapText", type: "bool", defVal: "false", description: "Gets or sets if cell value is wrapped."},
+                    {name: "ShrinkToFit", type: "bool", defVal: "false", description: "Gets or sets if cell value should shrunk to fit the cell."}
+                  ]},
+                  {name: "Font",
+                  properties: [
+                    {name: "Font", type: "Font", defVal: "new Font()"}
+                  ]},
+                  {name: "Format",
+                  properties: [
+                    {name: "Format", type: "string", defVal: "string.Empty"}
+                  ]},
+                  {name: "Alignment",
+                  properties: [
+                    {name: "WrapTextAtRightBorder", type: "bool", defVal: "true"},
+                    {name: "HorizontalAlignment", type: "CellHorizontalAlignment", defVal: "CellHorizontalAlignment.General"},
+                    {name: "VerticalAlignment", type: "CellVerticalAlignment", defVal: "CellVerticalAlignment.Top"},
+                    {name: "JustifyTextAtLastLine", type: "bool", defVal: "false"},
+                    {name: "Rotation", type: "byte", defVal: "0", description: "0 Not rotated;\n1-90 1 to 90 degrees counterclockwise;\n91-180 1 to 90;\ndegrees clockwise;\n255 Letters are stacked top-to-bottom, but not rotated."}
+                  ]},
+                  {name: "Borders",
+                  properties: [
+                    {name: "TopBorderLineStyle", type: "BorderLineStyle", defVal: "BorderLineStyle.None"},
+                    {name: "TopBorderLineColor", type: "Color", defVal: "Color.Black"},
+                    {name: "LeftBorderLineStyle", type: "BorderLineStyle", defVal: "BorderLineStyle.None"},
+                    {name: "LeftBorderLineColor", type: "Color", defVal: "Color.Black"},
+                    {name: "RightBorderLineStyle", type: "BorderLineStyle", defVal: "BorderLineStyle.None"},
+                    {name: "RightBorderLineColor", type: "Color", defVal: "Color.Black"},
+                    {name: "BottomBorderLineStyle", type: "BorderLineStyle", defVal: "BorderLineStyle.None"},
+                    {name: "BottomBorderLineColor", type: "Color", defVal: "Color.Black"}
+                  ]},
+                  {name: "Background",
+                  properties: [
+                    {name: "BackgroundColor", type: "Color", defVal: "Color.White"},
+                    {name: "BackgroundPatternColor", type: "Color", defVal: "Color.White"},
+                    {name: "BackgroundPattern", type: "CellBackgroundPattern", defVal: "CellBackgroundPattern.None"}
+                  ]}
+                ]};
+
+// Header
+var gen = "/*\n" +
+          " * Library for generating spreadsheet documents.\n" +
+          " * Copyright (C) 2008, Lauris Bukšis-Haberkorns <lauris@nix.lv>\n" +
+          " *\n" +
+          " * This library is free software; you can redistribute it and/or\n" +
+          " * modify it under the terms of the GNU Lesser General Public\n" +
+          " * License as published by the Free Software Foundation; either\n" +
+          " * version 2.1 of the License, or (at your option) any later version.\n" +
+          " *\n" +
+          " * This library is distributed in the hope that it will be useful,\n" +
+          " * but WITHOUT ANY WARRANTY; without even the implied warranty of\n" +
+          " * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU\n" +
+          " * Lesser General Public License for more details.\n" +
+          " *\n" +
+          " * You should have received a copy of the GNU Lesser General Public\n" +
+          " * License along with this library; if not, write to the Free Software\n" +
+          " * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA\n" +
+          " */\n\n";
+
+gen += "// WARNING! This class is generated do not edit!\n\n";
+
+// Usings and namespace
+gen += "using System;\n" +
+       "using System.Drawing;\n\n" +
+       "namespace Nix.SpreadSheet\n" +
+       "{\n";
+// Class description and name
+gen += "    /// <summary>\n" +
+       "    /// " + Class.description + "\n" +
+       "    /// </summary>\n" +
+       "    public class " + Class.className + "\n" +
+       "    {\n" +
+       "        private uint modified = 0;\n\n";
+
+var modified = 1;
+
+// Generic properties
+for (var g = 0; g < Class.groups.length; g++)
+{
+  var group = Class.groups[g];
+  if (g > 0)
+  {
+    gen += "\n";
+  }
+  if (group.name)
+    gen += "        #region " + group.name + "\n";
+  for (var p = 0; p < group.properties.length; p++)
+  {
+    var prop = group.properties[p];
+    if (p > 0)
+      gen += "\n";
+    var privateName = prop.name.substr(0,1).toLowerCase() + prop.name.substr(1);
+    var compareStart = " != ";
+    var compareEnd = "";
+    gen += "        private " + prop.type + " "
+                              + privateName
+                              + " = " + prop.defVal + ";\n\n";
+    if (prop.description)
+      gen += "        /// <summary>\n" +
+             "        /// " + prop.description.replace(/\n/g, "\n        /// ") + "\n" +
+             "        /// </summary>\n";
+    gen += "        public " + prop.type + " "
+                              + prop.name + " {\n" +
+           "            get\n" +
+           "            {\n" +
+           "                return this." + privateName + ";\n" +
+           "            }\n" +
+           "            set\n" +
+           "            {\n" +
+           "                if (this." + privateName + compareStart + "value" + compareEnd + ")\n" +
+           "                {\n" +
+           "                    this.modified |= " + modified + ";\n" +
+           "                    this." + privateName + " = value;\n" +
+           "                }\n" +
+           "            }\n" +
+           "        }\n\n";
+    gen += "        public bool IsModified" + prop.name + " () {\n" +
+           "          return ((this.modified & " + modified + ") == " + modified + ");\n" +
+           "        }\n";
+    modified *= 2;
+  }
+  if (group.name)
+    gen += "        #endregion\n";
+}
+
+gen += "    }\n";
+gen += "}\n";
+
+document.getElementById("generated").value = gen;
+</script>
+</body>
+</html>
