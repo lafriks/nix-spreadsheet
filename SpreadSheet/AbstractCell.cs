@@ -66,15 +66,6 @@ namespace Nix.SpreadSheet
                 this.formatting = value;
             }
         }
-
-        /// <summary>
-        /// Chack if cell style is equal to default style.
-        /// </summary>
-        /// <returns>True if cell style is same as default.</returns>
-        public bool IsDefaultStyle()
-        {
-            return this.formatting.IsDefault();
-        }
         #endregion
 
         #region Formula

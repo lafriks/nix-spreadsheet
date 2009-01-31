@@ -33,14 +33,16 @@ namespace Nix.SpreadSheet
         public const int MinWeight = 100;
 
         #region Default and equals method
-        private static Font def = null;
+        private static Font def = new Font();
         public static Font Default
         {
             get
             {
-                if (def == null)
-                    def = new Font();
                 return def;
+            }
+            set
+            {
+            	def = value;
             }
         }
 

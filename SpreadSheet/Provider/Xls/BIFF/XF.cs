@@ -18,6 +18,7 @@
  */
 
 using System;
+using System.Drawing;
 
 namespace Nix.SpreadSheet.Provider.Xls.BIFF
 {
@@ -38,6 +39,13 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 		{
 			get { return style; }
 			set { style = value; }
+		}
+
+		private CellStyle cstyle = null;
+		
+		public CellStyle CStyle {
+			get { return cstyle; }
+			set { cstyle = value; }
 		}
 
 		private ushort fontIndex = 0;
@@ -106,26 +114,93 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 		private byte GetUsedAtributes()
 		{
 			byte used_bits = 0;
-			if ( this.Style.IsModifiedFormat() )
+			if ( this.CStyle.IsModifiedFormat() )
 				used_bits |= 0x01;
-			if ( this.Style.IsModifiedFont() )
+			if ( this.CStyle.IsModifiedFont() )
 				used_bits |= 0x02;
-			// TODO: Indent level, shrink content, text direction, orientation
-			if ( this.Style.IsModifiedHorizontalAlignment() || this.Style.IsModifiedVerticalAlignment()
-					|| this.Style.IsModifiedWrapTextAtRightBorder() || this.Style.IsModifiedJustifyTextAtLastLine()
-					|| this.Style.IsModifiedWrapText() || this.Style.IsModifiedRotation() )
+			if ( this.CStyle.IsModifiedHorizontalAlignment() || this.CStyle.IsModifiedVerticalAlignment()
+			    || this.CStyle.IsModifiedWrapTextAtRightBorder() || this.CStyle.IsModifiedJustifyTextAtLastLine()
+			    || this.CStyle.IsModifiedWrapText() || this.CStyle.IsModifiedRotation()
+			    || this.CStyle.IsModifiedShrinkToFit() || this.CStyle.IsModifiedTextDirection()
+			    || this.CStyle.IsModifiedIndentLevel() )
 				used_bits |= 0x04;
-			if ( this.Style.IsModifiedTopBorderLineStyle() || this.Style.IsModifiedTopBorderLineColor()
-					|| this.Style.IsModifiedLeftBorderLineStyle() || this.Style.IsModifiedLeftBorderLineColor()
-					|| this.Style.IsModifiedRightBorderLineStyle() || this.Style.IsModifiedRightBorderLineColor()
-					|| this.Style.IsModifiedBottomBorderLineStyle() || this.Style.IsModifiedBottomBorderLineColor() )
+			if ( this.CStyle.IsModifiedTopBorderLineStyle() || this.CStyle.IsModifiedTopBorderLineColor()
+			    || this.CStyle.IsModifiedLeftBorderLineStyle() || this.CStyle.IsModifiedLeftBorderLineColor()
+			    || this.CStyle.IsModifiedRightBorderLineStyle() || this.CStyle.IsModifiedRightBorderLineColor()
+			    || this.CStyle.IsModifiedBottomBorderLineStyle() || this.CStyle.IsModifiedBottomBorderLineColor() )
 				used_bits |= 0x08;
-			if ( this.Style.IsModifiedBackgroundColor() || this.Style.IsModifiedBackgroundPattern()
-					|| this.Style.IsModifiedBackgroundPatternColor() )
+			if ( this.CStyle.IsModifiedBackgroundColor() || this.CStyle.IsModifiedBackgroundPattern()
+			    || this.CStyle.IsModifiedBackgroundPatternColor() )
 				used_bits |= 0x10;
-			if ( this.Style.IsModifiedCellLocked() || this.Style.IsModifiedHiddenFormula() )
+			if ( this.CStyle.IsModifiedCellLocked() || this.CStyle.IsModifiedHiddenFormula() )
 				used_bits |= 0x20;
 			return used_bits;
+		}
+
+		private byte GetTextDirection()
+		{
+			switch(this.Style.TextDirection)
+			{
+				default:
+				case TextDirection.Automatic:
+					return 0;
+				case TextDirection.LeftToRight:
+					return 1;
+				case TextDirection.RightToLeft:
+					return 2;
+			}
+		}
+
+		private byte GetLineStyle(BorderLineStyle style)
+		{
+			switch (style)
+			{
+				default:
+				case BorderLineStyle.None:
+					return 0;
+				case BorderLineStyle.Thin:
+					return 1;
+				case BorderLineStyle.Medium:
+					return 2;
+				case BorderLineStyle.Dashed:
+					return 3;
+				case BorderLineStyle.Dotted:
+					return 4;
+				case BorderLineStyle.Thick:
+					return 5;
+				case BorderLineStyle.Double:
+					return 6;
+				case BorderLineStyle.Hair:
+					return 7;
+				case BorderLineStyle.MediumDashed:
+					return 8;
+				case BorderLineStyle.ThinDashDotted:
+					return 9;
+				case BorderLineStyle.MediumDashDotted:
+					return 10;
+				case BorderLineStyle.ThinDashDotDotted:
+					return 11;
+				case BorderLineStyle.MediumDashDotDotted:
+					return 12;
+				case BorderLineStyle.SlantedMediumDashDotted:
+					return 13;
+			}
+		}
+
+		private byte GetBgPattern()
+		{
+			switch (this.Style.BackgroundPattern)
+			{
+				default:
+				case CellBackgroundPattern.None:
+					return 0;
+				case CellBackgroundPattern.Fill:
+					return 1;
+				case CellBackgroundPattern.HorizontalLines:
+					return 11;
+				case CellBackgroundPattern.VerticalLines:
+					return 12;
+			}
 		}
 
 		public override void Write(Nix.CompoundFile.EndianStream stream)
@@ -144,21 +219,44 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 			if ( ! this.ParentStyleIndex.HasValue )
 				prot_bit &= 0x04;
 			prot_bit = (ushort)(((this.ParentStyleIndex.HasValue ? this.ParentStyleIndex.Value : 0xFFF) << 4)
-								& prot_bit); // Parent index (15 - 4)
+			                    & prot_bit); // Parent index (15 - 4)
 			stream.WriteUInt16(prot_bit);
 			// Alignment and text break (1)
-		    byte align_bit = this.GetHorizontalAlignment(this.Style.HorizontalAlignment);
-		    if ( this.Style.WrapTextAtRightBorder )
+			byte align_bit = this.GetHorizontalAlignment(this.Style.HorizontalAlignment);
+			if ( this.Style.WrapTextAtRightBorder )
 				align_bit |= 0x08;
 			align_bit |= (byte)(this.GetVerticalAlignment(this.Style.VerticalAlignment) << 4);
 			stream.WriteByte(align_bit);
 			// Rotation angle (1)
 			stream.WriteByte(this.Style.Rotation);
-			// TODO: Indent level, shrink, text direction (1)
-			stream.WriteByte(0);
+			// Indent level, shrink, text direction (1)
+			byte ind_byte = this.Style.IndentLevel;
+			if ( this.Style.ShrinkToFit )
+				ind_byte |= 0x10;
+			ind_byte |= (byte)(this.GetTextDirection() << 6);
+			stream.WriteByte(ind_byte);
 			// Flags for used atribute groups
 			// TODO: For now parent style elements are all valid
 			stream.WriteByte((byte)((this.ParentStyleIndex.HasValue ? this.GetUsedAtributes() : 0) << 2));
+			// Borders (4)
+			uint bord_bits = (uint)(this.GetLineStyle(this.Style.LeftBorderLineStyle)
+				| (this.GetLineStyle(this.Style.RightBorderLineStyle) << 4)
+				| (this.GetLineStyle(this.Style.TopBorderLineStyle) << 8)
+				| (this.GetLineStyle(this.Style.BottomBorderLineStyle) << 12));
+			bord_bits |= ((uint)ColorTranslator.ToOle(this.Style.LeftBorderLineColor) << 16)
+				| ((uint)ColorTranslator.ToOle(this.Style.RightBorderLineColor) << 23);
+			// TODO: Diagonal lines to show
+			stream.WriteUInt32(bord_bits);
+			// Background (4)
+			uint back_bits = (uint)ColorTranslator.ToOle(this.Style.TopBorderLineColor)
+				| ((uint)ColorTranslator.ToOle(this.Style.BottomBorderLineColor) << 7);
+			// TODO: Diagonal line color and style
+			back_bits |= ((uint)this.GetBgPattern() << 26);
+			stream.WriteUInt32(back_bits);
+			// Background color (2);
+			ushort bgcol_bits = (ushort)((ushort)ColorTranslator.ToOle(this.Style.BackgroundPatternColor)
+			                             | (ushort)(ColorTranslator.ToOle(this.Style.BackgroundColor) << 7));
+			stream.WriteUInt16(bgcol_bits);
 		}
 
 		public override void Read(Nix.CompoundFile.EndianStream stream)

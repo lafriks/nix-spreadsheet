@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+// WARNING! This class is generated do not edit!
+
 using System;
 using System.Drawing;
 
@@ -25,44 +27,117 @@ namespace Nix.SpreadSheet
     /// <summary>
     /// Describes how cell and its data will be displayed.
     /// </summary>
-    public class CellStyle : ExtendedStyle
+    public class CellStyle : Style
     {
-    	#region Parent style
-		private ExtendedStyle style = null; //ExtendedStyle.Default;
+        private Style parent = Style.Default;
 
-		public ExtendedStyle Style
-		{
-			get { return this.style; }
-			set { this.style = value; }
-		}
-    	#endregion
-
-        #region Default style
-        private static CellStyle defStyle = null;
-
-        public static CellStyle Default
+        public Style Parent
         {
             get
             {
-                if (defStyle == null)
-                {
-                    defStyle = new CellStyle();
-                }
-                return defStyle;
+                return this.parent;
+            }
+            set
+            {
+                this.parent = value;
             }
         }
 
-        internal bool Equals(CellStyle comp)
-        {
-            return ! (this.WrapText != comp.WrapText || ! this.Font.Equals(comp.Font)
-                      || this.ShrinkToFit != comp.ShrinkToFit);
+        #region Compare values to parent values
+        public bool IsModifiedCellLocked () {
+          return (this.CellLocked != this.Parent.CellLocked);
         }
 
-        private bool defaultStyle = true;
+        public bool IsModifiedHiddenFormula () {
+          return (this.HiddenFormula != this.Parent.HiddenFormula);
+        }
 
-        public bool IsDefault()
-        {
-            return this.defaultStyle;
+        public bool IsModifiedWrapText () {
+          return (this.WrapText != this.Parent.WrapText);
+        }
+
+        public bool IsModifiedShrinkToFit () {
+          return (this.ShrinkToFit != this.Parent.ShrinkToFit);
+        }
+
+        public bool IsModifiedFont () {
+          return (this.Font.Equals(this.Parent.Font) == false);
+        }
+
+        public bool IsModifiedFormat () {
+          return (this.Format != this.Parent.Format);
+        }
+
+        public bool IsModifiedIndentLevel () {
+          return (this.IndentLevel != this.Parent.IndentLevel);
+        }
+
+        public bool IsModifiedTextDirection () {
+          return (this.TextDirection != this.Parent.TextDirection);
+        }
+
+        public bool IsModifiedWrapTextAtRightBorder () {
+          return (this.WrapTextAtRightBorder != this.Parent.WrapTextAtRightBorder);
+        }
+
+        public bool IsModifiedHorizontalAlignment () {
+          return (this.HorizontalAlignment != this.Parent.HorizontalAlignment);
+        }
+
+        public bool IsModifiedVerticalAlignment () {
+          return (this.VerticalAlignment != this.Parent.VerticalAlignment);
+        }
+
+        public bool IsModifiedJustifyTextAtLastLine () {
+          return (this.JustifyTextAtLastLine != this.Parent.JustifyTextAtLastLine);
+        }
+
+        public bool IsModifiedRotation () {
+          return (this.Rotation != this.Parent.Rotation);
+        }
+
+        public bool IsModifiedTopBorderLineStyle () {
+          return (this.TopBorderLineStyle != this.Parent.TopBorderLineStyle);
+        }
+
+        public bool IsModifiedTopBorderLineColor () {
+          return (this.TopBorderLineColor != this.Parent.TopBorderLineColor);
+        }
+
+        public bool IsModifiedLeftBorderLineStyle () {
+          return (this.LeftBorderLineStyle != this.Parent.LeftBorderLineStyle);
+        }
+
+        public bool IsModifiedLeftBorderLineColor () {
+          return (this.LeftBorderLineColor != this.Parent.LeftBorderLineColor);
+        }
+
+        public bool IsModifiedRightBorderLineStyle () {
+          return (this.RightBorderLineStyle != this.Parent.RightBorderLineStyle);
+        }
+
+        public bool IsModifiedRightBorderLineColor () {
+          return (this.RightBorderLineColor != this.Parent.RightBorderLineColor);
+        }
+
+        public bool IsModifiedBottomBorderLineStyle () {
+          return (this.BottomBorderLineStyle != this.Parent.BottomBorderLineStyle);
+        }
+
+        public bool IsModifiedBottomBorderLineColor () {
+          return (this.BottomBorderLineColor != this.Parent.BottomBorderLineColor);
+        }
+
+        public bool IsModifiedBackgroundColor () {
+          return (this.BackgroundColor != this.Parent.BackgroundColor);
+        }
+
+        public bool IsModifiedBackgroundPatternColor () {
+          return (this.BackgroundPatternColor != this.Parent.BackgroundPatternColor);
+        }
+
+        public bool IsModifiedBackgroundPattern () {
+          return (this.BackgroundPattern != this.Parent.BackgroundPattern);
         }
         #endregion
     }

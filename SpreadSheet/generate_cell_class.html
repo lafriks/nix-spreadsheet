@@ -1,12 +1,12 @@
-<html>
+﻿<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<textarea id="generated" style="width: 100%; height: 100%"></textarea>
+<textarea id="generated" style="width: 100%; height: 50%"></textarea>
+<textarea id="generated2" style="width: 100%; height: 50%"></textarea>
 <script type="text/javascript">
-var Class = {className: "Style", description: "Describes how cell and its data will be displayed.",
-                groups: [
+var groups = [
                   {name: "Cell protection",
                   properties: [
                     {name: "CellLocked", type: "bool", defVal: "false"},
@@ -19,11 +19,16 @@ var Class = {className: "Style", description: "Describes how cell and its data w
                   ]},
                   {name: "Font",
                   properties: [
-                    {name: "Font", type: "Font", defVal: "new Font()"}
+                    {name: "Font", type: "Font", defVal: "new Font()", compareStart: ".Equals(", compareEnd: ") == false"}
                   ]},
                   {name: "Format",
                   properties: [
                     {name: "Format", type: "string", defVal: "string.Empty"}
+                  ]},
+                  {name: "Indent level, text direction",
+                  properties: [
+                    {name: "IndentLevel", type: "byte", defVal: "0", minIntVal: "0", maxIntVal: "7"},
+                    {name: "TextDirection", type: "TextDirection", defVal: "TextDirection.Automatic"}
                   ]},
                   {name: "Alignment",
                   properties: [
@@ -50,98 +55,141 @@ var Class = {className: "Style", description: "Describes how cell and its data w
                     {name: "BackgroundPatternColor", type: "Color", defVal: "Color.White"},
                     {name: "BackgroundPattern", type: "CellBackgroundPattern", defVal: "CellBackgroundPattern.None"}
                   ]}
-                ]};
+                ];
 
-// Header
-var gen = "/*\n" +
-          " * Library for generating spreadsheet documents.\n" +
-          " * Copyright (C) 2008, Lauris Bukšis-Haberkorns <lauris@nix.lv>\n" +
-          " *\n" +
-          " * This library is free software; you can redistribute it and/or\n" +
-          " * modify it under the terms of the GNU Lesser General Public\n" +
-          " * License as published by the Free Software Foundation; either\n" +
-          " * version 2.1 of the License, or (at your option) any later version.\n" +
-          " *\n" +
-          " * This library is distributed in the hope that it will be useful,\n" +
-          " * but WITHOUT ANY WARRANTY; without even the implied warranty of\n" +
-          " * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU\n" +
-          " * Lesser General Public License for more details.\n" +
-          " *\n" +
-          " * You should have received a copy of the GNU Lesser General Public\n" +
-          " * License along with this library; if not, write to the Free Software\n" +
-          " * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA\n" +
-          " */\n\n";
-
-gen += "// WARNING! This class is generated do not edit!\n\n";
-
-// Usings and namespace
-gen += "using System;\n" +
-       "using System.Drawing;\n\n" +
-       "namespace Nix.SpreadSheet\n" +
-       "{\n";
-// Class description and name
-gen += "    /// <summary>\n" +
-       "    /// " + Class.description + "\n" +
-       "    /// </summary>\n" +
-       "    public class " + Class.className + "\n" +
-       "    {\n" +
-       "        private uint modified = 0;\n\n";
-
-var modified = 1;
-
-// Generic properties
-for (var g = 0; g < Class.groups.length; g++)
+function generateClass(name, description, parentClass, groups)
 {
-  var group = Class.groups[g];
-  if (g > 0)
-  {
-    gen += "\n";
-  }
-  if (group.name)
-    gen += "        #region " + group.name + "\n";
-  for (var p = 0; p < group.properties.length; p++)
-  {
-    var prop = group.properties[p];
-    if (p > 0)
-      gen += "\n";
-    var privateName = prop.name.substr(0,1).toLowerCase() + prop.name.substr(1);
-    var compareStart = " != ";
-    var compareEnd = "";
-    gen += "        private " + prop.type + " "
-                              + privateName
-                              + " = " + prop.defVal + ";\n\n";
-    if (prop.description)
-      gen += "        /// <summary>\n" +
-             "        /// " + prop.description.replace(/\n/g, "\n        /// ") + "\n" +
-             "        /// </summary>\n";
-    gen += "        public " + prop.type + " "
-                              + prop.name + " {\n" +
-           "            get\n" +
-           "            {\n" +
-           "                return this." + privateName + ";\n" +
-           "            }\n" +
-           "            set\n" +
-           "            {\n" +
-           "                if (this." + privateName + compareStart + "value" + compareEnd + ")\n" +
-           "                {\n" +
-           "                    this.modified |= " + modified + ";\n" +
-           "                    this." + privateName + " = value;\n" +
-           "                }\n" +
-           "            }\n" +
-           "        }\n\n";
-    gen += "        public bool IsModified" + prop.name + " () {\n" +
-           "          return ((this.modified & " + modified + ") == " + modified + ");\n" +
-           "        }\n";
-    modified *= 2;
-  }
-  if (group.name)
-    gen += "        #endregion\n";
+	// Header
+	var gen = "/*\n" +
+	          " * Library for generating spreadsheet documents.\n" +
+	          " * Copyright (C) 2008, Lauris Bukšis-Haberkorns <lauris@nix.lv>\n" +
+	          " *\n" +
+	          " * This library is free software; you can redistribute it and/or\n" +
+	          " * modify it under the terms of the GNU Lesser General Public\n" +
+	          " * License as published by the Free Software Foundation; either\n" +
+	          " * version 2.1 of the License, or (at your option) any later version.\n" +
+	          " *\n" +
+	          " * This library is distributed in the hope that it will be useful,\n" +
+	          " * but WITHOUT ANY WARRANTY; without even the implied warranty of\n" +
+	          " * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU\n" +
+	          " * Lesser General Public License for more details.\n" +
+	          " *\n" +
+	          " * You should have received a copy of the GNU Lesser General Public\n" +
+	          " * License along with this library; if not, write to the Free Software\n" +
+	          " * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA\n" +
+	          " */\n\n";
+
+	gen += "// WARNING! This class is generated do not edit!\n\n";
+
+	var eqals = "";
+	
+	// Usings and namespace
+	gen += "using System;\n" +
+	       "using System.Drawing;\n\n" +
+	       "namespace Nix.SpreadSheet\n" +
+	       "{\n";
+	// Class description and name
+	gen += "    /// <summary>\n" +
+	       "    /// " + description + "\n" +
+	       "    /// </summary>\n" +
+	       "    public class " + name + (parentClass != null ? " : " + parentClass : " : IEquatable<" + name + ">") + "\n" +
+	       "    {\n";
+	if (parentClass != null)
+		gen += "        private " + parentClass + " parent = " + parentClass + ".Default;\n\n" +
+			   "        public " + parentClass + " Parent\n" +
+			   "        {\n" +
+	           "            get\n" +
+	           "            {\n" +
+	           "                return this.parent;\n" +
+	           "            }\n" +
+	           "            set\n" +
+	           "            {\n" +
+	           "                this.parent = value;\n" +
+	           "            }\n" +
+	           "        }\n\n" +
+	           "        #region Compare values to parent values\n";
+	else
+		gen += "        private static " + parentClass + " def = new " + parentClass + "();\n\n" +
+			   "        public static" + parentClass + " Default\n" +
+			   "        {\n" +
+	           "            get\n" +
+	           "            {\n" +
+	           "                return def;\n" +
+	           "            }\n" +
+	           "            set\n" +
+	           "            {\n" +
+	           "                def = value;\n" +
+	           "            }\n" +
+	           "        }\n\n";
+	// Generic properties
+	for (var g = 0; g < groups.length; g++)
+	{
+	  var group = groups[g];
+	  if (g > 0)
+	  {
+	    gen += "\n";
+	  }
+	  if (group.name && parentClass == null)
+	    gen += "        #region " + group.name + "\n";
+	  for (var p = 0; p < group.properties.length; p++)
+	  {
+	    var prop = group.properties[p];
+	    if (p > 0)
+	      gen += "\n";
+	    var privateName = prop.name.substr(0,1).toLowerCase() + prop.name.substr(1);
+	    var compareStart = " != ";
+	    if ( prop.compareStart )
+	    	compareStart = prop.compareStart;
+	    var compareEnd = "";
+	    if ( prop.compareEnd )
+	    	compareEnd = prop.compareEnd;
+
+		if (eqals != "")
+			eqals += "\n                     || ";
+		eqals += "(this." + prop.name + compareStart + "other." + prop.name + compareEnd + ")";
+
+	    if (parentClass == null)
+	    	gen += "        private " + prop.type + " "
+	                              + privateName
+	                              + " = " + prop.defVal + ";\n\n";
+	    if (prop.description && parentClass == null)
+	      gen += "        /// <summary>\n" +
+	             "        /// " + prop.description.replace(/\n/g, "\n        /// ") + "\n" +
+	             "        /// </summary>\n";
+	    if (parentClass == null)
+	      gen += "        public " + prop.type + " "
+	                              + prop.name + " {\n" +
+	           "            get\n" +
+	           "            {\n" +
+	           "                return this." + privateName + ";\n" +
+	           "            }\n" +
+	           "            set\n" +
+	           "            {\n" +
+	           "                this." + privateName + " = value;\n" +
+	           "            }\n" +
+	           "        }\n";
+	    else
+	      gen += "        public bool IsModified" + prop.name + " () {\n" +
+	           "          return (this." + prop.name + compareStart + "this.Parent." + prop.name + compareEnd + ");\n" +
+	           "        }\n";
+	  }
+	  if (group.name && parentClass == null)
+	    gen += "        #endregion\n";
+	}
+	if (parentClass != null)
+	    gen += "        #endregion\n";
+	else
+		gen += "\n        public bool Equals(" + name + " other)\n" +
+		       "        {\n" +
+		       "            return ! (" + eqals + ");\n" +
+		       "        }\n";
+	
+	gen += "    }\n";
+	gen += "}\n";
+	return gen;
 }
-
-gen += "    }\n";
-gen += "}\n";
-
-document.getElementById("generated").value = gen;
+document.getElementById("generated").value = generateClass("Style", "Describes how cell and its data will be displayed.", null, groups);
+document.getElementById("generated2").value = generateClass("CellStyle", "Describes how cell and its data will be displayed.", "Style", groups);
 </script>
 </body>
 </html>

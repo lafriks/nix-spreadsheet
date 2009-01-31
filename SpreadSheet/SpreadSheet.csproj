@@ -128,7 +128,6 @@
     <Compile Include="Comment.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ExtendedStyle.cs" />
     <Compile Include="Font.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -146,6 +145,7 @@
     <Compile Include="SpreadSheetFileFormat.cs" />
     <Compile Include="StringFormating.cs" />
     <Compile Include="Style.cs" />
+    <Compile Include="TextDirection.cs" />
     <Compile Include="Utils.cs">
       <SubType>Code</SubType>
     </Compile>

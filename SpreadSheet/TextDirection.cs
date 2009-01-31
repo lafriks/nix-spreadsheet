@@ -1,6 +1,6 @@
-﻿/*
+/*
  * Library for generating spreadsheet documents.
- * Copyright (C) 2008, Lauris Bukšis-Haberkorns <lauris@nix.lv>
+ * Copyright (C) 2008, Lauris Buk�is-Haberkorns <lauris@nix.lv>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,14 +17,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-// WARNING! This class is generated do not edit!
-
 using System;
-using System.Drawing;
 
 namespace Nix.SpreadSheet
 {
-	public class ExtendedStyle : Style
+	/// <summary>
+	/// Text direction.
+	/// </summary>
+	public enum TextDirection
 	{
+		/// <summary>
+		/// Detect automaticaly.
+		/// </summary>
+		Automatic = 0,
+		/// <summary>
+		/// Right to left.
+		/// </summary>
+		RightToLeft,
+		/// <summary>
+		/// Left to right.
+		/// </summary>
+		LeftToRight
 	}
 }
