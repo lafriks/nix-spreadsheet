@@ -154,12 +154,6 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 			stream.WriteByte(FontFaceToByte(this.Font.FontFace)); // Font face
 			stream.WriteByte(CharSetToByte(this.Font.CharSet)); // Font charset
 			stream.WriteByte(0); // Reserved
-			//stream.WriteByte((byte)this.Font.Name.Length);
-			// TODO: Can we write compressed here?
-			//stream.WriteByte(1); // Uncompressed
-			// Font name
-			//foreach(char c in this.Font.Name)
-			//	stream.Write2((int)c);
 			BIFFStringHelper.WriteString(stream, this.Font.Name, false);
 		}
 
