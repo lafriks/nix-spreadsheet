@@ -58,8 +58,9 @@ namespace Nix.SpreadSheet.Provider
 		protected void BuildFontTable ( SpreadSheetDocument document )
 		{
 			foreach(Sheet sheet in document)
-				foreach(Cell cell in sheet)
-					if ( FindFontIndex(cell.Formatting.Font) == -1 )
+				foreach(Row row in sheet)
+					foreach(Cell cell in row)
+						if ( FindFontIndex(cell.Formatting.Font) == -1 )
 						fontTable.Add(cell.Formatting.Font);
 			// There should be at least 5 fonts in the table
 			for ( int i = fontTable.Count; i < 5; i++ )
@@ -69,6 +70,14 @@ namespace Nix.SpreadSheet.Provider
 		private Dictionary<ushort, string> formatTable = new Dictionary<ushort,string>();
 
 		private List<ushort> formatsToWrite = new List<ushort>();
+
+		public ushort FindFormatIndex(string format)
+		{
+			foreach ( ushort idx in formatTable.Keys )
+				if ( formatTable[idx] == format )
+					return idx;
+			throw new IndexOutOfRangeException("Format not found");
+		}
 
 		private ushort formatTableSeq = 0;
 
@@ -141,17 +150,55 @@ namespace Nix.SpreadSheet.Provider
 			this.formatTable.Add(0x31, "@");
 
 			this.formatTableSeq = 0x32;
-
+			
 			// Add user defined formats if they are not in default format table
 			foreach ( Sheet sheet in document )
 			{
-				foreach ( Cell cell in sheet )
+				foreach ( Row row in sheet )
 				{
-					if ( ! this.formatTable.ContainsValue(cell.Formatting.Format) )
+					foreach ( Cell cell in row )
 					{
-						this.formatTable.Add(this.formatTableSeq, cell.Formatting.Format);
-						this.formatsToWrite.Add(this.formatTableSeq);
-						this.formatTableSeq++;
+						if ( ! this.formatTable.ContainsValue(cell.Formatting.Format) )
+						{
+							this.formatTable.Add(this.formatTableSeq, cell.Formatting.Format);
+							this.formatsToWrite.Add(this.formatTableSeq);
+							this.formatTableSeq++;
+						}
+					}
+				}
+			}
+		}
+		
+
+		private List<Style> styleTable = new List<Style>();
+
+		public int FindStyleIndex(Style style)
+		{
+			for (int i = 0; i < styleTable.Count; i++)
+			{
+				if ( styleTable[i].Equals(style) )
+					return i;
+			}
+			return -1;
+		}
+
+		protected void BuildStyleTable(SpreadSheetDocument document)
+		{
+			// Find all parent styles
+			foreach ( Sheet sheet in document )
+			{
+				foreach ( Row row in sheet )
+				{
+					foreach ( Cell cell in row )
+					{
+						if ( FindStyleIndex(cell.Formatting.Parent) == -1 )
+						{
+							this.styleTable.Add(cell.Formatting.Parent);
+						}
+						if ( FindStyleIndex(cell.Formatting) == -1 )
+						{
+							this.styleTable.Add(cell.Formatting);
+						}
 					}
 				}
 			}
@@ -165,6 +212,7 @@ namespace Nix.SpreadSheet.Provider
 
 			this.BuildFontTable(document);
 			this.BuildFormatTable(document);
+			this.BuildStyleTable(document);
 			
 			#region Workbook stream
 			MemoryStream wbs = new MemoryStream();
@@ -179,6 +227,14 @@ namespace Nix.SpreadSheet.Provider
 			// Format table
 			foreach ( ushort fi in this.formatsToWrite )
 				this.Write(new FORMAT() { Index = fi, Format = this.formatTable[fi] });
+			// Style table
+			foreach ( Style s in this.styleTable )
+			{
+				XF r = new XF() { Style = s, FontIndex = (ushort)FindFontIndex(s.Font), FormatIndex = FindFormatIndex(s.Format) };
+				if ( s is CellStyle )
+					r.ParentStyleIndex = (ushort?)FindStyleIndex(((CellStyle)s).Parent);
+				this.Write(r);
+			}
 			this.Write(new EOF());
 
 			// Sheets

@@ -384,7 +384,7 @@ namespace Nix.SpreadSheet
         }
         #endregion
 
-        public bool Equals(Style other)
+        public virtual bool Equals(Style other)
         {
             return ! ((this.CellLocked != other.CellLocked)
                      || (this.HiddenFormula != other.HiddenFormula)

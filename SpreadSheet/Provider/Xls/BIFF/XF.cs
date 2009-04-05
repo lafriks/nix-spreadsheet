@@ -41,13 +41,6 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 			set { style = value; }
 		}
 
-		private CellStyle cstyle = null;
-		
-		public CellStyle CStyle {
-			get { return cstyle; }
-			set { cstyle = value; }
-		}
-
 		private ushort fontIndex = 0;
 		
 		public ushort FontIndex {
@@ -113,26 +106,28 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 
 		private byte GetUsedAtributes()
 		{
+			if ( ! (this.Style is CellStyle) )
+				return 0;
 			byte used_bits = 0;
-			if ( this.CStyle.IsModifiedFormat() )
+			if ( ((CellStyle)this.Style).IsModifiedFormat() )
 				used_bits |= 0x01;
-			if ( this.CStyle.IsModifiedFont() )
+			if ( ((CellStyle)this.Style).IsModifiedFont() )
 				used_bits |= 0x02;
-			if ( this.CStyle.IsModifiedHorizontalAlignment() || this.CStyle.IsModifiedVerticalAlignment()
-			    || this.CStyle.IsModifiedWrapTextAtRightBorder() || this.CStyle.IsModifiedJustifyTextAtLastLine()
-			    || this.CStyle.IsModifiedWrapText() || this.CStyle.IsModifiedRotation()
-			    || this.CStyle.IsModifiedShrinkToFit() || this.CStyle.IsModifiedTextDirection()
-			    || this.CStyle.IsModifiedIndentLevel() )
+			if ( ((CellStyle)this.Style).IsModifiedHorizontalAlignment() || ((CellStyle)this.Style).IsModifiedVerticalAlignment()
+			    || ((CellStyle)this.Style).IsModifiedWrapTextAtRightBorder() || ((CellStyle)this.Style).IsModifiedJustifyTextAtLastLine()
+			    || ((CellStyle)this.Style).IsModifiedWrapText() || ((CellStyle)this.Style).IsModifiedRotation()
+			    || ((CellStyle)this.Style).IsModifiedShrinkToFit() || ((CellStyle)this.Style).IsModifiedTextDirection()
+			    || ((CellStyle)this.Style).IsModifiedIndentLevel() )
 				used_bits |= 0x04;
-			if ( this.CStyle.IsModifiedTopBorderLineStyle() || this.CStyle.IsModifiedTopBorderLineColor()
-			    || this.CStyle.IsModifiedLeftBorderLineStyle() || this.CStyle.IsModifiedLeftBorderLineColor()
-			    || this.CStyle.IsModifiedRightBorderLineStyle() || this.CStyle.IsModifiedRightBorderLineColor()
-			    || this.CStyle.IsModifiedBottomBorderLineStyle() || this.CStyle.IsModifiedBottomBorderLineColor() )
+			if ( ((CellStyle)this.Style).IsModifiedTopBorderLineStyle() || ((CellStyle)this.Style).IsModifiedTopBorderLineColor()
+			    || ((CellStyle)this.Style).IsModifiedLeftBorderLineStyle() || ((CellStyle)this.Style).IsModifiedLeftBorderLineColor()
+			    || ((CellStyle)this.Style).IsModifiedRightBorderLineStyle() || ((CellStyle)this.Style).IsModifiedRightBorderLineColor()
+			    || ((CellStyle)this.Style).IsModifiedBottomBorderLineStyle() || ((CellStyle)this.Style).IsModifiedBottomBorderLineColor() )
 				used_bits |= 0x08;
-			if ( this.CStyle.IsModifiedBackgroundColor() || this.CStyle.IsModifiedBackgroundPattern()
-			    || this.CStyle.IsModifiedBackgroundPatternColor() )
+			if ( ((CellStyle)this.Style).IsModifiedBackgroundColor() || ((CellStyle)this.Style).IsModifiedBackgroundPattern()
+			    || ((CellStyle)this.Style).IsModifiedBackgroundPatternColor() )
 				used_bits |= 0x10;
-			if ( this.CStyle.IsModifiedCellLocked() || this.CStyle.IsModifiedHiddenFormula() )
+			if ( ((CellStyle)this.Style).IsModifiedCellLocked() || ((CellStyle)this.Style).IsModifiedHiddenFormula() )
 				used_bits |= 0x20;
 			return used_bits;
 		}

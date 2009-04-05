@@ -39,10 +39,10 @@ namespace Nix.SpreadSheet
 
         public Cell (string name)
         {
-            Utils.ParseCellName(name, ref this.row, ref this.column);
+            Utils.ParseCellName(name, out this.row, out this.column);
         }
 
-        internal int RowIndex
+        public int RowIndex
         {
             get
             {
@@ -50,7 +50,7 @@ namespace Nix.SpreadSheet
             }
         }
 
-        internal int ColumnIndex
+        public int ColumnIndex
         {
             get
             {
@@ -58,7 +58,7 @@ namespace Nix.SpreadSheet
             }
         }
 
-        internal string Name
+        public string Name
         {
             get
             {

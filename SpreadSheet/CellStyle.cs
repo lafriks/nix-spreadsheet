@@ -140,5 +140,11 @@ namespace Nix.SpreadSheet
           return (this.BackgroundPattern != this.Parent.BackgroundPattern);
         }
         #endregion
+
+		public override bool Equals(Style other)
+		{
+			// To be equal parent styles should match
+			return base.Equals(other) && other is CellStyle && ((CellStyle)other).Parent.Equals(this.Parent);
+		}
     }
 }

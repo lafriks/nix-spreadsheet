@@ -43,7 +43,7 @@ namespace Nix.SpreadSheet
             return name + row.ToString();
         }
 
-        public static void ParseCellName(string name, ref int row, ref int col)
+        public static void ParseCellName(string name, out int row, out int col)
         {
             col = 0;
             row = 0;

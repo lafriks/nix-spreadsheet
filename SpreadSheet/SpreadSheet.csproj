@@ -133,6 +133,7 @@
     </Compile>
     <Compile Include="Provider\IFileFormatProvider.cs" />
     <Compile Include="Provider\XlsProvider.cs" />
+    <Compile Include="Provider\Xls\BIFF\BIFF5\ROW.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFF8\BOF.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFFRecord.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFFStringHelper.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="Provider\Xls\BIFF\FONT.cs" />
     <Compile Include="Provider\Xls\BIFF\FORMAT.cs" />
     <Compile Include="Provider\Xls\BIFF\XF.cs" />
+    <Compile Include="Row.cs" />
     <Compile Include="Sheet.cs" />
     <Compile Include="SpreadSheetDocument.cs" />
     <Compile Include="SpreadSheetFileFormat.cs" />
@@ -166,6 +168,7 @@
       <ProductName>.NET Framework 3.5</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+    <Folder Include="Provider\Xls\BIFF\BIFF5" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

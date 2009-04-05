@@ -27,15 +27,14 @@ namespace Nix.SpreadSheet
 	/// <summary>
 	/// Sheet.
 	/// </summary>
-	public class Sheet : IEnumerable
+	public class Sheet : IEnumerable<Row>
 	{
 		private SpreadSheetDocument document;
 
 		public const int MaxRows = 65536;
         public const int MaxColumns = 256;
 
-        private Hashtable m_table = new Hashtable();
-	    
+        private Dictionary<int, Row> m_rows = new Dictionary<int, Row>();
 
 		/// <summary>
 		/// Gets the owner document.
@@ -73,23 +72,29 @@ namespace Nix.SpreadSheet
 			}
 		}
 
+		public Row this[int row]
+		{
+			get
+			{
+                if (row >= MaxRows || row < 0)
+                	throw new ArgumentOutOfRangeException("row");
+                if ( this.m_rows.ContainsKey(row) )
+                	return this.m_rows[row];
+                else
+                {
+                	Row nr = new Row(row);
+                	this.m_rows.Add(row, nr);
+                	return nr;
+                }
+                
+			}
+		}
+
         public Cell this[int row, int column]
         {
             get
             {
-                if (row >= MaxRows || column >= MaxColumns)
-                    throw new ArgumentOutOfRangeException();
-                string key = Utils.CellName(row, column);
-                if (this.m_table.ContainsKey(key))
-                {
-                    return (Cell)this.m_table[key];
-                }
-                else
-                {
-                    Cell nc = new Cell(row, column);
-                    this.m_table.Add(key, nc);
-                    return nc;
-                }
+            	return this[row][column];
             }
         }
 
@@ -97,24 +102,21 @@ namespace Nix.SpreadSheet
         {
             get
             {
-                if (this.m_table.ContainsKey(name))
-                {
-                    return (Cell)this.m_table[name];
-                }
-                else
-                {
-                    Cell nc = new Cell(name);
-                    if (nc.RowIndex >= MaxRows || nc.ColumnIndex >= MaxColumns)
-                        throw new ArgumentOutOfRangeException();
-                    this.m_table.Add(nc.Name, nc);
-                    return nc;
-                }
+            	int r;
+            	int c;
+            	Utils.ParseCellName(name, out r, out c);
+            	return this[r, c];
             }
         }
 
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
 		{
-			return this.m_table.Values.GetEnumerator();
+			return this.m_rows.Values.GetEnumerator();
+		}
+		
+		IEnumerator<Row> IEnumerable<Row>.GetEnumerator()
+		{
+			return this.m_rows.Values.GetEnumerator();
 		}
 	}
 }
