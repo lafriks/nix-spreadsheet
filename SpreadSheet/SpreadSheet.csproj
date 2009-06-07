@@ -128,6 +128,7 @@
     <Compile Include="Comment.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Common\Range.cs" />
     <Compile Include="Font.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -168,6 +169,7 @@
       <ProductName>.NET Framework 3.5</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+    <Folder Include="Common" />
     <Folder Include="Provider\Xls\BIFF\BIFF5" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

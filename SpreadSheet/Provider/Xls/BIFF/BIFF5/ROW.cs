@@ -36,10 +36,26 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF5
 			}
 		}
 
-		private int firstCellIndex;
-		private int lastCellIndex;
+		private Row row;
+		
+		public Row Row {
+			get { return row; }
+			set { row = value; }
+		}
 
-		private int rowHeight = 256;
+		private int firstCellIndex;
+		
+		public int FirstCellIndex {
+			get { return firstCellIndex; }
+			set { firstCellIndex = value; }
+		}
+
+		private int lastCellIndex;
+		
+		public int LastCellIndex {
+			get { return lastCellIndex; }
+			set { lastCellIndex = value; }
+		}
 
 		/// <summary>
 		/// Writes BIFF record to the specified stream.
@@ -48,7 +64,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF5
 		public override void Write(EndianStream stream)
 		{
 			this.WriteHeader(stream, 16);
-			
+			stream.WriteUInt16(this.Row.RowIndex);
 		}
 
 		/// <summary>

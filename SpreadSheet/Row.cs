@@ -30,7 +30,7 @@ namespace Nix.SpreadSheet
 	{
 		private int row;
 
-        private Dictionary<int, Cell> m_cells = new Dictionary<int, Cell>();
+        private SortedDictionary<int, Cell> m_cells = new SortedDictionary<int, Cell>();
 
 		public Row(int row)
 		{

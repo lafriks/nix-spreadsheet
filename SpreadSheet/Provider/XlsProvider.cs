@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+using Nix.SpreadSheet.Provider.Xls.BIFF.BIFF5;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
-
+using System.Text;
 using Nix.CompoundFile;
 using Nix.SpreadSheet.Provider.Xls.BIFF;
 using Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8;
@@ -205,7 +205,6 @@ namespace Nix.SpreadSheet.Provider
 		}
 
 		#region IFileFormatProvider Members
-
 		public void Save ( SpreadSheetDocument document, System.IO.Stream stream )
 		{
 			Ole2CompoundFile cf = new Ole2CompoundFile();
@@ -241,6 +240,10 @@ namespace Nix.SpreadSheet.Provider
 			foreach(Sheet sheet in document)
 			{
 				this.Write(new BOF() { Type = BOF.SheetType.WorkSheet});
+				foreach ( Row row in sheet )
+				{
+					this.Write( new ROW() { Row = row } );
+				}
 				this.Write(new EOF());
 			}
 

@@ -34,7 +34,7 @@ namespace Nix.SpreadSheet
 		public const int MaxRows = 65536;
         public const int MaxColumns = 256;
 
-        private Dictionary<int, Row> m_rows = new Dictionary<int, Row>();
+        private SortedDictionary<int, Row> m_rows = new SortedDictionary<int, Row>();
 
 		/// <summary>
 		/// Gets the owner document.
