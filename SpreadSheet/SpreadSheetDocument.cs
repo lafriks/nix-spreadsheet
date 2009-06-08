@@ -75,24 +75,13 @@ namespace Nix.SpreadSheet
 		#endregion
 
 		#region Loading and saving spreadsheet documents
-		private static Provider.IFileFormatProvider GetFileFormatProvider(SpreadSheetFileFormat format)
-		{
-			switch(format)
-			{
-				case SpreadSheetFileFormat.XlsBinary:
-					return new Provider.XlsProvider();
-				default:
-					throw new NotImplementedException("Unsupported spreadsheet file format.");
-			}
-		}
-		
 		/// <summary>
 		/// Loads a spreadsheet document from the specified file.
 		/// </summary>
 		/// <param name="fileName">The file name.</param>
 		/// <param name="format">The format.</param>
 		/// <returns>Spreadsheet document.</returns>
-		public static SpreadSheetDocument Load ( string fileName, SpreadSheetFileFormat format )
+		public static SpreadSheetDocument Load ( string fileName, Provider.IFileFormatProvider format )
 		{
 			StreamReader s = new StreamReader(fileName);
 			try
@@ -111,7 +100,7 @@ namespace Nix.SpreadSheet
 		/// <param name="stream">The stream.</param>
 		/// <param name="format">The format.</param>
 		/// <returns>Spreadsheet document.</returns>
-		public static SpreadSheetDocument Load ( Stream stream, SpreadSheetFileFormat format )
+		public static SpreadSheetDocument Load ( Stream stream, Provider.IFileFormatProvider format )
 		{
 			return new SpreadSheetDocument();
 		}
@@ -121,7 +110,7 @@ namespace Nix.SpreadSheet
 		/// </summary>
 		/// <param name="fileName">The file name.</param>
 		/// <param name="format">The format.</param>
-		public void Save ( string fileName, SpreadSheetFileFormat format )
+		public void Save ( string fileName, Provider.IFileFormatProvider format )
 		{
 			StreamWriter s = new StreamWriter(fileName);
 			try
@@ -139,10 +128,9 @@ namespace Nix.SpreadSheet
 		/// </summary>
 		/// <param name="stream">The stream.</param>
 		/// <param name="format">The format.</param>
-		public void Save ( Stream stream, SpreadSheetFileFormat format )
+		public void Save ( Stream stream, Provider.IFileFormatProvider format )
 		{
-			Provider.IFileFormatProvider prov = GetFileFormatProvider(format);
-			prov.Save(this, stream);
+			format.Save(this, stream);
 		}
 		#endregion
 

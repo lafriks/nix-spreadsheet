@@ -128,12 +128,13 @@
     <Compile Include="Comment.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Common\Position.cs" />
     <Compile Include="Common\Range.cs" />
     <Compile Include="Font.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Provider\IFileFormatProvider.cs" />
-    <Compile Include="Provider\XlsProvider.cs" />
+    <Compile Include="Provider\XlsFileFormatProvider.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFF5\ROW.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFF8\BOF.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFFRecord.cs" />
@@ -145,7 +146,6 @@
     <Compile Include="Row.cs" />
     <Compile Include="Sheet.cs" />
     <Compile Include="SpreadSheetDocument.cs" />
-    <Compile Include="SpreadSheetFileFormat.cs" />
     <Compile Include="StringFormating.cs" />
     <Compile Include="Style.cs" />
     <Compile Include="TextDirection.cs" />

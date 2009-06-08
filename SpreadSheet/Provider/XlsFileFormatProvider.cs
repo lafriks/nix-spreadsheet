@@ -28,7 +28,7 @@ using Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8;
 
 namespace Nix.SpreadSheet.Provider
 {
-	public class XlsProvider : IFileFormatProvider
+	public class XlsFileFormatProvider : IFileFormatProvider
 	{
 		private EndianStream activeStream = null;
 		private void Write(BIFFRecord record)

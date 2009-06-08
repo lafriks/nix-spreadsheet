@@ -64,7 +64,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF5
 		public override void Write(EndianStream stream)
 		{
 			this.WriteHeader(stream, 16);
-			stream.WriteUInt16(this.Row.RowIndex);
+			stream.WriteUInt16((ushort)this.Row.RowIndex);
 		}
 
 		/// <summary>

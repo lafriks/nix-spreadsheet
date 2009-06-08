@@ -155,6 +155,11 @@ namespace Nix.SpreadSheet.Common
 			return (Start.IsEmpty() || End.IsEmpty());
 		}
 
+		public override int GetHashCode()
+		{
+			return this.Start.GetHashCode() ^ this.End.GetHashCode();
+		}
+
 		public static bool operator == (Range Left, Range Right)
 		{
 			return Left.Equals(Right);

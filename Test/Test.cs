@@ -36,7 +36,7 @@ namespace Test
             Sheet s = doc.AddSheet();
             s["A1"].Formatting.WrapText = true;
             //s["IV65536"].Value = "MAX";
-            doc.Save(@"test.xls", SpreadSheetFileFormat.XlsBinary);
+            doc.Save(@"test.xls", new Nix.SpreadSheet.Provider.XlsFileFormatProvider());
         }
     }
 }
