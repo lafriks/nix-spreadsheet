@@ -29,7 +29,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 	{
 		protected override ushort OPCODE {
 			get {
-				return 0x231;
+                return 0x0031;
 			}
 		}
 
