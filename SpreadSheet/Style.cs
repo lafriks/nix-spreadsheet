@@ -121,7 +121,7 @@ namespace Nix.SpreadSheet
         #endregion
 
         #region Format
-        private string format = string.Empty;
+        private string format = "General";
 
         public string Format {
             get

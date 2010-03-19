@@ -32,6 +32,8 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 				return 0xE0;
 			}
 		}
+
+        private ColourPalette palette = new ColourPalette();
 		
 		private Style style = null;
 
@@ -208,13 +210,13 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 			// Cell protection and parent style (2)
 			ushort prot_bit = 0; // (2 - 0)
 			if ( this.Style.CellLocked )
-				prot_bit &= 0x01;
+				prot_bit |= 0x01;
 			if ( this.Style.HiddenFormula )
-				prot_bit &= 0x02;
+				prot_bit |= 0x02;
 			if ( ! this.ParentStyleIndex.HasValue )
-				prot_bit &= 0x04;
+				prot_bit |= 0x04;
 			prot_bit = (ushort)(((this.ParentStyleIndex.HasValue ? this.ParentStyleIndex.Value : 0xFFF) << 4)
-			                    & prot_bit); // Parent index (15 - 4)
+			                    | prot_bit); // Parent index (15 - 4)
 			stream.WriteUInt16(prot_bit);
 			// Alignment and text break (1)
 			byte align_bit = this.GetHorizontalAlignment(this.Style.HorizontalAlignment);
@@ -249,8 +251,9 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 			back_bits |= ((uint)this.GetBgPattern() << 26);
 			stream.WriteUInt32(back_bits);
 			// Background color (2);
-			ushort bgcol_bits = (ushort)((ushort)ColorTranslator.ToOle(this.Style.BackgroundPatternColor)
-			                             | (ushort)(ColorTranslator.ToOle(this.Style.BackgroundColor) << 7));
+			ushort bgcol_bits = (ushort)(palette.GetColourIndex(this.Style.BackgroundPatternColor)
+			                             | palette.GetColourIndex(this.Style.BackgroundColor) << 7);
+            //ushort bgcol_bits = 0x20c0;
 			stream.WriteUInt16(bgcol_bits);
 		}
 

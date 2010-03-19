@@ -38,6 +38,8 @@ namespace Nix.SpreadSheet.Provider
 			record.Write(activeStream);
 		}
 
+        
+
 		private List<Font> fontTable = new List<Font>();
 
 		public int FindFontIndex(Font font)
@@ -177,7 +179,7 @@ namespace Nix.SpreadSheet.Provider
 			for (int i = 0; i < styleTable.Count; i++)
 			{
 				if ( styleTable[i].Equals(style) )
-					return i;
+					return i + 16;
 			}
 			return -1;
 		}
@@ -215,41 +217,100 @@ namespace Nix.SpreadSheet.Provider
 			
 			#region Workbook stream
 			MemoryStream wbs = new MemoryStream();
+            EndianStream mainStream = cf.CreateEndianStream(wbs);
 
-			this.activeStream = cf.CreateEndianStream(wbs);
+            this.activeStream = mainStream;
+
+            foreach (Style s in this.styleTable)
+            {
+                ushort format = FindFormatIndex(s.Format);
+                if (!formatsToWrite.Contains(format))
+                {
+                    formatsToWrite.Add(format);
+                }
+            }
 
 			// Workbook globals
 			this.Write(new BOF() { Type = BOF.SheetType.WorkBookGlobals });
+			// WINDOW1
+			this.Write(new WINDOW1());
 			// Font table
-			foreach ( Font font in this.fontTable )
-				this.Write(new FONT() { Font = font });
+            foreach (Font font in this.fontTable)
+                this.Write(new FONT() { Font = font });
 			// Format table
 			foreach ( ushort fi in this.formatsToWrite )
 				this.Write(new FORMAT() { Index = fi, Format = this.formatTable[fi] });
-			// Style table
+            // Default XFs
+            for (int j = 0; j < 15; j++)
+            {
+                XF r = new XF(){Style = this.styleTable[0],
+                                FontIndex = (ushort)FindFontIndex(this.styleTable[0].Font),
+                                FormatIndex = FindFormatIndex(this.styleTable[0].Format)};
+                this.Write(r);
+
+                // Default Cell XF
+                if (j == 14)
+                {
+                    r.ParentStyleIndex = 0;
+                    this.Write(r);
+                }
+            }
+            // Style table
 			foreach ( Style s in this.styleTable )
 			{
 				XF r = new XF() { Style = s, FontIndex = (ushort)FindFontIndex(s.Font), FormatIndex = FindFormatIndex(s.Format) };
 				if ( s is CellStyle )
-					r.ParentStyleIndex = (ushort?)FindStyleIndex(((CellStyle)s).Parent);
+                    r.ParentStyleIndex = (ushort?)FindStyleIndex(((CellStyle)s).Parent);
 				this.Write(r);
 			}
-			this.Write(new EOF());
+
+
+            List<MemoryStream> sheetStreams = new List<MemoryStream>();
+            uint sheetNamesLength = 0;
 
 			// Sheets
 			foreach(Sheet sheet in document)
 			{
+                MemoryStream tmpStream = new MemoryStream();
+                activeStream = cf.CreateEndianStream(tmpStream);
+                sheetStreams.Add(tmpStream);
+                sheetNamesLength += BIFFStringHelper.GetStringByteCount(sheet.Name, false);
+
 				this.Write(new BOF() { Type = BOF.SheetType.WorkSheet});
-				foreach ( Row row in sheet )
+				this.Write(new DIMENSION());
+				/*foreach ( Row row in sheet )
 				{
 					this.Write( new ROW() { Row = row } );
-				}
+				}*/
+				this.Write(new WINDOW2());
 				this.Write(new EOF());
 			}
 
-			cf.Root.AddStream("Workbook", wbs);
-			#endregion
+            uint settingsLength = (uint)(document.SheetCount * 10 // Sheet base data length (without sheet name)
+                                         + sheetNamesLength // Sheet name length in unicode
+                                         + 4); // EOF
+            
+            this.activeStream = mainStream;
+            uint currentPosition = (uint)wbs.Length + settingsLength;
+            int i = 0;
+            // Sheets' headers
+            foreach(Sheet sheet in document)
+            {
+                this.Write(new SHEET() {Name = sheet.Name, Position = currentPosition});
+                currentPosition += (uint)sheetStreams[i].Length;
+                i++;
+            }
+            this.Write(new EOF());
 
+            foreach (MemoryStream str in sheetStreams)
+            {
+                wbs.Write(str.GetBuffer(), 0, (int)str.Length);
+            }
+
+			cf.Root.AddStream("Workbook", wbs);
+
+			#endregion
+/*
 			#region Summary information stream
 			MemoryStream ss = new MemoryStream();
 			this.activeStream = cf.CreateEndianStream(ss);
@@ -260,12 +321,12 @@ namespace Nix.SpreadSheet.Provider
 			MemoryStream dss = new MemoryStream();
 			this.activeStream = cf.CreateEndianStream(dss);
 			cf.Root.AddStream((char)0x05 + "DocumentSummaryInformation", dss);
-			#endregion
+			#endregion*/
 
 			cf.Save(stream);
 			wbs.Close();
-			ss.Close();
-			dss.Close();
+			/*ss.Close();
+			dss.Close();*/
 		}
 
 		#endregion

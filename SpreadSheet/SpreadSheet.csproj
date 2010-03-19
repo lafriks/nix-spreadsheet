@@ -1,7 +1,7 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{90F370AB-586A-473A-BAB1-002A808FB869}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -125,6 +125,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CellVerticalAlignment.cs" />
+    <Compile Include="ColourPalette.cs" />
     <Compile Include="Comment.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -136,7 +137,11 @@
     <Compile Include="Provider\IFileFormatProvider.cs" />
     <Compile Include="Provider\XlsFileFormatProvider.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFF5\ROW.cs" />
+    <Compile Include="Provider\Xls\BIFF\BIFF5\WINDOW1.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFF8\BOF.cs" />
+    <Compile Include="Provider\Xls\BIFF\BIFF5\SHEET.cs" />
+    <Compile Include="Provider\Xls\BIFF\BIFF8\DIMENSION.cs" />
+    <Compile Include="Provider\Xls\BIFF\BIFF8\WINDOW2.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFFRecord.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFFStringHelper.cs" />
     <Compile Include="Provider\Xls\BIFF\EOF.cs" />
@@ -169,8 +174,6 @@
       <ProductName>.NET Framework 3.5</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-    <Folder Include="Common" />
-    <Folder Include="Provider\Xls\BIFF\BIFF5" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
