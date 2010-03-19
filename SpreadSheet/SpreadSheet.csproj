@@ -126,6 +126,8 @@
     </Compile>
     <Compile Include="CellVerticalAlignment.cs" />
     <Compile Include="ColourPalette.cs" />
+    <Compile Include="Column.cs" />
+    <Compile Include="ColumnList.cs" />
     <Compile Include="Comment.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -146,6 +148,7 @@
     <Compile Include="Provider\Xls\BIFF\BIFFStringHelper.cs" />
     <Compile Include="Provider\Xls\BIFF\Cell.cs" />
     <Compile Include="Provider\Xls\BIFF\CellNumber.cs" />
+    <Compile Include="Provider\Xls\BIFF\COLUMN.cs" />
     <Compile Include="Provider\Xls\BIFF\EOF.cs" />
     <Compile Include="Provider\Xls\BIFF\FONT.cs" />
     <Compile Include="Provider\Xls\BIFF\FORMAT.cs" />

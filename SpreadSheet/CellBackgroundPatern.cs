@@ -27,8 +27,8 @@ namespace Nix.SpreadSheet
 	public enum CellBackgroundPattern
 	{
 		None = 0,
-		Fill,
-		HorizontalLines,
-		VerticalLines
+		Fill = 1,
+		HorizontalLines = 5,
+		VerticalLines = 6
 	}
 }

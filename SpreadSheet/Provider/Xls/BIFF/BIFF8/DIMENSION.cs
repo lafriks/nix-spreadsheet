@@ -63,7 +63,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
         /// <summary>
         /// Index to first used column
         /// </summary>
-        public UInt16 FirstCol
+        public ushort FirstCol
         {
             get { return firstCol; }
             set { firstCol = value; }
@@ -72,7 +72,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
         /// <summary>
         /// Index to last used column, increased by 1
         /// </summary>
-        public UInt16 LastCol
+        public ushort LastCol
         {
             get { return lastCol; }
             set { lastCol = value; }

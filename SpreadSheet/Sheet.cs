@@ -35,7 +35,14 @@ namespace Nix.SpreadSheet
         public const int MaxColumns = 256;
 
         private SortedDictionary<int, Row> m_rows = new SortedDictionary<int, Row>();
-
+        
+        private ColumnList columns = new ColumnList();
+        
+        public ColumnList Columns
+        { 
+        	get { return columns; }
+        }
+        
 		/// <summary>
 		/// Gets the owner document.
 		/// </summary>
@@ -45,7 +52,7 @@ namespace Nix.SpreadSheet
 			get { return document; }
 		}
 
-        public uint RowCount
+        public uint LastRow
         {
             
             get
@@ -53,13 +60,82 @@ namespace Nix.SpreadSheet
                 uint result = 0;
                 foreach (int key in m_rows.Keys)
                 {
-                    if (key + 1 > result)
+                    if (key > result)
                     {
-                        result = (uint)key + 1;
+                        result = (uint)key;
                     }
                 }
                 return result;
             }
+        }
+        
+        public uint FirstRow
+        {
+            
+            get
+            {
+            	uint result = m_rows.Count > 0 ? uint.MaxValue : 0;
+                foreach (int key in m_rows.Keys)
+                {
+                    if (key < result)
+                    {
+                        result = (uint)key;
+                    }
+                }
+                return result;
+            }
+        }
+        
+        public uint FirstColumn
+        {
+        	get
+        	{
+        		int result = -1;
+        		
+        		foreach (Row row in m_rows.Values)
+        		{
+        			if (row.FirstCell != -1 && (result == -1 || result > row.FirstCell))
+        			{
+        				result = row.FirstCell;
+        			}
+        		}
+        		
+        		foreach (Column col in columns)
+        		{
+        			if (result == -1 || result > col.ColumnIndex)
+        			{
+        				result = col.ColumnIndex;
+        			}
+        		}
+        		
+        		return result < 0 ? 0 : (uint)result;
+        	}
+        }
+        
+        public uint LastColumn
+        {
+        	get
+        	{
+        		uint result = 0;
+        		
+        		foreach (Row row in m_rows.Values)
+        		{
+        			if (result < row.LastCell)
+        			{
+        				result = row.LastCell;
+        			}
+        		}
+        		
+        		foreach (Column col in columns)
+        		{
+        			if (result < col.ColumnIndex)
+        			{
+        				result = (uint)col.ColumnIndex;
+        			}
+        		}
+        		
+        		return result;
+        	}
         }
 
 		/// <summary>

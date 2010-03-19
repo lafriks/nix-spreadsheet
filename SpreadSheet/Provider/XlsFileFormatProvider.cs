@@ -203,6 +203,17 @@ namespace Nix.SpreadSheet.Provider
 						}
 					}
 				}
+				foreach (Column col in sheet.Columns)
+				{
+					if ( FindStyleIndex(col.Formatting.Parent) == -1 )
+					{
+						this.styleTable.Add(col.Formatting.Parent);
+					}
+					if ( FindStyleIndex(col.Formatting) == -1 )
+					{
+						this.styleTable.Add(col.Formatting);
+					}
+				}
 			}
 		}
 
@@ -277,7 +288,14 @@ namespace Nix.SpreadSheet.Provider
                 sheetNamesLength += BIFFStringHelper.GetStringByteCount(sheet.Name, false);
 
 				this.Write(new BOF() { Type = BOF.SheetType.WorkSheet});
-                this.Write(new DIMENSION() { LastCol = 1, LastRow = sheet.RowCount }); // TODO: get colCount from Columns object
+				
+				foreach (Column col in sheet.Columns)
+				{
+					this.Write(new COLUMN() {Index = (ushort)col.ColumnIndex, Width = (ushort)col.Width, XfIndex = (ushort)FindStyleIndex(col.Formatting)});
+				}
+				
+				this.Write(new DIMENSION() { FirstCol = (ushort)sheet.FirstColumn, FirstRow = (uint)sheet.FirstRow,
+				           					 LastCol = (ushort)(sheet.LastColumn + 1), LastRow = (uint)(sheet.LastRow + 1) });
 				foreach ( Row row in sheet )
 				{
 					this.Write( new ROW() { Row = row } );

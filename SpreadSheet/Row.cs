@@ -44,6 +44,38 @@ namespace Nix.SpreadSheet
                 return this.row;
             }
         }
+        
+        public int FirstCell
+        {
+        	get
+        	{
+        		int result = m_cells.Count == 0 ? -1 : int.MaxValue;
+        		foreach (int idx in m_cells.Keys)
+        		{
+        			if (idx < result)
+        			{
+        				result = idx;
+        			}
+        		}
+        		return result;
+        	}
+        }
+        
+        public uint LastCell
+        {
+        	get
+        	{
+        		uint result = 0;
+        		foreach (int idx in m_cells.Keys)
+        		{
+        			if (idx > result)
+        			{
+        				result = (uint)idx;
+        			}
+        		}
+        		return result;
+        	}
+        }
 
 		public Cell this[int column]
 		{
