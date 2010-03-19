@@ -45,7 +45,7 @@ namespace Nix.SpreadSheet
                     result = 1;
                     break;
                 case KnownColor.Red:
-                    result = 2;
+                    result = 10;
                     break;
                 case KnownColor.Green:
                     result = 3;

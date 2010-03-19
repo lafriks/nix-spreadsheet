@@ -35,6 +35,8 @@ namespace Test
             SpreadSheetDocument doc = new SpreadSheetDocument();
             Sheet s = doc.AddSheet();
             s["A1"].Formatting.WrapText = true;
+            s["A1"].Value = 13;
+            s["A1"].Formatting.BackgroundPatternColor = System.Drawing.Color.Red;
             //s["IV65536"].Value = "MAX";
             doc.Save(@"test.xls", new Nix.SpreadSheet.Provider.XlsFileFormatProvider());
         }

@@ -277,11 +277,25 @@ namespace Nix.SpreadSheet.Provider
                 sheetNamesLength += BIFFStringHelper.GetStringByteCount(sheet.Name, false);
 
 				this.Write(new BOF() { Type = BOF.SheetType.WorkSheet});
-				this.Write(new DIMENSION());
-				/*foreach ( Row row in sheet )
+                this.Write(new DIMENSION() { LastCol = 1, LastRow = sheet.RowCount }); // TODO: get colCount from Columns object
+				foreach ( Row row in sheet )
 				{
 					this.Write( new ROW() { Row = row } );
-				}*/
+				}
+                foreach (Row row in sheet)
+                {
+                    foreach (Cell cell in row)
+                    {
+                        if (cell.Value is int || cell.Value is float || cell.Value is double ||
+                            cell.Value is decimal || cell.Value is long)
+                        {
+                            this.Write(new CellNumber(){ColIndex = (ushort)cell.ColumnIndex,
+                                                        RowIndex = (ushort)cell.RowIndex,
+                                                        XfIndex = (ushort)FindStyleIndex(cell.Formatting),
+                                                        Value = Convert.ToDouble(cell.Value)});
+                        }
+                    }
+                }
 				this.Write(new WINDOW2());
 				this.Write(new EOF());
 			}

@@ -45,6 +45,23 @@ namespace Nix.SpreadSheet
 			get { return document; }
 		}
 
+        public uint RowCount
+        {
+            
+            get
+            {
+                uint result = 0;
+                foreach (int key in m_rows.Keys)
+                {
+                    if (key + 1 > result)
+                    {
+                        result = (uint)key + 1;
+                    }
+                }
+                return result;
+            }
+        }
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Sheet"/> class.
 		/// </summary>
