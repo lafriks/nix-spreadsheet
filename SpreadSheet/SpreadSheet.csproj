@@ -152,6 +152,7 @@
     <Compile Include="Provider\Xls\BIFF\EOF.cs" />
     <Compile Include="Provider\Xls\BIFF\FONT.cs" />
     <Compile Include="Provider\Xls\BIFF\FORMAT.cs" />
+    <Compile Include="Provider\Xls\BIFF\PALETTE.cs" />
     <Compile Include="Provider\Xls\BIFF\XF.cs" />
     <Compile Include="Row.cs" />
     <Compile Include="Sheet.cs" />

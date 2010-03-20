@@ -40,7 +40,7 @@ namespace Test
             s["A1"].Formatting.BackgroundPattern = CellBackgroundPattern.Fill;
             s.Columns[0].Width = 256 * 10;
             s.Columns[3].Formatting.BackgroundPattern = CellBackgroundPattern.Fill;
-            s.Columns[3].Formatting.BackgroundPatternColor = System.Drawing.Color.Red;
+            s.Columns[3].Formatting.BackgroundPatternColor = System.Drawing.Color.Gray;
             //s["IV65536"].Value = "MAX";
             doc.Save(@"test.xls", new Nix.SpreadSheet.Provider.XlsFileFormatProvider());
         }

@@ -33,7 +33,13 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 			}
 		}
 
-        private ColourPalette palette = new ColourPalette();
+        private ColourPalette palette = null;
+        
+        public ColourPalette Palette
+        {
+        	set { palette = value; }
+        }
+        
 		
 		private Style style = null;
 
@@ -251,8 +257,8 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 			back_bits |= ((uint)this.GetBgPattern() << 26);
 			stream.WriteUInt32(back_bits);
 			// Background color (2);
-			ushort bgcol_bits = (ushort)(palette.GetColourIndex(this.Style.BackgroundPatternColor)
-			                             | palette.GetColourIndex(this.Style.BackgroundColor) << 7);
+			ushort bgcol_bits = (ushort)(palette.GetColorIndex(this.Style.BackgroundPatternColor)
+			                             | palette.GetColorIndex(this.Style.BackgroundColor) << 7);
             //ushort bgcol_bits = 0x20c0;
 			stream.WriteUInt16(bgcol_bits);
 		}

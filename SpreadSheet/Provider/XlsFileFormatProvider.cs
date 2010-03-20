@@ -37,8 +37,9 @@ namespace Nix.SpreadSheet.Provider
 				throw new ArgumentNullException("activeStream");
 			record.Write(activeStream);
 		}
-
-        
+		
+		
+        private ColourPalette palette = new ColourPalette();        
 
 		private List<Font> fontTable = new List<Font>();
 
@@ -256,7 +257,8 @@ namespace Nix.SpreadSheet.Provider
             {
                 XF r = new XF(){Style = this.styleTable[0],
                                 FontIndex = (ushort)FindFontIndex(this.styleTable[0].Font),
-                                FormatIndex = FindFormatIndex(this.styleTable[0].Format)};
+                                FormatIndex = FindFormatIndex(this.styleTable[0].Format),
+                                Palette = palette};
                 this.Write(r);
 
                 // Default Cell XF
@@ -269,11 +271,13 @@ namespace Nix.SpreadSheet.Provider
             // Style table
 			foreach ( Style s in this.styleTable )
 			{
-				XF r = new XF() { Style = s, FontIndex = (ushort)FindFontIndex(s.Font), FormatIndex = FindFormatIndex(s.Format) };
+				XF r = new XF() { Style = s, FontIndex = (ushort)FindFontIndex(s.Font), FormatIndex = FindFormatIndex(s.Format), Palette = palette };
 				if ( s is CellStyle )
                     r.ParentStyleIndex = (ushort?)FindStyleIndex(((CellStyle)s).Parent);
 				this.Write(r);
 			}
+			
+			this.Write(new PALETTE() {Palette = palette});
 
 
             List<MemoryStream> sheetStreams = new List<MemoryStream>();
