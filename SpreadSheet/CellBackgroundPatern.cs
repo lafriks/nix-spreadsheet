@@ -22,13 +22,25 @@ using System;
 namespace Nix.SpreadSheet
 {
 	/// <summary>
-	/// Description of CellBackgroundPatern.
+	/// Cell background pattern.
 	/// </summary>
 	public enum CellBackgroundPattern
 	{
+		/// <summary>
+		/// None.
+		/// </summary>
 		None = 0,
+		/// <summary>
+		/// Fill.
+		/// </summary>
 		Fill = 1,
+		/// <summary>
+		/// Horizontal lines.
+		/// </summary>
 		HorizontalLines = 5,
+		/// <summary>
+		/// Vertical lines.
+		/// </summary>
 		VerticalLines = 6
 	}
 }

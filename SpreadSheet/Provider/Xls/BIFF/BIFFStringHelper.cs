@@ -27,7 +27,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 	/// <summary>
 	/// Description of String.
 	/// </summary>
-	public static class BIFFStringHelper
+	internal static class BIFFStringHelper
 	{
 		private static byte GetGRBIT(string text, StringFormating[] formating, bool stringLengthInt)
 		{

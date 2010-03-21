@@ -71,6 +71,9 @@ namespace Nix.SpreadSheet
         #region Formula
         private string formula = string.Empty;
 
+        /// <summary>
+        /// Formula.
+        /// </summary>
         public string Formula
         {
             get

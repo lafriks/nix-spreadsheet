@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Library for writing OLE 2 Compount Document file format.
  * Copyright (C) 2007, Lauris Bukšis-Haberkorns <lauris@nix.lv>
  *
@@ -25,7 +25,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("NIX Software")]
 [assembly: AssemblyProduct("Nix.CompoundFile")]
-[assembly: AssemblyCopyright("Copyright (C) 2007, Lauris Bukšis-Haberkorns")]
+[assembly: AssemblyCopyright("Copyright (C) 2007-2010, Lauris Bukšis-Haberkorns")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 

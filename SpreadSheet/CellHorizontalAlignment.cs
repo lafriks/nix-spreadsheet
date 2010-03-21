@@ -26,13 +26,37 @@ namespace Nix.SpreadSheet
 	/// </summary>
 	public enum CellHorizontalAlignment
 	{
+		/// <summary>
+		/// General.
+		/// </summary>
 		General = 0,
+		/// <summary>
+		/// To the left.
+		/// </summary>
 		Left,
+		/// <summary>
+		/// Centered.
+		/// </summary>
 		Centred,
+		/// <summary>
+		/// To the right.
+		/// </summary>
 		Right,
+		/// <summary>
+		/// Filled.
+		/// </summary>
 		Filled,
+		/// <summary>
+		/// Justified.
+		/// </summary>
 		Justified,
+		/// <summary>
+		/// Centred across selection.
+		/// </summary>
 		CentredAcrossSelection,
+		/// <summary>
+		/// Distributed.
+		/// </summary>
 		Distributed
 	}
 }

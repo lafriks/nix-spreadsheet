@@ -22,7 +22,7 @@ using System;
 namespace Nix.SpreadSheet
 {
     /// <summary>
-    /// Summary description for Cell.
+    /// Cell.
     /// </summary>
     public class Cell : AbstractCell
     {
@@ -31,17 +31,29 @@ namespace Nix.SpreadSheet
         // Column of the value
         private int column;
 
+        /// <summary>
+        /// Creates instance of <see cref="Cell">Cell</see> class.
+        /// </summary>
+        /// <param name="row">Row position</param>
+        /// <param name="col">Column position</param>
         public Cell (int row, int col)
         {
             this.column = col;
             this.row = row;
         }
 
+        /// <summary>
+        /// Creates instance of <see cref="Cell">Cell</see> class.
+        /// </summary>
+        /// <param name="name">Cell name.</param>
         public Cell (string name)
         {
             Utils.ParseCellName(name, out this.row, out this.column);
         }
 
+        /// <summary>
+        /// Cell row index.
+        /// </summary>
         public int RowIndex
         {
             get
@@ -50,6 +62,9 @@ namespace Nix.SpreadSheet
             }
         }
 
+        /// <summary>
+        /// Cell column index.
+        /// </summary>
         public int ColumnIndex
         {
             get
@@ -58,6 +73,9 @@ namespace Nix.SpreadSheet
             }
         }
 
+        /// <summary>
+        /// Cell name.
+        /// </summary>
         public string Name
         {
             get

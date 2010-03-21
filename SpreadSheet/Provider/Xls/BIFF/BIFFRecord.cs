@@ -42,7 +42,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 		/// Writes record header to the specified stream.
 		/// </summary>
 		/// <param name="stream">The stream.</param>
-		/// <param name="nRecLen">The record length.</param>
+		/// <param name="recordLength">The record length.</param>
         protected void WriteHeader (EndianStream stream, ushort recordLength)
         {
 			stream.WriteUInt16(this.OPCODE);

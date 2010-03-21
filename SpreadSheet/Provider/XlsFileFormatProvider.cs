@@ -28,6 +28,9 @@ using Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8;
 
 namespace Nix.SpreadSheet.Provider
 {
+	/// <summary>
+	/// Microsoft Excel binary file format provider.
+	/// </summary>
 	public class XlsFileFormatProvider : IFileFormatProvider
 	{
 		private EndianStream activeStream = null;
@@ -44,7 +47,12 @@ namespace Nix.SpreadSheet.Provider
 
 		private List<string> stringTable = new List<string>();
 
-		public int FindFontIndex(Font font)
+		/// <summary>
+		/// Find font index.
+		/// </summary>
+		/// <param name="font">Font object.</param>
+		/// <returns>Index in font table.</returns>
+		protected int FindFontIndex(Font font)
 		{
 			for (int i = 0; i < fontTable.Count; i++)
 			{
@@ -59,6 +67,10 @@ namespace Nix.SpreadSheet.Provider
 			return -1;
 		}
 		
+		/// <summary>
+		/// Build used font table.
+		/// </summary>
+		/// <param name="document">Spreadsheet document to search used fonts in.</param>
 		protected void BuildFontTable ( SpreadSheetDocument document )
 		{
 			foreach(Sheet sheet in document)
@@ -75,7 +87,12 @@ namespace Nix.SpreadSheet.Provider
 
 		private List<ushort> formatsToWrite = new List<ushort>();
 
-		public ushort FindFormatIndex(string format)
+		/// <summary>
+		/// Find format index.
+		/// </summary>
+		/// <param name="format">Format.</param>
+		/// <returns>Format index in format table.</returns>
+		protected ushort FindFormatIndex(string format)
 		{
 			foreach ( ushort idx in formatTable.Keys )
 				if ( formatTable[idx] == format )
@@ -85,6 +102,10 @@ namespace Nix.SpreadSheet.Provider
 
 		private ushort formatTableSeq = 0;
 
+		/// <summary>
+		/// Build used format table.
+		/// </summary>
+		/// <param name="document">Spreadsheet document to search used formats in.</param>
 		protected void BuildFormatTable ( SpreadSheetDocument document )
 		{
 			// Add default formats
@@ -175,6 +196,11 @@ namespace Nix.SpreadSheet.Provider
 
 		private List<Style> styleTable = new List<Style>();
 
+		/// <summary>
+		/// Find style index.
+		/// </summary>
+		/// <param name="style">Style.</param>
+		/// <returns>Style index in format table.</returns>
 		public int FindStyleIndex(Style style)
 		{
 			for (int i = 0; i < styleTable.Count; i++)
@@ -185,6 +211,10 @@ namespace Nix.SpreadSheet.Provider
 			return -1;
 		}
 
+		/// <summary>
+		/// Build style table.
+		/// </summary>
+		/// <param name="document">Spreadsheet document to search used styles in.</param>
 		protected void BuildStyleTable(SpreadSheetDocument document)
 		{
 			// Find all parent styles
@@ -221,8 +251,8 @@ namespace Nix.SpreadSheet.Provider
 		/// <summary>
 		/// Get value type.
 		/// </summary>
-		/// <param name="value">Value.</param>
-		/// <returns>0 - string; 1 - number</returns>
+		/// <param name="cell">Cell.</param>
+		/// <returns>0 - string; 1 - number.</returns>
 		protected int GetValueType(Cell cell)
 		{
             if (cell.Value is int || cell.Value is float || cell.Value is double ||
@@ -231,12 +261,22 @@ namespace Nix.SpreadSheet.Provider
 			return 0;
 		}
 
+		/// <summary>
+		/// Format cell value.
+		/// </summary>
+		/// <param name="cell">Cell.</param>
+		/// <returns>Formated cell value.</returns>
 		protected string FormatValue(Cell cell)
 		{
 			// TODO: Better value convertation to string
 			return Convert.ToString(cell.Value);
 		}
 
+		/// <summary>
+		/// Build strings table.
+		/// </summary>
+		/// <param name="document">Spreadsheet document to search strings in.</param>
+		/// <returns>Total count of strings in document.</returns>
 		protected uint BuildStringTable(SpreadSheetDocument document)
 		{
 			uint count = 0;
@@ -260,6 +300,11 @@ namespace Nix.SpreadSheet.Provider
 			return count;
 		}
 		
+		/// <summary>
+		/// Find string in table.
+		/// </summary>
+		/// <param name="value">String.</param>
+		/// <returns>Index of string in table.</returns>
 		protected uint FindStringTableIndex(string value)
 		{
 			int idx = stringTable.IndexOf(value);
@@ -269,6 +314,11 @@ namespace Nix.SpreadSheet.Provider
 		}
 
 		#region IFileFormatProvider Members
+		/// <summary>
+		/// Save document to stream.
+		/// </summary>
+		/// <param name="document">Spreadsheet document.</param>
+		/// <param name="stream">Stream to write to.</param>
 		public void Save ( SpreadSheetDocument document, System.IO.Stream stream )
 		{
 			Ole2CompoundFile cf = new Ole2CompoundFile();

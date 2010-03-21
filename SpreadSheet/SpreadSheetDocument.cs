@@ -34,6 +34,10 @@ namespace Nix.SpreadSheet
 		#region Sheets
 		private Dictionary<string, Sheet> sheets = new Dictionary<string,Sheet>();
 
+		/// <summary>
+		/// Add new sheet to document.
+		/// </summary>
+		/// <returns>Added sheet.</returns>
 		public Sheet AddSheet ()
 		{
 			string name = string.Empty;
@@ -47,6 +51,11 @@ namespace Nix.SpreadSheet
 			return this.sheets[name];
 		}
 
+		/// <summary>
+		/// Add new sheet to document.
+		/// </summary>
+		/// <param name="name">Sheet name.</param>
+		/// <returns>Added sheet.</returns>
 		public Sheet AddSheet (string name)
 		{
 			if (this.sheets.ContainsKey(name))
@@ -146,6 +155,9 @@ namespace Nix.SpreadSheet
 		#region Locale
 		private RegionInfo locale = RegionInfo.CurrentRegion;
 
+		/// <summary>
+		/// Document locale.
+		/// </summary>
 		public RegionInfo Locale
 		{
 			get { return locale; }

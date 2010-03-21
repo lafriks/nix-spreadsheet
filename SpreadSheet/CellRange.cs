@@ -28,31 +28,54 @@ namespace Nix.SpreadSheet
 	public class CellRange
 	{
 		private Sheet sheet;
+		/// <summary>
+		/// Sheet.
+		/// </summary>
 		public Sheet Sheet
 		{
 			get { return sheet; }
 		}
 
 		private int firstRow;
+		/// <summary>
+		/// First row in range.
+		/// </summary>
 		public int FirstRow {
 			get { return firstRow; }
 		}
 
 		private int firstColumn;
+		/// <summary>
+		/// First columnt in range.
+		/// </summary>
 		public int FirstColumn {
 			get { return firstColumn; }
 		}
 
 		private int lastRow;
+		/// <summary>
+		/// Last row in range.
+		/// </summary>
 		public int LastRow {
 			get { return lastRow; }
 		}
 
 		private int lastColumn;
+		/// <summary>
+		/// Last column in range.
+		/// </summary>
 		public int LastColumn {
 			get { return lastColumn; }
 		}
 
+		/// <summary>
+		/// Create instance of <see cref="CellRange">CellRange</see> class.
+		/// </summary>
+		/// <param name="sheet">Sheet.</param>
+		/// <param name="firstRow">First row.</param>
+		/// <param name="firstColumn">First column.</param>
+		/// <param name="lastRow">Last row.</param>
+		/// <param name="lastColumn">Last column.</param>
 		public CellRange(Sheet sheet, int firstRow, int firstColumn, int lastRow, int lastColumn)
 		{
 			this.sheet = sheet;
@@ -61,7 +84,13 @@ namespace Nix.SpreadSheet
 			this.lastRow = lastRow;
 			this.lastColumn = lastColumn;
 		}
-		
+
+		/// <summary>
+		/// Draw border around range of cells.
+		/// </summary>
+		/// <param name="borderColor">Border color.</param>
+		/// <param name="borderLineStyle">Border line style.</param>
+		/// <returns>Current range instance.</returns>
 		public CellRange DrawBorder(Color borderColor, BorderLineStyle borderLineStyle)
 		{
 			for (int i = FirstRow; i <= LastRow; i++)
@@ -81,11 +110,24 @@ namespace Nix.SpreadSheet
 			return this;
 		}
 
+		/// <summary>
+		/// Draw table.
+		/// </summary>
+		/// <param name="borderColor">Border color.</param>
+		/// <param name="lineStyle">Line style.</param>
+		/// <returns>Current range instance.</returns>
 		public CellRange DrawTable(Color borderColor, BorderLineStyle lineStyle)
 		{
 			return this.DrawTable(borderColor, lineStyle, lineStyle);
 		}
 
+		/// <summary>
+		/// Draw table.
+		/// </summary>
+		/// <param name="borderColor">Border color.</param>
+		/// <param name="innerLineStyle">Inner line style.</param>
+		/// <param name="outerLineStyle">Outer line style.</param>
+		/// <returns>Current range instance.</returns>
 		public CellRange DrawTable(Color borderColor, BorderLineStyle innerLineStyle, BorderLineStyle outerLineStyle)
 		{
 			for (int r = FirstRow; r <= LastRow; r++)
@@ -113,12 +155,23 @@ namespace Nix.SpreadSheet
 			}
 			return this;
 		}
-		
+
+		/// <summary>
+		/// Set solid background color.
+		/// </summary>
+		/// <param name="color">Color.</param>
+		/// <returns>Current range instance.</returns>
 		public CellRange SetBackground(Color color)
 		{
 			return SetBackground(color, CellBackgroundPattern.Fill);
 		}
 
+		/// <summary>
+		/// Set backround color and pattern.
+		/// </summary>
+		/// <param name="color">Color.</param>
+		/// <param name="pattern">Pattern.</param>
+		/// <returns>Current range instance.</returns>
 		public CellRange SetBackground(Color color, CellBackgroundPattern pattern)
 		{
 			for (int r = FirstRow; r <= LastRow; r++)
@@ -131,7 +184,13 @@ namespace Nix.SpreadSheet
 			}
 			return this;
 		}
-		
+
+		/// <summary>
+		/// Set cell alignment.
+		/// </summary>
+		/// <param name="horizontal">Horizontal alignment.</param>
+		/// <param name="vertical">Verical alignment.</param>
+		/// <returns>Current range instance.</returns>
 		public CellRange SetAlignment(CellHorizontalAlignment horizontal, CellVerticalAlignment vertical)
 		{
 			for (int r = FirstRow; r <= LastRow; r++)

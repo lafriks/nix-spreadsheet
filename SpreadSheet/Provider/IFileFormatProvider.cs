@@ -24,8 +24,16 @@ using System.IO;
 
 namespace Nix.SpreadSheet.Provider
 {
+	/// <summary>
+	/// Spreadsheet file format provider interface.
+	/// </summary>
 	public interface IFileFormatProvider
 	{
+		/// <summary>
+		/// Save document to stream.
+		/// </summary>
+		/// <param name="document">Spreadsheet document.</param>
+		/// <param name="stream">Stream to write to.</param>
 		void Save(SpreadSheetDocument document, Stream stream);
 	}
 }
