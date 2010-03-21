@@ -25,7 +25,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
 	/// <summary>
 	/// LABELSST BIFF record.
 	/// </summary>
-	internal class LABELSST : Cell
+	internal class LABELSST : CellBIFFRecord
 	{
         /// <summary>
         /// LABELSST record OPCODE.

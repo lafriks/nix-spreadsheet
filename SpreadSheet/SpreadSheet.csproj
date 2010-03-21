@@ -148,8 +148,8 @@
     <Compile Include="Provider\Xls\BIFF\BIFF8\WINDOW2.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFFRecord.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFFStringHelper.cs" />
-    <Compile Include="Provider\Xls\BIFF\Cell.cs" />
-    <Compile Include="Provider\Xls\BIFF\CellNumber.cs" />
+    <Compile Include="Provider\Xls\BIFF\CellBIFFRecord.cs" />
+    <Compile Include="Provider\Xls\BIFF\NUMBER.cs" />
     <Compile Include="Provider\Xls\BIFF\COLUMN.cs" />
     <Compile Include="Provider\Xls\BIFF\EOF.cs" />
     <Compile Include="Provider\Xls\BIFF\FONT.cs" />

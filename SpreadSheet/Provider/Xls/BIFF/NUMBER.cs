@@ -24,30 +24,39 @@ using Nix.CompoundFile;
 
 namespace Nix.SpreadSheet.Provider.Xls.BIFF
 {
-    internal abstract class Cell : BIFFRecord
+    internal class NUMBER : CellBIFFRecord
     {
-        private ushort rowIndex;
-
-        public ushort RowIndex
+        /// <summary>
+        /// EOF record OPCODE.
+        /// </summary>
+        protected override ushort OPCODE
         {
-            get { return rowIndex; }
-            set { rowIndex = value; }
+            get
+            {
+                return 0x0203;
+            }
         }
 
-        private ushort colIndex;
+        private double value = 0;
 
-        public ushort ColIndex
+        public double Value
         {
-            get { return colIndex; }
-            set { colIndex = value; }
+            get { return this.value; }
+            set { this.value = value; }
         }
 
-        private ushort xfIndex;
-
-        public ushort XfIndex
+        public override void Write(EndianStream stream)
         {
-            get { return xfIndex; }
-            set { xfIndex = value; }
+            this.WriteHeader(stream, 14);
+            stream.WriteUInt16(RowIndex);
+            stream.WriteUInt16(ColIndex);
+            stream.WriteUInt16(XfIndex);
+            stream.WriteDoubleIEEE(Value);
+        }
+
+        public override void Read(EndianStream stream)
+        {
+			throw new NotImplementedException();
         }
     }
 }

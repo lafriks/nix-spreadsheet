@@ -43,6 +43,8 @@ namespace Test
             s["B4"].Value = "TestXX";
             s["B5"].Value = "Test";
             s["B6"].Value = "TestXX";
+            s["B2"].Formatting.LeftBorderLineStyle = BorderLineStyle.Thin;
+            s["B2"].Formatting.LeftBorderLineColor = System.Drawing.Color.Black;
             s.Columns[0].Width = 256 * 10;
             s.Columns[3].Formatting.BackgroundPattern = CellBackgroundPattern.Fill;
             s.Columns[3].Formatting.BackgroundPatternColor = System.Drawing.Color.Gray;

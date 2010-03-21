@@ -361,7 +361,7 @@ namespace Nix.SpreadSheet.Provider
                     	switch ( this.GetValueType(cell) )
                     	{
 	                    	case 1:
-	                            this.Write(new CellNumber(){ColIndex = (ushort)cell.ColumnIndex,
+	                            this.Write(new NUMBER(){ColIndex = (ushort)cell.ColumnIndex,
 	                                                        RowIndex = (ushort)cell.RowIndex,
 	                                                        XfIndex = (ushort)FindStyleIndex(cell.Formatting),
 	                                                        Value = Convert.ToDouble(cell.Value)});
