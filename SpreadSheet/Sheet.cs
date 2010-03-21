@@ -201,6 +201,41 @@ namespace Nix.SpreadSheet
             	return this[r, c];
             }
         }
+        
+        public CellRange GetCellRange(string range)
+        {
+        	int fr, fc, lr, lc, t;
+        	string[] rng = range.Split(':');
+        	if ( rng.GetLength(0) == 1 )
+        	{
+        		Utils.ParseCellName(rng[0], out fr, out fc);
+        		lr = fr;
+        		lc = fc;
+        	}
+        	else
+        	{
+        		Utils.ParseCellName(rng[0], out fr, out fc);
+        		Utils.ParseCellName(rng[1], out lr, out lc);
+        	}
+        	if ( fr > lr )
+        	{
+        		t = lr;
+        		lr = fr;
+        		fr = t;
+        	}
+        	if ( fc > lc )
+        	{
+        		t = lc;
+        		lc = fc;
+        		fc = t;
+        	}
+        	return GetCellRange(fr, fc, lr, lc);
+        }
+
+        public CellRange GetCellRange(int firstRow, int firstColumn, int lastRow, int lastColumn)
+        {
+        	return new CellRange(this, firstRow, firstColumn, lastRow, lastColumn);
+        }
 
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
 		{

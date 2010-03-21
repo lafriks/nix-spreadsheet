@@ -43,7 +43,10 @@ namespace Test
             s["B4"].Value = "TestXX";
             s["B5"].Value = "Test";
             s["B6"].Value = "TestXX";
-            s["B2"].Formatting.LeftBorderLineStyle = BorderLineStyle.Thin;
+            s.GetCellRange("B2:E6").DrawTable(System.Drawing.Color.Black, BorderLineStyle.Thin, BorderLineStyle.Medium);
+            s.GetCellRange("B2:B6").SetBackground(System.Drawing.Color.Gray)
+            					   .DrawBorder(System.Drawing.Color.Black, BorderLineStyle.Medium)
+            					   .SetAlignment(CellHorizontalAlignment.Centred, CellVerticalAlignment.Centred);
             s["B2"].Formatting.LeftBorderLineColor = System.Drawing.Color.Black;
             s.Columns[0].Width = 256 * 10;
             s.Columns[3].Formatting.BackgroundPattern = CellBackgroundPattern.Fill;

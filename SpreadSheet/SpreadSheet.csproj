@@ -121,6 +121,7 @@
     </Compile>
     <Compile Include="CellBackgroundPatern.cs" />
     <Compile Include="CellHorizontalAlignment.cs" />
+    <Compile Include="CellRange.cs" />
     <Compile Include="CellStyle.cs">
       <SubType>Code</SubType>
     </Compile>
