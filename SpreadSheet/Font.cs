@@ -22,18 +22,36 @@ using System.Drawing;
 
 namespace Nix.SpreadSheet
 {
+	/// <summary>
+	/// Font.
+	/// </summary>
 	public class Font : IEquatable<Font>, ICloneable
 	{
+		/// <summary>
+		/// Normal weight constant.
+		/// </summary>
         public const int NormalWeight = 400;
 
+        /// <summary>
+        /// Bold weight constant.
+        /// </summary>
         public const int BoldWeight = 700;
 
+        /// <summary>
+        /// Maximal weight.
+        /// </summary>
         public const int MaxWeight = 1000;
 
+        /// <summary>
+        /// Minimal weight.
+        /// </summary>
         public const int MinWeight = 100;
 
         #region Default and equals method
         private static Font def = new Font();
+        /// <summary>
+        /// Default font instance.
+        /// </summary>
         public static Font Default
         {
             get
@@ -46,6 +64,11 @@ namespace Nix.SpreadSheet
             }
         }
 
+        /// <summary>
+        /// Compare to font instances for equality.
+        /// </summary>
+        /// <param name="other">Font.</param>
+        /// <returns></returns>
         public bool Equals(Font other)
         {
             return ! (this.color != other.color || this.italic != other.italic
@@ -75,6 +98,9 @@ namespace Nix.SpreadSheet
         #region Color
         private Color color = Color.Black;
 
+        /// <summary>
+        /// Font color.
+        /// </summary>
         public Color Color
         {
             get

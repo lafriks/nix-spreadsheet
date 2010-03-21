@@ -33,9 +33,9 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 			}
 		}
 
-        private ColourPalette palette = null;
+        private ColorPalette palette = null;
         
-        public ColourPalette Palette
+        public ColorPalette Palette
         {
         	set { palette = value; }
         }

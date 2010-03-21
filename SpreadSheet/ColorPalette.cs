@@ -26,7 +26,7 @@ namespace Nix.SpreadSheet
     /// <summary>
     /// Summary description for Cell.
     /// </summary>
-    public class ColourPalette : IEnumerable<uint>
+    public class ColorPalette : IEnumerable<uint>
     {
 
         private SortedDictionary<ushort, uint> m_colors = new SortedDictionary<ushort, uint>();

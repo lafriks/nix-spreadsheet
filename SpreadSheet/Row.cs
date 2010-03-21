@@ -32,11 +32,18 @@ namespace Nix.SpreadSheet
 
         private SortedDictionary<int, Cell> m_cells = new SortedDictionary<int, Cell>();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Row"/> class.
+        /// </summary>
+        /// <param name="row">Row index.</param>
 		public Row(int row)
 		{
 			this.row = row;
 		}
 
+		/// <summary>
+		/// Row index.
+		/// </summary>
         public int RowIndex
         {
             get
@@ -44,12 +51,15 @@ namespace Nix.SpreadSheet
                 return this.row;
             }
         }
-        
+
+        /// <summary>
+        /// First used cell in row.
+        /// </summary>
         public int FirstCell
         {
         	get
         	{
-        		int result = m_cells.Count == 0 ? -1 : int.MaxValue;
+        		int result = (m_cells.Count == 0 ? -1 : int.MaxValue);
         		foreach (int idx in m_cells.Keys)
         		{
         			if (idx < result)
@@ -60,7 +70,10 @@ namespace Nix.SpreadSheet
         		return result;
         	}
         }
-        
+
+        /// <summary>
+        /// Last used cell in row
+        /// </summary>
         public uint LastCell
         {
         	get
@@ -77,6 +90,9 @@ namespace Nix.SpreadSheet
         	}
         }
 
+        /// <summary>
+        /// Get cell by column index in current row.
+        /// </summary>
 		public Cell this[int column]
 		{
 			get
@@ -93,7 +109,7 @@ namespace Nix.SpreadSheet
                 }
 			}
 		}
-		
+
 		public IEnumerator<Cell> GetEnumerator()
 		{
 			return this.m_cells.Values.GetEnumerator();

@@ -31,13 +31,22 @@ namespace Nix.SpreadSheet
 	{
 		private SpreadSheetDocument document;
 
+		/// <summary>
+		/// Maximal row count.
+		/// </summary>
 		public const int MaxRows = 65536;
+		/// <summary>
+		/// Maximal column count.
+		/// </summary>
         public const int MaxColumns = 256;
 
         private SortedDictionary<int, Row> m_rows = new SortedDictionary<int, Row>();
         
-        private ColumnList columns = new ColumnList();
-        
+        private ColumnList columns;
+
+        /// <summary>
+        /// Sheet columns.
+        /// </summary>
         public ColumnList Columns
         { 
         	get { return columns; }
@@ -52,6 +61,9 @@ namespace Nix.SpreadSheet
 			get { return document; }
 		}
 
+		/// <summary>
+		/// Last used row index.
+		/// </summary>
         public uint LastRow
         {
             
@@ -68,7 +80,10 @@ namespace Nix.SpreadSheet
                 return result;
             }
         }
-        
+
+        /// <summary>
+        /// First used row index.
+        /// </summary>
         public uint FirstRow
         {
             
@@ -85,7 +100,10 @@ namespace Nix.SpreadSheet
                 return result;
             }
         }
-        
+
+        /// <summary>
+        /// First used column index.
+        /// </summary>
         public uint FirstColumn
         {
         	get
@@ -111,7 +129,10 @@ namespace Nix.SpreadSheet
         		return result < 0 ? 0 : (uint)result;
         	}
         }
-        
+
+        /// <summary>
+        /// Last used column.
+        /// </summary>
         public uint LastColumn
         {
         	get
@@ -147,6 +168,7 @@ namespace Nix.SpreadSheet
 		{
 			this.document = document;
 			this.name = name;
+			this.columns = new ColumnList(this);
 		}
 
 		private string name = "Sheet";
@@ -165,6 +187,9 @@ namespace Nix.SpreadSheet
 			}
 		}
 
+		/// <summary>
+		/// Get row.
+		/// </summary>
 		public Row this[int row]
 		{
 			get
@@ -183,6 +208,9 @@ namespace Nix.SpreadSheet
 			}
 		}
 
+		/// <summary>
+		/// Get cell by row and column index.
+		/// </summary>
         public Cell this[int row, int column]
         {
             get
@@ -191,6 +219,9 @@ namespace Nix.SpreadSheet
             }
         }
 
+        /// <summary>
+        /// Get cell by name.
+        /// </summary>
         public Cell this[string name]
         {
             get
@@ -201,7 +232,11 @@ namespace Nix.SpreadSheet
             	return this[r, c];
             }
         }
-        
+        /// <summary>
+        /// Get cell range.
+        /// </summary>
+        /// <param name="range">Range in format (ex. A1:B3)</param>
+        /// <returns>Cell range.</returns>
         public CellRange GetCellRange(string range)
         {
         	int fr, fc, lr, lc, t;
@@ -232,6 +267,14 @@ namespace Nix.SpreadSheet
         	return GetCellRange(fr, fc, lr, lc);
         }
 
+        /// <summary>
+        /// Get cell range.
+        /// </summary>
+        /// <param name="firstRow">First row.</param>
+        /// <param name="firstColumn">First column.</param>
+        /// <param name="lastRow">Last row.</param>
+        /// <param name="lastColumn">Last column.</param>
+        /// <returns></returns>
         public CellRange GetCellRange(int firstRow, int firstColumn, int lastRow, int lastColumn)
         {
         	return new CellRange(this, firstRow, firstColumn, lastRow, lastColumn);

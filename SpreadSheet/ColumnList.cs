@@ -29,7 +29,13 @@ namespace Nix.SpreadSheet
 	/// </summary>
 	public class ColumnList : IEnumerable<Column>
 	{
-	
+		private Sheet sheet;
+		
+		public ColumnList(Sheet sheet)
+		{
+			this.sheet = sheet;
+		}
+
 		private SortedDictionary<int, Column> m_columns = new SortedDictionary<int, Column>();
 		
 		public Column this[int col]
@@ -42,7 +48,7 @@ namespace Nix.SpreadSheet
                 	return this.m_columns[col];
                 else
                 {
-                	Column nr = new Column(col);
+                	Column nr = new Column(sheet, col);
                 	this.m_columns.Add(col, nr);
                 	return nr;
                 }

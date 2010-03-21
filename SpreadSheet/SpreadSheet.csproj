@@ -129,7 +129,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CellVerticalAlignment.cs" />
-    <Compile Include="ColourPalette.cs" />
+    <Compile Include="ColorPalette.cs" />
     <Compile Include="Column.cs" />
     <Compile Include="ColumnList.cs" />
     <Compile Include="Comment.cs">

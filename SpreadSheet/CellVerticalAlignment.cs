@@ -26,10 +26,25 @@ namespace Nix.SpreadSheet
 	/// </summary>
 	public enum CellVerticalAlignment
 	{
+		/// <summary>
+		/// Top.
+		/// </summary>
 		Top = 0,
+		/// <summary>
+		/// Centred.
+		/// </summary>
 		Centred,
+		/// <summary>
+		/// Bottom.
+		/// </summary>
 		Bottom,
+		/// <summary>
+		/// Justified.
+		/// </summary>
 		Justified,
+		/// <summary>
+		/// Distributed.
+		/// </summary>
 		Distributed,
 	}
 }

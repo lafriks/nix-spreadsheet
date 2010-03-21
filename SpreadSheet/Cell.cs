@@ -32,7 +32,7 @@ namespace Nix.SpreadSheet
         private int column;
 
         /// <summary>
-        /// Creates instance of <see cref="Cell">Cell</see> class.
+        /// Initializes a new instance of the <see cref="Cell"/> class.
         /// </summary>
         /// <param name="row">Row position</param>
         /// <param name="col">Column position</param>
@@ -43,7 +43,7 @@ namespace Nix.SpreadSheet
         }
 
         /// <summary>
-        /// Creates instance of <see cref="Cell">Cell</see> class.
+        /// Initializes a new instance of the <see cref="Cell"/> class.
         /// </summary>
         /// <param name="name">Cell name.</param>
         public Cell (string name)

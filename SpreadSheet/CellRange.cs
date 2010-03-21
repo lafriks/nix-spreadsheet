@@ -69,7 +69,7 @@ namespace Nix.SpreadSheet
 		}
 
 		/// <summary>
-		/// Create instance of <see cref="CellRange">CellRange</see> class.
+		/// Initializes a new instance of the <see cref="CellRange"/> class.
 		/// </summary>
 		/// <param name="sheet">Sheet.</param>
 		/// <param name="firstRow">First row.</param>

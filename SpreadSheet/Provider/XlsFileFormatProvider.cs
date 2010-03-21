@@ -41,7 +41,7 @@ namespace Nix.SpreadSheet.Provider
 			record.Write(activeStream);
 		}
 
-        private ColourPalette palette = new ColourPalette();        
+        private ColorPalette palette = new ColorPalette();        
 
 		private List<Font> fontTable = new List<Font>();
 
