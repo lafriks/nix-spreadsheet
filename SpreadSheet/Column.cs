@@ -60,7 +60,7 @@ namespace Nix.SpreadSheet
             }
         }
         
-        private int width = 256*10;
+        private int width = 2560;
         
         public int Width
         {
