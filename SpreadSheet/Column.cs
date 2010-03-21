@@ -26,7 +26,6 @@ namespace Nix.SpreadSheet
     /// </summary>
     public class Column
     {
-
         // Column of the value
         private int columnIndex;
 
@@ -59,9 +58,9 @@ namespace Nix.SpreadSheet
                 this.formatting = value;
             }
         }
-        
+
         private int width = 2560;
-        
+
         public int Width
         {
             get { return this.width; }
