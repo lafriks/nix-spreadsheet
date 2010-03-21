@@ -143,6 +143,8 @@
     <Compile Include="Provider\Xls\BIFF\BIFF8\BOF.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFF5\SHEET.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFF8\DIMENSION.cs" />
+    <Compile Include="Provider\Xls\BIFF\BIFF8\LABELSST.cs" />
+    <Compile Include="Provider\Xls\BIFF\BIFF8\SST.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFF8\WINDOW2.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFFRecord.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFFStringHelper.cs" />

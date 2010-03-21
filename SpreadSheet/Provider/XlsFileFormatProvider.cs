@@ -37,11 +37,12 @@ namespace Nix.SpreadSheet.Provider
 				throw new ArgumentNullException("activeStream");
 			record.Write(activeStream);
 		}
-		
-		
+
         private ColourPalette palette = new ColourPalette();        
 
 		private List<Font> fontTable = new List<Font>();
+
+		private List<string> stringTable = new List<string>();
 
 		public int FindFontIndex(Font font)
 		{
@@ -171,7 +172,6 @@ namespace Nix.SpreadSheet.Provider
 				}
 			}
 		}
-		
 
 		private List<Style> styleTable = new List<Style>();
 
@@ -218,6 +218,56 @@ namespace Nix.SpreadSheet.Provider
 			}
 		}
 
+		/// <summary>
+		/// Get value type.
+		/// </summary>
+		/// <param name="value">Value.</param>
+		/// <returns>0 - string; 1 - number</returns>
+		protected int GetValueType(Cell cell)
+		{
+            if (cell.Value is int || cell.Value is float || cell.Value is double ||
+                	cell.Value is decimal || cell.Value is long || cell.Value is short)
+            	return 1;
+			return 0;
+		}
+
+		protected string FormatValue(Cell cell)
+		{
+			// TODO: Better value convertation to string
+			return Convert.ToString(cell.Value);
+		}
+
+		protected uint BuildStringTable(SpreadSheetDocument document)
+		{
+			uint count = 0;
+			// Build string table
+			foreach ( Sheet sheet in document )
+			{
+				foreach ( Row row in sheet )
+				{
+					foreach ( Cell cell in row )
+					{
+						if ( this.GetValueType(cell) == 0 )
+						{
+							count++;
+							string val = this.FormatValue(cell);
+							if ( stringTable.IndexOf(val) == -1 )
+								stringTable.Add(val);
+						}
+					}
+				}
+			}
+			return count;
+		}
+		
+		protected uint FindStringTableIndex(string value)
+		{
+			int idx = stringTable.IndexOf(value);
+			if ( idx == -1 )
+				throw new ArgumentOutOfRangeException("value");
+			return (uint)idx;
+		}
+
 		#region IFileFormatProvider Members
 		public void Save ( SpreadSheetDocument document, System.IO.Stream stream )
 		{
@@ -226,6 +276,7 @@ namespace Nix.SpreadSheet.Provider
 			this.BuildFontTable(document);
 			this.BuildFormatTable(document);
 			this.BuildStyleTable(document);
+			uint totalStringCount = this.BuildStringTable(document);
 			
 			#region Workbook stream
 			MemoryStream wbs = new MemoryStream();
@@ -279,7 +330,6 @@ namespace Nix.SpreadSheet.Provider
 			
 			this.Write(new PALETTE() {Palette = palette});
 
-
             List<MemoryStream> sheetStreams = new List<MemoryStream>();
             uint sheetNamesLength = 0;
 
@@ -308,13 +358,20 @@ namespace Nix.SpreadSheet.Provider
                 {
                     foreach (Cell cell in row)
                     {
-                        if (cell.Value is int || cell.Value is float || cell.Value is double ||
-                            cell.Value is decimal || cell.Value is long)
-                        {
-                            this.Write(new CellNumber(){ColIndex = (ushort)cell.ColumnIndex,
-                                                        RowIndex = (ushort)cell.RowIndex,
-                                                        XfIndex = (ushort)FindStyleIndex(cell.Formatting),
-                                                        Value = Convert.ToDouble(cell.Value)});
+                    	switch ( this.GetValueType(cell) )
+                    	{
+	                    	case 1:
+	                            this.Write(new CellNumber(){ColIndex = (ushort)cell.ColumnIndex,
+	                                                        RowIndex = (ushort)cell.RowIndex,
+	                                                        XfIndex = (ushort)FindStyleIndex(cell.Formatting),
+	                                                        Value = Convert.ToDouble(cell.Value)});
+                    			break;
+                    		default:
+	                            this.Write(new LABELSST(){ColIndex = (ushort)cell.ColumnIndex,
+	                                                        RowIndex = (ushort)cell.RowIndex,
+	                                                        XfIndex = (ushort)FindStyleIndex(cell.Formatting),
+	                                                        IndexToSST = FindStringTableIndex(FormatValue(cell))});
+                    			break;
                         }
                     }
                 }
@@ -325,9 +382,18 @@ namespace Nix.SpreadSheet.Provider
             uint settingsLength = (uint)(document.SheetCount * 10 // Sheet base data length (without sheet name)
                                          + sheetNamesLength // Sheet name length in unicode
                                          + 4); // EOF
-            
+			
+			// Calculate SST length
+			uint sstLength = 0;
+			if ( this.stringTable.Count > 0 )
+			{
+				sstLength = 12;
+				foreach (string str in this.stringTable)
+					sstLength += BIFFStringHelper.GetStringByteCount(str, true);
+			}
+
             this.activeStream = mainStream;
-            uint currentPosition = (uint)wbs.Length + settingsLength;
+            uint currentPosition = (uint)wbs.Length + settingsLength + sstLength;
             int i = 0;
             // Sheets' headers
             foreach(Sheet sheet in document)
@@ -336,6 +402,8 @@ namespace Nix.SpreadSheet.Provider
                 currentPosition += (uint)sheetStreams[i].Length;
                 i++;
             }
+            if ( stringTable.Count > 0 )
+            	this.Write(new SST() { TotalCount = totalStringCount, StringTable = stringTable });
             this.Write(new EOF());
 
             foreach (MemoryStream str in sheetStreams)

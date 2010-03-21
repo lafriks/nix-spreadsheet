@@ -16,47 +16,42 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Nix.CompoundFile;
+using Nix.SpreadSheet.Provider.Xls.BIFF;
 
-namespace Nix.SpreadSheet.Provider.Xls.BIFF
+namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
 {
-    internal class CellNumber : Cell
-    {
+	/// <summary>
+	/// LABELSST BIFF record.
+	/// </summary>
+	internal class LABELSST : Cell
+	{
         /// <summary>
-        /// EOF record OPCODE.
+        /// LABELSST record OPCODE.
         /// </summary>
         protected override ushort OPCODE
         {
             get
             {
-                return 0x0203;
+                return 0x00FD;
             }
         }
 
-        private double value = 0;
-
-        public double Value
-        {
-            get { return this.value; }
-            set { this.value = value; }
-        }
+        public uint IndexToSST { get; set; }
 
         public override void Write(EndianStream stream)
         {
-            this.WriteHeader(stream, 14);
+            this.WriteHeader(stream, 10);
             stream.WriteUInt16(RowIndex);
             stream.WriteUInt16(ColIndex);
             stream.WriteUInt16(XfIndex);
-            stream.WriteDoubleIEEE(Value);
+            stream.WriteUInt32(IndexToSST);
         }
 
         public override void Read(EndianStream stream)
         {
-			throw new NotImplementedException();
+        	throw new NotImplementedException();
         }
-    }
+	}
 }

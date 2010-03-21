@@ -38,6 +38,11 @@ namespace Test
             s["A1"].Value = 13;
             s["A1"].Formatting.BackgroundPatternColor = System.Drawing.Color.Red;
             s["A1"].Formatting.BackgroundPattern = CellBackgroundPattern.Fill;
+            s["B2"].Value = "Test";
+            s["B3"].Value = "TestX";
+            s["B4"].Value = "TestXX";
+            s["B5"].Value = "Test";
+            s["B6"].Value = "TestXX";
             s.Columns[0].Width = 256 * 10;
             s.Columns[3].Formatting.BackgroundPattern = CellBackgroundPattern.Fill;
             s.Columns[3].Formatting.BackgroundPatternColor = System.Drawing.Color.Gray;
