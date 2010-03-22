@@ -21,6 +21,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Data;
+using System.Drawing;
 
 namespace Nix.SpreadSheet
 {
@@ -289,5 +291,144 @@ namespace Nix.SpreadSheet
 		{
 			return this.m_rows.Values.GetEnumerator();
 		}
+
+		#region DataTable helper
+		/// <summary>
+		/// Insert DataTable view into sheet starting at specified cell.
+		/// </summary>
+		/// <param name="firstCell">Cell name.</param>
+		/// <param name="dataView">Data view to get data from.</param>
+		public void InsertTable(string firstCell, DataView dataView)
+		{
+			InsertTable(firstCell, dataView, null);
+		}
+
+		/// <summary>
+		/// Insert DataTable view into sheet starting at specified cell.
+		/// </summary>
+		/// <param name="firstCell">Cell name.</param>
+		/// <param name="dataView">Data view to get data from.</param>
+		/// <param name="columnHeaders">Column header dictionary, where key is columnName and value is header text.</param>
+		public void InsertTable(string firstCell, DataView dataView, Dictionary<string, string> columnHeaders)
+		{
+			InsertTable(firstCell, dataView, columnHeaders, true);
+		}
+
+		/// <summary>
+		/// Insert DataTable view into sheet starting at specified cell.
+		/// </summary>
+		/// <param name="firstCell">Cell name.</param>
+		/// <param name="dataView">Data view to get data from.</param>
+		/// <param name="columnHeaders">Column header dictionary, where key is columnName and value is header text.</param>
+		/// <param name="showHeader">Show table header.</param>
+		public void InsertTable(string firstCell, DataView dataView, Dictionary<string, string> columnHeaders, bool showHeader)
+		{
+			InsertTable(firstCell, dataView, columnHeaders, showHeader, true);
+		}
+
+		/// <summary>
+		/// Insert DataTable view into sheet starting at specified cell.
+		/// </summary>
+		/// <param name="firstCell">Cell name.</param>
+		/// <param name="dataView">Data view to get data from.</param>
+		/// <param name="columnHeaders">Column header dictionary, where key is columnName and value is header text.</param>
+		/// <param name="showHeader">Show table header.</param>
+		/// <param name="formatTable">Format table with borders.</param>
+		public void InsertTable(string firstCell, DataView dataView, Dictionary<string, string> columnHeaders, bool showHeader, bool formatTable)
+		{
+			int fc, fr;
+			Utils.ParseCellName(firstCell, out fr, out fc);
+			InsertTable(fr, fc, dataView, columnHeaders, showHeader, formatTable);
+		}
+
+		/// <summary>
+		/// Insert DataTable view into sheet starting at specified cell.
+		/// </summary>
+		/// <param name="firstRow">First row index.</param>
+		/// <param name="firstColumn">First column index.</param>
+		/// <param name="dataView">Data view to get data from.</param>
+		public void InsertTable(int firstRow, int firstColumn, DataView dataView)
+		{
+			InsertTable(firstRow, firstColumn, dataView, null);
+		}
+
+		/// <summary>
+		/// Insert DataTable view into sheet starting at specified cell.
+		/// </summary>
+		/// <param name="firstRow">First row index.</param>
+		/// <param name="firstColumn">First column index.</param>
+		/// <param name="dataView">Data view to get data from.</param>
+		/// <param name="columnHeaders">Column header dictionary, where key is columnName and value is header text.</param>
+		public void InsertTable(int firstRow, int firstColumn, DataView dataView, Dictionary<string, string> columnHeaders)
+		{
+			InsertTable(firstRow, firstColumn, dataView, columnHeaders, true);
+		}
+
+		/// <summary>
+		/// Insert DataTable view into sheet starting at specified cell.
+		/// </summary>
+		/// <param name="firstRow">First row index.</param>
+		/// <param name="firstColumn">First column index.</param>
+		/// <param name="dataView">Data view to get data from.</param>
+		/// <param name="columnHeaders">Column header dictionary, where key is columnName and value is header text.</param>
+		/// <param name="showHeader">Show table header.</param>
+		public void InsertTable(int firstRow, int firstColumn, DataView dataView, Dictionary<string, string> columnHeaders, bool showHeader)
+		{
+			InsertTable(firstRow, firstColumn, dataView, columnHeaders, showHeader, true);
+		}
+
+		/// <summary>
+		/// Insert DataTable view into sheet starting at specified cell.
+		/// </summary>
+		/// <param name="firstRow">First row index.</param>
+		/// <param name="firstColumn">First column index.</param>
+		/// <param name="dataView">Data view to get data from.</param>
+		/// <param name="columnHeaders">Column header dictionary, where key is columnName and value is header text.</param>
+		/// <param name="showHeader">Show table header.</param>
+		/// <param name="formatTable">Format table with borders.</param>
+		public void InsertTable(int firstRow, int firstColumn, DataView dataView, Dictionary<string, string> columnHeaders, bool showHeader, bool formatTable)
+		{
+			if (columnHeaders == null)
+			{
+				foreach (DataColumn col in dataView.Table.Columns)
+				{
+					columnHeaders.Add(col.ColumnName, col.ColumnName);
+				}
+			}
+
+			int c = 0;
+			if (showHeader)
+			{
+				foreach (string columnName in columnHeaders.Keys)
+				{
+					this[firstRow, c].Value = columnHeaders[columnName];
+					c++;
+				}
+			}
+
+			for (int r = 0; r < dataView.Count; r++)
+			{
+				c = 0;
+				foreach (string columnName in columnHeaders.Keys)
+				{
+					this[r + firstRow + (showHeader ? 1 : 0), c + firstColumn].Value = dataView[r][columnName];
+					c++;
+				}
+			}
+
+			if (formatTable)
+			{
+				this.GetCellRange(firstRow, firstColumn, firstRow + dataView.Count + (showHeader ? 1 : 0), firstColumn + columnHeaders.Count)
+							.DrawTable(Color.Black, BorderLineStyle.Thin, BorderLineStyle.Medium);
+				if (showHeader)
+				{
+					this.GetCellRange(firstRow, firstColumn, firstRow, firstColumn + columnHeaders.Count)
+							.DrawBorder(Color.Black, BorderLineStyle.Medium)
+							.SetAlignment(CellHorizontalAlignment.Centred, CellVerticalAlignment.Centred)
+							.SetBackground(Color.Gray);
+				}
+			}
+		}
+		#endregion
 	}
 }
