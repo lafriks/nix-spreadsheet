@@ -77,7 +77,6 @@ namespace Test
 			for (int i = 0; i < 4000; i++)
 			{
 				dt.Rows.Add(new object[] { i,
-									"Col1_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString(),
 									"Col2_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString(),
 									"Col3_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString(),
 									"Col4_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString(),
@@ -87,7 +86,8 @@ namespace Test
 									"Col8_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString(),
 									"Col9_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString(),
 									"Col10_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString(),
-									"Col11_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString()
+									"Col11_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString(),
+									"Col12_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString()
 							});
 			}
 

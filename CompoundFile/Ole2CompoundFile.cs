@@ -230,6 +230,8 @@ namespace Nix.CompoundFile
 
             // Allocate Short stream
             int ShortStreamStart = this.SAT.Allocate(ShortStreamSize);
+			if (ShortStreamStart == -1)
+				ShortStreamStart = -2;
 
             // Allocate long streams
             this.AllocateLongStreams();

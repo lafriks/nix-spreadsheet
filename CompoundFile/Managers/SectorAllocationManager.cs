@@ -85,7 +85,10 @@ namespace Nix.CompoundFile.Managers
 
         public int Allocate(uint size, int val)
         {
-            this.sync = false;
+			// If size is zero, do not allocate any sectors.
+			if (size == 0)
+				return -1;
+			this.sync = false;
             // Allocate first record
             int first = this.FindFirstFree();
             int current = first;
@@ -132,15 +135,7 @@ namespace Nix.CompoundFile.Managers
             int steamSize = (int)stream.Length;
             while ((start > -1 || start == -3 || start == -4) && start < this.Sectors.Count)
             {
-                //byte[] nd = new byte[this.SectorSize];
-                ISector sector = new SectorStream(stream, offset, this.SectorSize, def);
-                // Copy one sector data
-                //for (int i = 0; i < this.SectorSize; i++)
-                //    if (i + offset < steamSize)
-                //        nd[i] = data[i + offset];
-                //    else
-                //        nd[i] = def;
-                this.SectorsData[start] = sector;
+                this.SectorsData[start] = new SectorStream(stream, offset, this.SectorSize, def);
                 offset += this.SectorSize;
                 // Go to next sector
 				start = ((int)this.Sectors[start] == -3 || (int)this.Sectors[start] == -4 ? start + 1 : (int)this.Sectors[start]);
