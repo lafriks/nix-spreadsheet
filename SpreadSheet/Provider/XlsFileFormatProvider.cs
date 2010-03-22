@@ -314,6 +314,43 @@ namespace Nix.SpreadSheet.Provider
 		}
 
 		#region IFileFormatProvider Members
+		private void WriteRowBlock(List<Row> rows)
+		{
+			foreach(Row row in rows)
+			{
+				this.Write(new ROW() { Row = row });
+			}
+			// Write cells
+			foreach (Row row in rows)
+			{
+				foreach (Cell cell in row)
+				{
+					switch (this.GetValueType(cell))
+					{
+						case 1:
+							this.Write(new NUMBER()
+							{
+								ColIndex = (ushort)cell.ColumnIndex,
+								RowIndex = (ushort)cell.RowIndex,
+								XfIndex = (ushort)FindStyleIndex(cell.Formatting),
+								Value = Convert.ToDouble(cell.Value)
+							});
+							break;
+						default:
+							this.Write(new LABELSST()
+							{
+								ColIndex = (ushort)cell.ColumnIndex,
+								RowIndex = (ushort)cell.RowIndex,
+								XfIndex = (ushort)FindStyleIndex(cell.Formatting),
+								IndexToSST = FindStringTableIndex(FormatValue(cell))
+							});
+							break;
+					}
+				}
+			}
+			// TODO: Write DBCELL
+		}
+
 		/// <summary>
 		/// Save document to stream.
 		/// </summary>
@@ -400,31 +437,28 @@ namespace Nix.SpreadSheet.Provider
 				
 				this.Write(new DIMENSION() { FirstCol = (ushort)sheet.FirstColumn, FirstRow = (uint)sheet.FirstRow,
 				           					 LastCol = (ushort)(sheet.LastColumn + 1), LastRow = (uint)(sheet.LastRow + 1) });
+
+				// Write rows in 32 row blocks
+				List<Row> rows = new List<Row>();
 				foreach ( Row row in sheet )
 				{
-					this.Write( new ROW() { Row = row } );
+					if ( rows.Count > 0 && rows[rows.Count - 1].RowIndex != row.RowIndex - 1 )
+					{
+						WriteRowBlock(rows);
+						rows.Clear();
+					}
+					rows.Add(row);
+					if ( rows.Count == 32 )
+					{
+						WriteRowBlock(rows);
+						rows.Clear();
+					}
 				}
-                foreach (Row row in sheet)
-                {
-                    foreach (Cell cell in row)
-                    {
-                    	switch ( this.GetValueType(cell) )
-                    	{
-	                    	case 1:
-	                            this.Write(new NUMBER(){ColIndex = (ushort)cell.ColumnIndex,
-	                                                        RowIndex = (ushort)cell.RowIndex,
-	                                                        XfIndex = (ushort)FindStyleIndex(cell.Formatting),
-	                                                        Value = Convert.ToDouble(cell.Value)});
-                    			break;
-                    		default:
-	                            this.Write(new LABELSST(){ColIndex = (ushort)cell.ColumnIndex,
-	                                                        RowIndex = (ushort)cell.RowIndex,
-	                                                        XfIndex = (ushort)FindStyleIndex(cell.Formatting),
-	                                                        IndexToSST = FindStringTableIndex(FormatValue(cell))});
-                    			break;
-                        }
-                    }
-                }
+				if ( rows.Count > 0 )
+				{
+					WriteRowBlock(rows);
+					rows.Clear();
+				}
 				this.Write(new WINDOW2());
 				this.Write(new EOF());
 			}
