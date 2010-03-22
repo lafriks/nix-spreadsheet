@@ -102,6 +102,8 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
 						else
 							has_len = (ushort)Math.Floor((decimal)(left - (3 + ((item.GRBit & 0x08) == 0x08 ? 2 : 0))) / ((item.GRBit & 0x01) == 0x01 ? 2 : 1));
 						part.String = item.String.Substring(has_len);
+						// We can change GRBit in continued record
+						part.GRBit = BIFFStringHelper.GetGRBIT(part.String, null, true);
 						item.String = item.String.Substring(0, has_len);
 						RecordBlocks[RecordBlocks.Count - 1].SplitItemList.Add(item);
 						// Start new record

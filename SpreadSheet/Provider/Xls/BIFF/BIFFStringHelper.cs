@@ -42,8 +42,8 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 
 		public static ushort GetStringByteCount(string text, StringFormating[] formating, bool stringLengthInt, byte grbit, bool skipHeader)
 		{
-			// String length byte(s) + grbit byte
-			ushort length = (ushort)(skipHeader ? 0 : (stringLengthInt ? 3 : 2));
+			// String length byte(s) + grbit byte (only grbit byte in continued record)
+			ushort length = (ushort)(skipHeader ? 1 : (stringLengthInt ? 3 : 2));
 			 // Formating run count bytes
 			if ( ! skipHeader && (grbit & 0x08) == 0x08 )
 				length += 2;
@@ -84,12 +84,11 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 					stream.WriteUInt16((ushort)stringLength);
 				else
 					stream.WriteByte((byte)stringLength);
-
-				stream.WriteByte(grbit); // String options
-
-				if ((grbit & 0x08) == 0x08)
-					stream.WriteUInt16((ushort)formating.Length); // Formating run count
 			}
+			// grbit is writen allways
+			stream.WriteByte(grbit); // String options
+			if (!skipHeader && (grbit & 0x08) == 0x08)
+				stream.WriteUInt16((ushort)formating.Length); // Formating run count
 			if ( (grbit & 0x01) == 0x01 )
 			{
 				// Write uncompressed string

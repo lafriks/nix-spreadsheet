@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Data;
 using System.Text;
@@ -77,17 +77,17 @@ namespace Test
 			for (int i = 0; i < 4000; i++)
 			{
 				dt.Rows.Add(new object[] { i,
-									"Col2_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
-									"Col3_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
-									"Col4_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
-									"Col5_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
-									"Col6_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
-									"Col7_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
-									"Col8_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
-									"Col9_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
-									"Col10_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
-									"Col11_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
-									"Col12_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString()
+									"Žeļ2_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
+									"Āšļ3_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
+									"Ķom4_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
+									"Bak5_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
+									"Zēt6_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
+									"Dēt7_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
+									"Bak8_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
+									"Rot9_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
+									"Šol10_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
+									"Zīp11_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
+									"Pīp12_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString()
 							});
 			}
 
