@@ -52,7 +52,46 @@ namespace Test
             s.Columns[3].Formatting.BackgroundPattern = CellBackgroundPattern.Fill;
             s.Columns[3].Formatting.BackgroundPatternColor = System.Drawing.Color.Gray;
             //s["IV65536"].Value = "MAX";
+			Sheet big = doc.AddSheet("Big");
+			big.InsertTable(0, 0, BigTestData().DefaultView);
             doc.Save(@"test.xls", new Nix.SpreadSheet.Provider.XlsFileFormatProvider());
         }
-    }
+
+		public static DataTable BigTestData()
+		{
+			Random rnd = new Random();
+			DataTable dt = new DataTable();
+			dt.Columns.Add("nr", typeof(int));
+			dt.Columns.Add("text1", typeof(string));
+			dt.Columns.Add("text2", typeof(string));
+			dt.Columns.Add("text3", typeof(string));
+			dt.Columns.Add("text4", typeof(string));
+			dt.Columns.Add("text5", typeof(string));
+			dt.Columns.Add("text6", typeof(string));
+			dt.Columns.Add("text7", typeof(string));
+			dt.Columns.Add("text8", typeof(string));
+			dt.Columns.Add("text9", typeof(string));
+			dt.Columns.Add("text10", typeof(string));
+			dt.Columns.Add("text11", typeof(string));
+
+			for (int i = 0; i < 4000; i++)
+			{
+				dt.Rows.Add(new object[] { i,
+									"Col1_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString(),
+									"Col2_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString(),
+									"Col3_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString(),
+									"Col4_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString(),
+									"Col5_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString(),
+									"Col6_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString(),
+									"Col7_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString(),
+									"Col8_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString(),
+									"Col9_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString(),
+									"Col10_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString(),
+									"Col11_" + ((int)Math.Round(rnd.NextDouble() * 10, 0)).ToString()
+							});
+			}
+
+			return dt;
+		}
+	}
 }

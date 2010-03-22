@@ -390,6 +390,7 @@ namespace Nix.SpreadSheet
 		{
 			if (columnHeaders == null)
 			{
+				columnHeaders = new Dictionary<string, string>();
 				foreach (DataColumn col in dataView.Table.Columns)
 				{
 					columnHeaders.Add(col.ColumnName, col.ColumnName);
@@ -418,11 +419,11 @@ namespace Nix.SpreadSheet
 
 			if (formatTable)
 			{
-				this.GetCellRange(firstRow, firstColumn, firstRow + dataView.Count + (showHeader ? 1 : 0), firstColumn + columnHeaders.Count)
+				this.GetCellRange(firstRow, firstColumn, firstRow + dataView.Count - (showHeader ? 0 : 1), firstColumn + columnHeaders.Count - 1)
 							.DrawTable(Color.Black, BorderLineStyle.Thin, BorderLineStyle.Medium);
 				if (showHeader)
 				{
-					this.GetCellRange(firstRow, firstColumn, firstRow, firstColumn + columnHeaders.Count)
+					this.GetCellRange(firstRow, firstColumn, firstRow, firstColumn + columnHeaders.Count - 1)
 							.DrawBorder(Color.Black, BorderLineStyle.Medium)
 							.SetAlignment(CellHorizontalAlignment.Centred, CellVerticalAlignment.Centred)
 							.SetBackground(Color.Gray);

@@ -304,8 +304,8 @@ namespace Nix.CompoundFile
                         int fsect = this.SSAT.Allocate(((Ole2Stream)e).Size);
                         ((Ole2Stream)e).Sector = fsect;
                         this.SSAT.AllocateStream(fsect, ((Ole2Stream)e).BaseStream);
-                    }
-                    sum += (uint)Math.Ceiling((double)((Ole2Stream)e).Size / this.shortSectorSize) * this.shortSectorSize;
+						sum += (uint)Math.Ceiling((double)((Ole2Stream)e).Size / this.shortSectorSize) * this.shortSectorSize;
+					}
                 }
             }
             return sum;

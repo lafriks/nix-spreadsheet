@@ -130,7 +130,7 @@ namespace Nix.CompoundFile.Managers
         {
             int offset = 0;
             int steamSize = (int)stream.Length;
-            while (start > -1)
+            while ((start > -1 || start == -3 || start == -4) && start < this.Sectors.Count)
             {
                 //byte[] nd = new byte[this.SectorSize];
                 ISector sector = new SectorStream(stream, offset, this.SectorSize, def);
@@ -143,7 +143,7 @@ namespace Nix.CompoundFile.Managers
                 this.SectorsData[start] = sector;
                 offset += this.SectorSize;
                 // Go to next sector
-                start = (int)this.Sectors[start];
+				start = ((int)this.Sectors[start] == -3 || (int)this.Sectors[start] == -4 ? start + 1 : (int)this.Sectors[start]);
             }
         }
         #endregion
