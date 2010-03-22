@@ -252,10 +252,12 @@ namespace Nix.SpreadSheet.Provider
 		/// Get value type.
 		/// </summary>
 		/// <param name="cell">Cell.</param>
-		/// <returns>0 - string; 1 - number.</returns>
+		/// <returns>-1 - empty; 0 - string; 1 - number.</returns>
 		protected int GetValueType(Cell cell)
 		{
-            if (cell.Value is int || cell.Value is float || cell.Value is double ||
+			if (cell.Value == null || (cell.Value is string && (string)cell.Value == string.Empty))
+				return -1;
+			if (cell.Value is int || cell.Value is float || cell.Value is double ||
                 	cell.Value is decimal || cell.Value is long || cell.Value is short)
             	return 1;
 			return 0;
@@ -334,6 +336,14 @@ namespace Nix.SpreadSheet.Provider
 								RowIndex = (ushort)cell.RowIndex,
 								XfIndex = (ushort)FindStyleIndex(cell.Formatting),
 								Value = Convert.ToDouble(cell.Value)
+							});
+							break;
+						case -1:
+							this.Write(new BLANK()
+							{
+								ColIndex = (ushort)cell.ColumnIndex,
+								RowIndex = (ushort)cell.RowIndex,
+								XfIndex = (ushort)FindStyleIndex(cell.Formatting),
 							});
 							break;
 						default:
@@ -468,16 +478,12 @@ namespace Nix.SpreadSheet.Provider
                                          + 4); // EOF
 			
 			// Calculate SST length
-			uint sstLength = 0;
-			if ( this.stringTable.Count > 0 )
-			{
-				sstLength = 12;
-				foreach (string str in this.stringTable)
-					sstLength += BIFFStringHelper.GetStringByteCount(str, true);
-			}
+			SST sst = null;
+			if ( stringTable.Count > 0 )
+				sst = new SST() { TotalCount = totalStringCount, StringTable = stringTable };
 
             this.activeStream = mainStream;
-            uint currentPosition = (uint)wbs.Length + settingsLength + sstLength;
+			uint currentPosition = (uint)wbs.Length + settingsLength + (sst != null ? sst.GetTotalByteCount() : 0);
             int i = 0;
             // Sheets' headers
             foreach(Sheet sheet in document)
@@ -486,8 +492,9 @@ namespace Nix.SpreadSheet.Provider
                 currentPosition += (uint)sheetStreams[i].Length;
                 i++;
             }
-            if ( stringTable.Count > 0 )
-            	this.Write(new SST() { TotalCount = totalStringCount, StringTable = stringTable });
+			// Write Shared String Table
+			if ( sst != null )
+            	this.Write(sst);
             this.Write(new EOF());
 
             foreach (MemoryStream str in sheetStreams)

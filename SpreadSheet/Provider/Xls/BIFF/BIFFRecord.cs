@@ -37,6 +37,14 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 			get;
 		}
 
+		protected virtual ushort MaximalRecordLength
+		{
+			get
+			{
+				return 8224;
+			}
+		}
+
 		#region Header
 		/// <summary>
 		/// Writes record header to the specified stream.

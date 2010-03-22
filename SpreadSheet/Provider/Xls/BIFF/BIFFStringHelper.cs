@@ -29,7 +29,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 	/// </summary>
 	internal static class BIFFStringHelper
 	{
-		private static byte GetGRBIT(string text, StringFormating[] formating, bool stringLengthInt)
+		public static byte GetGRBIT(string text, StringFormating[] formating, bool stringLengthInt)
 		{
 			byte grbit = 0;
 			foreach (char c in text)
@@ -40,13 +40,12 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 			return grbit;
 		}
 
-		public static ushort GetStringByteCount(string text, StringFormating[] formating, bool stringLengthInt)
+		public static ushort GetStringByteCount(string text, StringFormating[] formating, bool stringLengthInt, byte grbit, bool skipHeader)
 		{
-			byte grbit = GetGRBIT(text, formating, stringLengthInt);
 			// String length byte(s) + grbit byte
-			ushort length = (ushort)(stringLengthInt ? 3 : 2);
+			ushort length = (ushort)(skipHeader ? 0 : (stringLengthInt ? 3 : 2));
 			 // Formating run count bytes
-			if ( (grbit & 0x08) == 0x08 )
+			if ( ! skipHeader && (grbit & 0x08) == 0x08 )
 				length += 2;
 			if ( (grbit & 0x01) == 0x01 )
 				length += (ushort)(text.Length * 2);
@@ -54,6 +53,16 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 				length += (ushort)text.Length;
 			// TODO: formating
 			return length;
+		}
+
+		public static ushort GetStringByteCount(string text, StringFormating[] formating, bool stringLengthInt, byte grbit)
+		{
+			return GetStringByteCount(text, formating, stringLengthInt, GetGRBIT(text, formating, stringLengthInt), false);
+		}
+
+		public static ushort GetStringByteCount(string text, StringFormating[] formating, bool stringLengthInt)
+		{
+			return GetStringByteCount(text, formating, stringLengthInt, GetGRBIT(text, formating, stringLengthInt));
 		}
 
 		public static ushort GetStringByteCount(string text, bool stringLengthInt)
@@ -66,21 +75,21 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 			return GetStringByteCount(text, null, true);
 		}
 
-		public static void WriteString(EndianStream stream, string text, StringFormating[] formating, bool stringLengthInt)
+		public static void WriteString(EndianStream stream, string text, StringFormating[] formating, bool stringLengthInt, byte grbit, bool skipHeader)
 		{
 			// Text length
-			if ( stringLengthInt )
-				stream.WriteUInt16((ushort)text.Length);
-			else
-				stream.WriteByte((byte)text.Length);
+			if (!skipHeader)
+			{
+				if (stringLengthInt)
+					stream.WriteUInt16((ushort)text.Length);
+				else
+					stream.WriteByte((byte)text.Length);
 
-			byte grbit = GetGRBIT(text, formating, stringLengthInt);
+				stream.WriteByte(grbit); // String options
 
-			stream.WriteByte(grbit); // String options
-
-			if ( (grbit & 0x08) == 0x08 )
-				stream.WriteUInt16((ushort)formating.Length); // Formating run count
-
+				if ((grbit & 0x08) == 0x08)
+					stream.WriteUInt16((ushort)formating.Length); // Formating run count
+			}
 			if ( (grbit & 0x01) == 0x01 )
 			{
 				// Write uncompressed string
@@ -95,6 +104,11 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 			}
 
 			// TODO: Write formating
+		}
+
+		public static void WriteString(EndianStream stream, string text, StringFormating[] formating, bool stringLengthInt)
+		{
+			WriteString(stream, text, formating, stringLengthInt, GetGRBIT(text, formating, stringLengthInt), false);
 		}
 
 		public static void WriteString(EndianStream stream, string text, bool stringLengthInt)

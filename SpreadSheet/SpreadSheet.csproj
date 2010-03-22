@@ -150,7 +150,9 @@
     <Compile Include="Provider\Xls\BIFF\BIFF8\WINDOW2.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFFRecord.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFFStringHelper.cs" />
+    <Compile Include="Provider\Xls\BIFF\BLANK.cs" />
     <Compile Include="Provider\Xls\BIFF\CellBIFFRecord.cs" />
+    <Compile Include="Provider\Xls\BIFF\CONTINUE.cs" />
     <Compile Include="Provider\Xls\BIFF\NUMBER.cs" />
     <Compile Include="Provider\Xls\BIFF\COLUMN.cs" />
     <Compile Include="Provider\Xls\BIFF\EOF.cs" />
