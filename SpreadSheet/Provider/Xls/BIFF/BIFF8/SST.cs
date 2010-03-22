@@ -33,6 +33,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
 			public string String;
 			public bool FullString;
 			public byte GRBit;
+			public ushort StringLength;
 			public StringFormating[] StringFormating;
 		}
 
@@ -72,7 +73,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
 			int left = MaximalRecordLength - 8;
 			foreach (string str in StringTable)
 			{
-				SplitItem item = new SplitItem() { FullString = true, String = str, StringFormating = null, GRBit = BIFFStringHelper.GetGRBIT(str, null, true) };
+				SplitItem item = new SplitItem() { FullString = true, String = str, StringLength = (ushort)str.Length, StringFormating = null, GRBit = BIFFStringHelper.GetGRBIT(str, null, true) };
 				ushort len = BIFFStringHelper.GetStringByteCount(item.String, item.StringFormating, true, item.GRBit, !item.FullString);
 				while (true)
 				{
@@ -94,7 +95,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
 					else
 					{
 						// Split string into parts
-						SplitItem part = new SplitItem() { FullString = false, StringFormating = null, GRBit = item.GRBit };
+						SplitItem part = new SplitItem() { FullString = false, StringLength = 0, StringFormating = null, GRBit = item.GRBit };
 						ushort has_len = 0;
 						if (!item.FullString)
 							has_len = (ushort)Math.Floor((decimal)left / ((item.GRBit & 0x01) == 0x01 ? 2 : 1));
@@ -147,7 +148,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
 				}
 				foreach (SplitItem item in record.SplitItemList)
 				{
-					BIFFStringHelper.WriteString(stream, item.String, item.StringFormating, true, item.GRBit, !item.FullString);
+					BIFFStringHelper.WriteString(stream, item.String, item.StringFormating, true, item.GRBit, item.StringLength, !item.FullString);
 				}
 				first = false;
 			}

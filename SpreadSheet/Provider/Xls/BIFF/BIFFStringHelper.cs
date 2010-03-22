@@ -75,15 +75,15 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 			return GetStringByteCount(text, null, true);
 		}
 
-		public static void WriteString(EndianStream stream, string text, StringFormating[] formating, bool stringLengthInt, byte grbit, bool skipHeader)
+		public static void WriteString(EndianStream stream, string text, StringFormating[] formating, bool stringLengthInt, byte grbit, ushort stringLength, bool skipHeader)
 		{
 			// Text length
 			if (!skipHeader)
 			{
 				if (stringLengthInt)
-					stream.WriteUInt16((ushort)text.Length);
+					stream.WriteUInt16((ushort)stringLength);
 				else
-					stream.WriteByte((byte)text.Length);
+					stream.WriteByte((byte)stringLength);
 
 				stream.WriteByte(grbit); // String options
 
@@ -108,7 +108,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 
 		public static void WriteString(EndianStream stream, string text, StringFormating[] formating, bool stringLengthInt)
 		{
-			WriteString(stream, text, formating, stringLengthInt, GetGRBIT(text, formating, stringLengthInt), false);
+			WriteString(stream, text, formating, stringLengthInt, GetGRBIT(text, formating, stringLengthInt), (ushort)text.Length, false);
 		}
 
 		public static void WriteString(EndianStream stream, string text, bool stringLengthInt)
