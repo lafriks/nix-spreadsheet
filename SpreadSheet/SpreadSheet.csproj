@@ -135,6 +135,7 @@
     <Compile Include="Comment.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ErrorCode.cs" />
     <Compile Include="Font.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -151,6 +152,7 @@
     <Compile Include="Provider\Xls\BIFF\BIFFRecord.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFFStringHelper.cs" />
     <Compile Include="Provider\Xls\BIFF\BLANK.cs" />
+    <Compile Include="Provider\Xls\BIFF\BOOLERR.cs" />
     <Compile Include="Provider\Xls\BIFF\CellBIFFRecord.cs" />
     <Compile Include="Provider\Xls\BIFF\CONTINUE.cs" />
     <Compile Include="Provider\Xls\BIFF\NUMBER.cs" />

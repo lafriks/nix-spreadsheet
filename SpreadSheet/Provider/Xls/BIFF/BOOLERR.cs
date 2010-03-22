@@ -22,39 +22,45 @@ using Nix.CompoundFile;
 
 namespace Nix.SpreadSheet.Provider.Xls.BIFF
 {
-    internal class NUMBER : CellBIFFRecord
-    {
+	/// <summary>
+	/// BOOLERR record.
+	/// </summary>
+	internal class BOOLERR : CellBIFFRecord
+	{
         /// <summary>
-        /// NUMBER record OPCODE.
+        /// BOOLERR record OPCODE.
         /// </summary>
         protected override ushort OPCODE
         {
             get
             {
-                return 0x0203;
+                return 0x0205;
             }
         }
 
-        private double value = 0;
+        /// <summary>
+        /// Value (if boolean 0 - false, 1 - true, or error code)
+        /// </summary>
+        public byte Value { get; set; }
 
-        public double Value
-        {
-            get { return this.value; }
-            set { this.value = value; }
-        }
+        /// <summary>
+        /// Type (0 - boolean; 1 - error)
+        /// </summary>
+        public byte Type { get; set; }
 
         public override void Write(EndianStream stream)
         {
-            this.WriteHeader(stream, 14);
+            this.WriteHeader(stream, 8);
             stream.WriteUInt16(RowIndex);
             stream.WriteUInt16(ColIndex);
             stream.WriteUInt16(XfIndex);
-            stream.WriteDoubleIEEE(Value);
+            stream.WriteByte(Value);
+            stream.WriteByte(Type);
         }
 
         public override void Read(EndianStream stream)
         {
 			throw new NotImplementedException();
         }
-    }
+	}
 }

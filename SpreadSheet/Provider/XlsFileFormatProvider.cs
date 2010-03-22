@@ -252,11 +252,13 @@ namespace Nix.SpreadSheet.Provider
 		/// Get value type.
 		/// </summary>
 		/// <param name="cell">Cell.</param>
-		/// <returns>-1 - empty; 0 - string; 1 - number.</returns>
+		/// <returns>-1 - empty; 0 - string; 1 - number; 2 - boolean or error.</returns>
 		protected int GetValueType(Cell cell)
 		{
 			if (cell.Value == null || (cell.Value is string && (string)cell.Value == string.Empty))
 				return -1;
+			if (cell.Value is ErrorCode || cell.Value is bool)
+				return 2;
 			if (cell.Value is int || cell.Value is float || cell.Value is double ||
                 	cell.Value is decimal || cell.Value is long || cell.Value is short)
             	return 1;
@@ -272,6 +274,28 @@ namespace Nix.SpreadSheet.Provider
 		{
 			// TODO: Better value convertation to string
 			return Convert.ToString(cell.Value);
+		}
+		
+		protected byte GetErrorCodeValue(ErrorCode code)
+		{
+			switch (code)
+			{
+				default:
+				case ErrorCode.Null:
+					return 0x00;
+				case ErrorCode.DivisionByZero:
+					return 0x07;
+				case ErrorCode.WrongType:
+					return 0x0F;
+				case ErrorCode.IllegalCellReference:
+					return 0x17;
+				case ErrorCode.WrongFunctionOrRange:
+					return 0x1D;
+				case ErrorCode.ValueRangeOverflow:
+					return 0x24;
+				case ErrorCode.ArgumentOrFunctionNotAvailable:
+					return 0x2A;
+			}
 		}
 
 		/// <summary>
@@ -336,6 +360,16 @@ namespace Nix.SpreadSheet.Provider
 								RowIndex = (ushort)cell.RowIndex,
 								XfIndex = (ushort)FindStyleIndex(cell.Formatting),
 								Value = Convert.ToDouble(cell.Value)
+							});
+							break;
+						case 2:
+							this.Write(new BOOLERR()
+							{
+								ColIndex = (ushort)cell.ColumnIndex,
+								RowIndex = (ushort)cell.RowIndex,
+								XfIndex = (ushort)FindStyleIndex(cell.Formatting),
+								Value = (byte)(cell.Value is bool ? ((bool)cell.Value ? 1 : 0) : GetErrorCodeValue((ErrorCode)cell.Value)),
+								Type = (byte)(cell.Value is bool ? 0 : 1)
 							});
 							break;
 						case -1:
