@@ -95,7 +95,11 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
 					{
 						// Split string into parts
 						SplitItem part = new SplitItem() { FullString = false, StringFormating = null, GRBit = item.GRBit };
-						ushort has_len = (ushort)Math.Floor((decimal)left / ((item.GRBit & 0x01) == 0x01 ? 2 : 1));
+						ushort has_len = 0;
+						if (!item.FullString)
+							has_len = (ushort)Math.Floor((decimal)left / ((item.GRBit & 0x01) == 0x01 ? 2 : 1));
+						else
+							has_len = (ushort)Math.Floor((decimal)(left - (3 + ((item.GRBit & 0x08) == 0x08 ? 2 : 0))) / ((item.GRBit & 0x01) == 0x01 ? 2 : 1));
 						part.String = item.String.Substring(has_len);
 						item.String = item.String.Substring(0, has_len);
 						RecordBlocks[RecordBlocks.Count - 1].SplitItemList.Add(item);
