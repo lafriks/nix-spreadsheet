@@ -286,7 +286,7 @@ namespace Nix.SpreadSheet
 		{
 			return this.m_rows.Values.GetEnumerator();
 		}
-		
+
 		IEnumerator<Row> IEnumerable<Row>.GetEnumerator()
 		{
 			return this.m_rows.Values.GetEnumerator();
