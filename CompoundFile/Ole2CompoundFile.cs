@@ -45,6 +45,7 @@ namespace Nix.CompoundFile
         private MasterSectorAllocationManager MSAT;
 
         private EndianStream ewriter;
+        private EndianStream ereader;
 
         private ushort sectorSizeC = 9;
         private ushort sectorSize = 512;
@@ -289,6 +290,22 @@ namespace Nix.CompoundFile
         {
             StreamWriter file = new StreamWriter(filename);
             this.Save(file.BaseStream);
+            file.Close();
+        }
+        #endregion
+
+        #region Load methods
+        public void Load(Stream input)
+        {
+        	this.ereader = this.CreateEndianStream(input);
+        	//this.ReadHeader();
+        	// TODO: Reading OLE 2 compound file
+        }
+
+        public void Load(string filename)
+        {
+            StreamReader file = new StreamReader(filename);
+            this.Load(file.BaseStream);
             file.Close();
         }
         #endregion
