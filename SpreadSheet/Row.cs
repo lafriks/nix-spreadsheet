@@ -52,6 +52,14 @@ namespace Nix.SpreadSheet
             }
         }
 
+        private ushort? height = null;
+
+        public ushort? Height
+        {
+            get { return height; }
+            set { height = (ushort)(value * 20); }
+        }
+
         /// <summary>
         /// First used cell in row.
         /// </summary>

@@ -48,12 +48,14 @@ namespace Test
             					   .DrawBorder(System.Drawing.Color.Black, BorderLineStyle.Medium)
             					   .SetAlignment(CellHorizontalAlignment.Centred, CellVerticalAlignment.Centred);
             s["B2"].Formatting.LeftBorderLineColor = System.Drawing.Color.Black;
-            s.Columns[0].Width = 256 * 10;
+            s.Columns[0].Width = 40;
+            s[1].Height = 20;
+            s[10].Height = 40;
             s.Columns[3].Formatting.BackgroundPattern = CellBackgroundPattern.Fill;
             s.Columns[3].Formatting.BackgroundPatternColor = System.Drawing.Color.Gray;
             //s["IV65536"].Value = "MAX";
-			Sheet big = doc.AddSheet("Big");
-			big.InsertTable(0, 0, BigTestData().DefaultView);
+			/*Sheet big = doc.AddSheet("Big");
+			big.InsertTable(0, 0, BigTestData().DefaultView);*/
             doc.Save(@"test.xls", new Nix.SpreadSheet.Provider.XlsFileFormatProvider());
         }
 

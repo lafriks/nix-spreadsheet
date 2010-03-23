@@ -431,5 +431,102 @@ namespace Nix.SpreadSheet
 			}
 		}
 		#endregion
-	}
+
+        #region DataGridView helper
+
+        public void InsertDataGridView(int firstRow, int firstColumn, System.Windows.Forms.DataGridView grid)
+        {
+            int invisible_columns = 0;
+            foreach (System.Windows.Forms.DataGridViewColumn c in grid.Columns)
+            {
+                invisible_columns += c.Visible ? 0 : 1;
+            }
+
+            this.GetCellRange(firstRow, firstColumn, firstRow + grid.RowCount - (grid.RowHeadersVisible ? 0 : 1), 
+                              firstColumn + grid.ColumnCount - 1 - invisible_columns)
+                        .DrawTable(Color.Black, BorderLineStyle.Thin, BorderLineStyle.Medium);
+            if (grid.RowHeadersVisible)
+            {
+                this.GetCellRange(firstRow, firstColumn, firstRow, firstColumn + grid.ColumnCount - 1)
+                        .DrawBorder(Color.Black, BorderLineStyle.Medium)
+                        .SetAlignment(CellHorizontalAlignment.Centred, CellVerticalAlignment.Centred)
+                        .SetBackground(Color.Gray);
+            }
+
+            for (int row = 0; row < grid.RowCount; row++)
+            {
+                invisible_columns = 0;
+                this[row+firstRow].Height = (ushort)grid.Rows[row].Height;
+                for (int col = 0; col < grid.ColumnCount; col++)
+                {
+                    if (!grid.Columns[col].Visible)
+                    {
+                        invisible_columns++;
+                        continue;
+                    }
+
+                    if (row == 0)
+                    {
+                        this.columns[col + firstColumn - invisible_columns].Width = grid.Columns[col].Width;
+                    }
+
+                    System.Windows.Forms.DataGridViewCell dataCell = grid.Rows[row].Cells[col];
+                    Cell c = this[row + firstRow + (grid.RowHeadersVisible ? 1 : 0), 
+                                  firstColumn + col - invisible_columns];
+                    c.Value = dataCell.Value;
+                    c.Formatting.Font.Size = Convert.ToUInt16(Math.Round(dataCell.InheritedStyle.Font.Size * 20));
+
+                    switch (dataCell.InheritedStyle.Alignment)
+	                {
+		                case System.Windows.Forms.DataGridViewContentAlignment.BottomCenter:
+                            c.Formatting.HorizontalAlignment = CellHorizontalAlignment.Centred;
+                            c.Formatting.VerticalAlignment = CellVerticalAlignment.Bottom;
+                            break;
+                        case System.Windows.Forms.DataGridViewContentAlignment.BottomLeft:
+                            c.Formatting.HorizontalAlignment = CellHorizontalAlignment.Left;
+                            c.Formatting.VerticalAlignment = CellVerticalAlignment.Bottom;
+                            break;
+                        case System.Windows.Forms.DataGridViewContentAlignment.BottomRight:
+                            c.Formatting.HorizontalAlignment = CellHorizontalAlignment.Right;
+                            c.Formatting.VerticalAlignment = CellVerticalAlignment.Bottom;
+                            break;
+                        case System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter:
+                            c.Formatting.HorizontalAlignment = CellHorizontalAlignment.Centred;
+                            c.Formatting.VerticalAlignment = CellVerticalAlignment.Centred;
+                            break;
+                        case System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft:
+                            c.Formatting.HorizontalAlignment = CellHorizontalAlignment.Left;
+                            c.Formatting.VerticalAlignment = CellVerticalAlignment.Centred;
+                            break;
+                        case System.Windows.Forms.DataGridViewContentAlignment.MiddleRight:
+                            c.Formatting.HorizontalAlignment = CellHorizontalAlignment.Right;
+                            c.Formatting.VerticalAlignment = CellVerticalAlignment.Centred;
+                            break;
+                        case System.Windows.Forms.DataGridViewContentAlignment.TopCenter:
+                            c.Formatting.HorizontalAlignment = CellHorizontalAlignment.Centred;
+                            c.Formatting.VerticalAlignment = CellVerticalAlignment.Top;
+                            break;
+                        case System.Windows.Forms.DataGridViewContentAlignment.TopLeft:
+                            c.Formatting.HorizontalAlignment = CellHorizontalAlignment.Left;
+                            c.Formatting.VerticalAlignment = CellVerticalAlignment.Top;
+                            break;
+                        case System.Windows.Forms.DataGridViewContentAlignment.TopRight:
+                            c.Formatting.HorizontalAlignment = CellHorizontalAlignment.Right;
+                            c.Formatting.VerticalAlignment = CellVerticalAlignment.Centred;
+                            break;
+                        default:
+                            break;
+	                }
+
+                    c.Formatting.BackgroundPatternColor = dataCell.InheritedStyle.BackColor;
+                    c.Formatting.BackgroundPattern = CellBackgroundPattern.Fill;
+                }
+            }
+
+            
+        }
+		
+
+        #endregion
+    }
 }

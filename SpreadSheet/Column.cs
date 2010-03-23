@@ -67,7 +67,7 @@ namespace Nix.SpreadSheet
         public int Width
         {
             get { return this.width; }
-            set { this.width = value; }
+            set { this.width = value * 256 * 4 / (7*3); }
         }
     }
 }

@@ -65,12 +65,25 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF5
 		{
 			this.WriteHeader(stream, 16);
             stream.WriteUInt16((ushort)this.Row.RowIndex);
+            stream.WriteUInt16((ushort)(Row.FirstCell < 0 ? 0 : Row.FirstCell));
+            stream.WriteUInt16((ushort)Row.LastCell);
+            if (row.Height.HasValue)
+            {
+                 stream.WriteUInt16((ushort)(row.Height.Value & 0x7fff));
+            }
+            else
+            {
+                stream.WriteUInt16((ushort)0x8000);
+            }
             stream.WriteUInt16((ushort)0);
-            stream.WriteUInt16((ushort)1);
-            stream.WriteUInt16((ushort)0x8000);
             stream.WriteUInt16((ushort)0);
-            stream.WriteUInt16((ushort)0);
-            stream.WriteUInt32((ushort)0x00000100);
+
+            uint flags = 0x00000100;
+            if (row.Height.HasValue)
+            {
+                flags |= 0x00000040;
+            }
+            stream.WriteUInt32(flags);
 		}
 
 		/// <summary>
