@@ -54,10 +54,13 @@ namespace Nix.SpreadSheet
 
         private ushort? height = null;
 
+        /// <summary>
+        /// Row height in pixels
+        /// </summary>
         public ushort? Height
         {
             get { return height; }
-            set { height = (ushort)(value * 20); }
+            set { height = (ushort)(value * 15); }
         }
 
         /// <summary>

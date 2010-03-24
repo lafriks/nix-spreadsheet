@@ -447,16 +447,27 @@ namespace Nix.SpreadSheet
                         .DrawTable(Color.Black, BorderLineStyle.Thin, BorderLineStyle.Medium);
             if (grid.RowHeadersVisible)
             {
-                this.GetCellRange(firstRow, firstColumn, firstRow, firstColumn + grid.ColumnCount - 1)
+                this.GetCellRange(firstRow, firstColumn, firstRow, firstColumn + grid.ColumnCount - invisible_columns - 1)
                         .DrawBorder(Color.Black, BorderLineStyle.Medium)
                         .SetAlignment(CellHorizontalAlignment.Centred, CellVerticalAlignment.Centred)
                         .SetBackground(Color.Gray);
+
+                invisible_columns = 0;
+                for (int col = 0; col < grid.ColumnCount; col++)
+                {
+                    if (!grid.Columns[col].Visible)
+                    {
+                        invisible_columns++;
+                        continue;
+                    }
+                    this[firstRow, firstColumn - invisible_columns + col].Value = grid.Columns[col].HeaderText;
+                }
             }
 
             for (int row = 0; row < grid.RowCount; row++)
             {
                 invisible_columns = 0;
-                this[row+firstRow].Height = (ushort)grid.Rows[row].Height;
+                this[row+firstRow].Height = (ushort)(grid.Rows[row].Height);
                 for (int col = 0; col < grid.ColumnCount; col++)
                 {
                     if (!grid.Columns[col].Visible)
@@ -467,13 +478,13 @@ namespace Nix.SpreadSheet
 
                     if (row == 0)
                     {
-                        this.columns[col + firstColumn - invisible_columns].Width = grid.Columns[col].Width;
+                        this.columns[col + firstColumn - invisible_columns].Width = (uint)grid.Columns[col].Width;
                     }
 
                     System.Windows.Forms.DataGridViewCell dataCell = grid.Rows[row].Cells[col];
                     Cell c = this[row + firstRow + (grid.RowHeadersVisible ? 1 : 0), 
                                   firstColumn + col - invisible_columns];
-                    c.Value = dataCell.Value;
+                    c.Value = dataCell.FormattedValue;
                     c.Formatting.Font.Size = Convert.ToUInt16(Math.Round(dataCell.InheritedStyle.Font.Size * 20));
 
                     switch (dataCell.InheritedStyle.Alignment)

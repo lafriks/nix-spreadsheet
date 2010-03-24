@@ -73,12 +73,16 @@ namespace Nix.SpreadSheet.Provider
 		/// <param name="document">Spreadsheet document to search used fonts in.</param>
 		protected void BuildFontTable ( SpreadSheetDocument document )
 		{
+			// first default font for setting column widths
+            fontTable.Add(Font.Default);
+
 			foreach(Sheet sheet in document)
 				foreach(Row row in sheet)
 					foreach(Cell cell in row)
 						if ( FindFontIndex(cell.Formatting.Font) == -1 )
 						fontTable.Add(cell.Formatting.Font);
-			// There should be at least 5 fonts in the table
+            
+            // There should be at least 5 fonts in the table
 			for ( int i = fontTable.Count; i < 5; i++ )
 				fontTable.Add(Font.Default);
 		}

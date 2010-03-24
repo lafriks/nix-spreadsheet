@@ -48,7 +48,8 @@ namespace Test
             					   .DrawBorder(System.Drawing.Color.Black, BorderLineStyle.Medium)
             					   .SetAlignment(CellHorizontalAlignment.Centred, CellVerticalAlignment.Centred);
             s["B2"].Formatting.LeftBorderLineColor = System.Drawing.Color.Black;
-            s.Columns[0].Width = 40;
+            s.Columns[0].Width = 1000;
+            s.Columns[1].Width = 913;
             s[1].Height = 20;
             s[10].Height = 40;
             s.Columns[3].Formatting.BackgroundPattern = CellBackgroundPattern.Fill;

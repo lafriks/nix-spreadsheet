@@ -62,12 +62,15 @@ namespace Nix.SpreadSheet
             }
         }
 
-        private int width = 2560;
+        private uint width = 2560;
 
-        public int Width
+        /// <summary>
+        /// Column Width in pixels
+        /// </summary>
+        public uint Width
         {
             get { return this.width; }
-            set { this.width = value * 256 * 4 / (7*3); }
+            set { this.width = Convert.ToUInt32(Math.Round((double)value/7 * 256)); }
         }
     }
 }
