@@ -377,6 +377,21 @@ namespace Nix.SpreadSheet
 			InsertTable(firstRow, firstColumn, dataView, columnHeaders, showHeader, true);
 		}
 
+        /// <summary>
+        /// Insert DataTable view into sheet starting at specified cell.
+        /// </summary>
+        /// <param name="firstRow">First row index.</param>
+        /// <param name="firstColumn">First column index.</param>
+        /// <param name="dataView">Data view to get data from.</param>
+        /// <param name="columnHeaders">Column header dictionary, where key is columnName and value is header text.</param>
+        /// <param name="showHeader">Show table header.</param>
+        /// <param name="formatTable">Format table with borders.</param>
+        public void InsertTable(int firstRow, int firstColumn, DataView dataView, Dictionary<string, string> columnHeaders, bool showHeader, bool formatTable)
+        {
+            InsertTable(firstRow, firstColumn, dataView, columnHeaders, showHeader, true, null);
+        }
+		
+
 		/// <summary>
 		/// Insert DataTable view into sheet starting at specified cell.
 		/// </summary>
@@ -386,7 +401,8 @@ namespace Nix.SpreadSheet
 		/// <param name="columnHeaders">Column header dictionary, where key is columnName and value is header text.</param>
 		/// <param name="showHeader">Show table header.</param>
 		/// <param name="formatTable">Format table with borders.</param>
-		public void InsertTable(int firstRow, int firstColumn, DataView dataView, Dictionary<string, string> columnHeaders, bool showHeader, bool formatTable)
+        /// <param name="columnWidths">Column widths in pixels.</param>
+		public void InsertTable(int firstRow, int firstColumn, DataView dataView, Dictionary<string, string> columnHeaders, bool showHeader, bool formatTable, List<uint> columnWidths)
 		{
 			if (columnHeaders == null)
 			{
@@ -429,6 +445,14 @@ namespace Nix.SpreadSheet
 							.SetBackground(Color.Gray);
 				}
 			}
+
+            if (columnWidths != null)
+            {
+                for (int col = 0; col < columnWidths.Count; col++)
+                {
+                    this.columns[col + firstColumn].Width = columnWidths[col];
+                }
+            }
 		}
 		#endregion
 
