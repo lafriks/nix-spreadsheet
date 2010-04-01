@@ -1,4 +1,23 @@
-﻿using System;
+﻿/*
+ * Library for creating Zip files.
+ * Copyright (C) 2007, Lauris Bukšis-Haberkorns <lauris@nix.lv>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -37,7 +56,7 @@ namespace Nix.SpreadSheet.Provider.Zip
 			/// <summary>
 			/// File CRC32 checksum.
 			/// </summary>
-			public uint? Crc32;
+			public byte[] Crc32;
 
 			/// <summary>
 			/// Header length.
@@ -92,9 +111,9 @@ namespace Nix.SpreadSheet.Provider.Zip
 			// Last modified date and time
 			this.stream.Write(BitConverter.GetBytes(DateTimeToDosTime(e.LastModified)), 0, 4);
 			// CRC & size
-			if (e.Crc32.HasValue)
+			if (e.Crc32 != null)
 			{
-				this.stream.Write(BitConverter.GetBytes(e.Crc32.Value), 0, 4);
+				this.stream.Write(e.Crc32, 0, 4);
 				this.stream.Write(BitConverter.GetBytes(e.OriginalSize), 0, 4);
 				this.stream.Write(BitConverter.GetBytes(e.Size), 0, 4);
 			}
@@ -134,7 +153,8 @@ namespace Nix.SpreadSheet.Provider.Zip
 		public void AddFileWithStringContent(string fileName, string content, string comment)
 		{
 			byte[] bin = UTF8Encoding.UTF8.GetBytes(content);
-			Entry e = new Entry() { FileName = fileName, Compress = false, OriginalSize = (uint)bin.GetLength(0), Size = (uint)bin.GetLength(0), LastModified = DateTime.Now, Comment = comment };
+            CRC32 crc32 = new CRC32(CRC32.DefaultPolynomialLE);
+			Entry e = new Entry() { FileName = fileName, Compress = false, OriginalSize = (uint)bin.GetLength(0), Size = (uint)bin.GetLength(0), LastModified = DateTime.Now, Comment = comment, Crc32 = crc32.ComputeHash(bin) };
 			entries.Add(e);
 			// Write header
 			WriteFileHeader(e);

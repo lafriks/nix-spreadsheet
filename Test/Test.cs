@@ -58,7 +58,8 @@ namespace Test
 			/*Sheet big = doc.AddSheet("Big");
 			big.InsertTable(0, 0, BigTestData().DefaultView);*/
             doc.Save(@"test.xls", new Nix.SpreadSheet.Provider.XlsFileFormatProvider());
-        }
+			doc.Save(@"test.odt", new Nix.SpreadSheet.Provider.OpenDocumentFileFormatProvider());
+		}
 
 		public static DataTable BigTestData()
 		{
