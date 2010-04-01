@@ -141,6 +141,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Provider\IFileFormatProvider.cs" />
+    <Compile Include="Provider\OpenDocumentFileFormatProvider.cs" />
     <Compile Include="Provider\XlsFileFormatProvider.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFF5\ROW.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFF5\WINDOW1.cs" />
@@ -163,6 +164,7 @@
     <Compile Include="Provider\Xls\BIFF\FORMAT.cs" />
     <Compile Include="Provider\Xls\BIFF\PALETTE.cs" />
     <Compile Include="Provider\Xls\BIFF\XF.cs" />
+    <Compile Include="Provider\Zip\ZipStream.cs" />
     <Compile Include="Row.cs" />
     <Compile Include="Sheet.cs" />
     <Compile Include="SpreadSheetDocument.cs" />
@@ -189,6 +191,9 @@
       <ProductName>.NET Framework 3.5</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Provider\OpenDocument\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
