@@ -62,7 +62,7 @@ namespace Nix.SpreadSheet
             }
         }
 
-        private uint width = 2560;
+        private uint width = 70;
 
         /// <summary>
         /// Column Width in pixels
@@ -70,7 +70,7 @@ namespace Nix.SpreadSheet
         public uint Width
         {
             get { return this.width; }
-            set { this.width = Convert.ToUInt32(Math.Round((double)value/7 * 256)); }
+            set { this.width = value; }
         }
     }
 }

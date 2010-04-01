@@ -69,7 +69,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF5
             stream.WriteUInt16((ushort)Row.LastCell);
             if (row.Height.HasValue)
             {
-                 stream.WriteUInt16((ushort)(row.Height.Value & 0x7fff));
+				stream.WriteUInt16((ushort)((row.Height.Value * 15) & 0x7fff));
             }
             else
             {

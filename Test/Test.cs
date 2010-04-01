@@ -1,4 +1,4 @@
-ï»¿using System;
+using System;
 using System.Collections;
 using System.Data;
 using System.Text;
@@ -80,17 +80,17 @@ namespace Test
 			for (int i = 0; i < 4000; i++)
 			{
 				dt.Rows.Add(new object[] { i,
-									"Å½eÄ¼2_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
-									"Ä€Å¡Ä¼3_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
-									"Ä¶om4_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
-									"Bak5_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
-									"ZÄ“t6_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
-									"DÄ“t7_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
+									"Col_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
+									"Pîp_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
+									"Ðûòð_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
+									"Ðíûns_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
+									"Ban_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
+									"Rîb_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
 									"Bak8_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
 									"Rot9_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
-									"Å ol10_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
-									"ZÄ«p11_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
-									"PÄ«p12_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString()
+									"Þog10_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
+									"Mâk11_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString(),
+									"Sâk12_" + ((int)Math.Round(rnd.NextDouble() * 100, 0)).ToString()
 							});
 			}
 

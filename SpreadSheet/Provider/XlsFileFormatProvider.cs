@@ -480,7 +480,9 @@ namespace Nix.SpreadSheet.Provider
 				
 				foreach (Column col in sheet.Columns)
 				{
-					this.Write(new COLUMN() {Index = (ushort)col.ColumnIndex, Width = (ushort)col.Width, XfIndex = (ushort)FindStyleIndex(col.Formatting)});
+					// Convert pixels to MS mystical units
+					ushort width = Convert.ToUInt16(Math.Round((double)col.Width/7 * 256));
+					this.Write(new COLUMN() { Index = (ushort)col.ColumnIndex, Width = (ushort)width, XfIndex = (ushort)FindStyleIndex(col.Formatting) });
 				}
 				
 				this.Write(new DIMENSION() { FirstCol = (ushort)sheet.FirstColumn, FirstRow = (uint)sheet.FirstRow,

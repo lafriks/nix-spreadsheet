@@ -60,7 +60,7 @@ namespace Nix.SpreadSheet
         public ushort? Height
         {
             get { return height; }
-            set { height = (ushort)(value * 15); }
+            set { height = value; }
         }
 
         /// <summary>
