@@ -105,7 +105,7 @@ namespace Nix.SpreadSheet.Provider.Zip
 							(dt.Hour << 11) | (dt.Minute << 5) | (dt.Second >> 1)); 
 		}
 
-		private void WriteFileHeader(Entry e)
+		private void WriteFileHeader(ref Entry e)
 		{
 			e.PositionInStream = (uint)this.stream.Position;
 
@@ -146,8 +146,21 @@ namespace Nix.SpreadSheet.Provider.Zip
 			// Set header size
 			e.HeaderSize = (uint)(this.stream.Position - e.PositionInStream);
 		}
+		
+		private void UpdateFileHeader(ref Entry e)
+		{
+            long pos = this.stream.Position;
 
-		private void WriteCentralDirectoryHeader(Entry e)
+            this.stream.Position = e.PositionInStream + 14;
+
+            this.stream.Write(e.Crc32, 0, 4);
+			this.stream.Write(BitConverter.GetBytes(e.Size), 0, 4);
+			this.stream.Write(BitConverter.GetBytes(e.OriginalSize), 0, 4);
+
+            this.stream.Position = pos;
+		}
+
+		private void WriteCentralDirectoryHeader(ref Entry e)
 		{
 			bool encodeUtf8 = this.ForceStringsInUtf8 || DetectUtf8(e.FileName) || DetectUtf8(e.Comment);
 
@@ -195,8 +208,11 @@ namespace Nix.SpreadSheet.Provider.Zip
 		{
 			uint cdStartPos = (uint)this.stream.Position;
 
-			foreach(Entry e in this.entries)
-				this.WriteCentralDirectoryHeader(e);
+			for (int i = 0; i < this.entries.Count; i++)
+			{
+				Entry e = this.entries[i];
+				this.WriteCentralDirectoryHeader(ref e);
+			}
 
 			uint cdSize = (uint)this.stream.Position - cdStartPos;
 
@@ -218,6 +234,40 @@ namespace Nix.SpreadSheet.Provider.Zip
             this.stream.Write(BitConverter.GetBytes((ushort)0), 0, 2);
             
             this.stream.Flush();
+		}
+		
+		private void WriteStream(ref Entry e, Stream content)
+		{
+			// Write header
+			this.WriteFileHeader(ref e);
+
+			CRC32 crc32 = new CRC32();
+			Stream st = ( e.Compress ? new DeflateStream(this.stream, CompressionMode.Compress, true) : this.stream );
+            uint fileSize = 0;
+
+            try
+			{
+	        	byte[] buffer = new byte[8192];
+				int r;
+				// Write content
+				while ( (r = content.Read(buffer, 0, buffer.GetLength(0))) > 0 )
+				{
+	            	crc32.ComputeHash(buffer, 0, r);
+	            	st.Write(buffer, 0, r);
+	            	fileSize += (uint)r;
+				}
+			}
+			finally
+			{
+				if ( e.Compress )
+					st.Dispose();
+			}
+			byte[] hash = (fileSize == 0 ? new byte[] {0, 0, 0, 0} : crc32.Hash);
+            Array.Reverse(hash);
+
+            e.OriginalSize = fileSize;
+			e.Size = (uint)(this.stream.Position - e.PositionInStream - e.HeaderSize);
+			e.Crc32 = hash;
 		}
 		#endregion
 
@@ -246,7 +296,7 @@ namespace Nix.SpreadSheet.Provider.Zip
             Array.Reverse(hash);
 			Entry e = new Entry() { FileName = fileName, Compress = false, OriginalSize = (uint)bin.GetLength(0), Size = (uint)bin.GetLength(0), LastModified = DateTime.Now, Comment = comment, Crc32 = hash };
 			// Write header
-			this.WriteFileHeader(e);
+			this.WriteFileHeader(ref e);
 			// Write content
 			this.stream.Write(bin, 0, bin.GetLength(0));
 			this.stream.Flush();
@@ -273,33 +323,26 @@ namespace Nix.SpreadSheet.Provider.Zip
 		public void AddStream(string fileName, Stream content, string comment)
 		{
 			Entry e = new Entry() { FileName = fileName, Compress = true, LastModified = DateTime.Now, Comment = comment };
-			// Write header
-			this.WriteFileHeader(e);
 
-			CRC32 crc32 = new CRC32();
-            Stream def = new DeflateStream(this.stream, CompressionMode.Compress, true);
-
-            uint fileSize = 0;
-        	byte[] buffer = new byte[8192];
-			int r;
-			// Write content
-			while ( (r = content.Read(buffer, 0, buffer.GetLength(0))) > 0 )
+			long cpos = content.Position;
+			
+			this.WriteStream(ref e, content);
+			
+			if ( e.OriginalSize < e.Size && content.CanSeek )
 			{
-            	crc32.ComputeHash(buffer, 0, r);
-            	def.Write(buffer, 0, r);
-            	fileSize += (uint)r;
+				e.Compress = false;
+				content.Position = cpos;
+				this.stream.Position = e.PositionInStream;
+				this.stream.SetLength(e.PositionInStream);
+				this.WriteStream(ref e, content);
 			}
-			byte[] hash = (fileSize == 0 ? new byte[] {0, 0, 0, 0} : crc32.Hash);
-            Array.Reverse(hash);
 
-            e.OriginalSize = fileSize;
-			e.Size = (uint)(this.stream.Position - e.PositionInStream - e.HeaderSize);
-			e.Crc32 = hash;
+			this.UpdateFileHeader(ref e);
+
 			this.stream.Flush();
-
 			this.entries.Add(e);
 		}
-		
+
 		/// <summary>
 		/// Write central directory entries and close zip file (Underlaying stream will not be closed).
 		/// </summary>
