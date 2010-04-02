@@ -19,8 +19,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
+using System.IO.Compression;
+using System.Text;
 
 namespace Nix.SpreadSheet.Provider.Zip
 {
@@ -59,9 +60,14 @@ namespace Nix.SpreadSheet.Provider.Zip
 			public byte[] Crc32;
 
 			/// <summary>
-			/// Header length.
+			/// Entry position in stream.
 			/// </summary>
-			public uint HeaderLength;
+			public uint PositionInStream;
+			
+			/// <summary>
+			/// Header size.
+			/// </summary>
+			public uint HeaderSize;
 
 			/// <summary>
 			/// Comment.
@@ -72,12 +78,19 @@ namespace Nix.SpreadSheet.Provider.Zip
 		private Stream stream;
 
 		private List<Entry> entries = new List<Entry>();
+		
+		/// <summary>
+		/// Force strings to be written allways in UTF-8
+		/// </summary>
+		public bool ForceStringsInUtf8 { get; set; }
 
 		public ZipStream(Stream stream)
 		{
+			this.ForceStringsInUtf8 = false;
 			this.stream = stream;
 		}
 
+		#region Header and helper methods
 		private bool DetectUtf8(string text)
 		{
 			foreach (char c in text)
@@ -94,45 +107,119 @@ namespace Nix.SpreadSheet.Provider.Zip
 
 		private void WriteFileHeader(Entry e)
 		{
-			long hStartPos = this.stream.Position;
+			e.PositionInStream = (uint)this.stream.Position;
 
-			bool encodeUtf8 = DetectUtf8(e.FileName)/* || DetectUtf8(e.Comment)*/;
+			bool encodeUtf8 = this.ForceStringsInUtf8 || DetectUtf8(e.FileName) /* || DetectUtf8(e.Comment)*/;
 
-			byte[] fileName = (encodeUtf8 ? Encoding.UTF8 : Encoding.ASCII).GetBytes(e.FileName);
+			byte[] fileName = (encodeUtf8 ? Encoding.UTF8 : Encoding.GetEncoding(437)).GetBytes(e.FileName);
 
 			// Signature
-			this.stream.Write(BitConverter.GetBytes(0x04034b50), 0, 4);
+			this.stream.Write(BitConverter.GetBytes((uint)0x04034b50), 0, 4);
 			// Version needed to extract (minimum)
 			this.stream.Write(new byte[] {20, 0}, 0, 2);
-			// Encode in utf8 or ascii
+			// General purpose bit flag
 			this.stream.Write(BitConverter.GetBytes((ushort)(encodeUtf8 ? 2048 : 0)), 0, 2);
 			// Compression method
 			this.stream.Write(BitConverter.GetBytes((ushort)(e.Compress ? 8 : 0)), 0, 2);
 			// Last modified date and time
 			this.stream.Write(BitConverter.GetBytes(DateTimeToDosTime(e.LastModified)), 0, 4);
-			// CRC & size
+			// CRC-32 & size
 			if (e.Crc32 != null)
 			{
 				this.stream.Write(e.Crc32, 0, 4);
-				this.stream.Write(BitConverter.GetBytes(e.OriginalSize), 0, 4);
 				this.stream.Write(BitConverter.GetBytes(e.Size), 0, 4);
+				this.stream.Write(BitConverter.GetBytes(e.OriginalSize), 0, 4);
 			}
 			else
 			{
 				// Updated later
 				this.stream.Write(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 0, 12);
 			}
-			// Filename length
+			// File name length
 			this.stream.Write(BitConverter.GetBytes((ushort)fileName.GetLength(0)), 0, 2);
 			// Extra field length
 			this.stream.Write(BitConverter.GetBytes((ushort)0), 0, 2);
 
-			// Filename
+			// File name
 			this.stream.Write(fileName, 0, fileName.GetLength(0));
 
-			// Set header lenght
-			e.HeaderLength = (uint)(this.stream.Position - hStartPos);
+			// Set header size
+			e.HeaderSize = (uint)(this.stream.Position - e.PositionInStream);
 		}
+
+		private void WriteCentralDirectoryHeader(Entry e)
+		{
+			bool encodeUtf8 = this.ForceStringsInUtf8 || DetectUtf8(e.FileName) || DetectUtf8(e.Comment);
+
+			Encoding enc = (encodeUtf8 ? Encoding.UTF8 : Encoding.GetEncoding(437));
+			byte[] fileName = enc.GetBytes(e.FileName);
+			byte[] comment = enc.GetBytes(e.Comment);
+			
+			// Central directory file header signature
+			this.stream.Write(BitConverter.GetBytes((uint)0x02014b50), 0, 4);
+			// Version made by and version needed to extract (minimum)
+			this.stream.Write(new byte[] {20, 0, 20, 0}, 0, 4);
+			// General purpose bit flag
+			this.stream.Write(BitConverter.GetBytes((ushort)(encodeUtf8 ? 2048 : 0)), 0, 2);
+			// Compression method
+			this.stream.Write(BitConverter.GetBytes((ushort)(e.Compress ? 8 : 0)), 0, 2);
+			// Last modified date and time
+			this.stream.Write(BitConverter.GetBytes(DateTimeToDosTime(e.LastModified)), 0, 4);
+			// File CRC-32
+			this.stream.Write(e.Crc32, 0, 4);
+			// Compressed size
+			this.stream.Write(BitConverter.GetBytes(e.Size), 0, 4);
+			// Uncompressed size
+			this.stream.Write(BitConverter.GetBytes(e.OriginalSize), 0, 4);
+			// File name length
+			this.stream.Write(BitConverter.GetBytes((ushort)fileName.GetLength(0)), 0, 2);
+			// Extra field length
+			this.stream.Write(BitConverter.GetBytes((ushort)0), 0, 2);
+			// File comment length
+			this.stream.Write(BitConverter.GetBytes((ushort)comment.GetLength(0)), 0, 2);
+			// Disk number where file starts
+			this.stream.Write(BitConverter.GetBytes((ushort)0), 0, 2);
+			// Internal file attributes
+            this.stream.Write(BitConverter.GetBytes((ushort)0), 0, 2);
+            // External file attributes
+            this.stream.Write(BitConverter.GetBytes((uint)0x8100), 0, 4);
+            // Relative offset of local file header
+            this.stream.Write(BitConverter.GetBytes(e.PositionInStream), 0, 4);
+			// File name
+			this.stream.Write(fileName, 0, fileName.GetLength(0));
+			// File comment
+			this.stream.Write(comment, 0, comment.GetLength(0));
+		}
+		
+		private void WriteCentralDirectory()
+		{
+			uint cdStartPos = (uint)this.stream.Position;
+
+			foreach(Entry e in this.entries)
+				this.WriteCentralDirectoryHeader(e);
+
+			uint cdSize = (uint)this.stream.Position - cdStartPos;
+
+			// Central directory file header signature
+			this.stream.Write(BitConverter.GetBytes((uint)0x06054b50), 0, 4);
+			// Number of this disk
+			this.stream.Write(BitConverter.GetBytes((ushort)0), 0, 2);
+			// Disk where central directory starts
+			this.stream.Write(BitConverter.GetBytes((ushort)0), 0, 2);
+			// Number of central directory records on this disk
+            this.stream.Write(BitConverter.GetBytes((ushort)entries.Count), 0, 2);
+            // Total number of central directory records
+            this.stream.Write(BitConverter.GetBytes((ushort)entries.Count), 0, 2);
+            // Size of central directory (bytes)
+            this.stream.Write(BitConverter.GetBytes(cdSize), 0, 4);
+            // Offset of start of central directory, relative to start of archive
+            this.stream.Write(BitConverter.GetBytes(cdStartPos), 0, 4);
+            // Comment size
+            this.stream.Write(BitConverter.GetBytes((ushort)0), 0, 2);
+            
+            this.stream.Flush();
+		}
+		#endregion
 
 		/// <summary>
 		/// Add uncompressed file to zip archive.
@@ -153,14 +240,72 @@ namespace Nix.SpreadSheet.Provider.Zip
 		public void AddFileWithStringContent(string fileName, string content, string comment)
 		{
 			byte[] bin = UTF8Encoding.UTF8.GetBytes(content);
-            CRC32 crc32 = new CRC32(CRC32.DefaultPolynomialLE);
-			Entry e = new Entry() { FileName = fileName, Compress = false, OriginalSize = (uint)bin.GetLength(0), Size = (uint)bin.GetLength(0), LastModified = DateTime.Now, Comment = comment, Crc32 = crc32.ComputeHash(bin) };
-			entries.Add(e);
+            CRC32 crc32 = new CRC32();
+            crc32.ComputeHash(bin);
+            byte[] hash = crc32.Hash;
+            Array.Reverse(hash);
+			Entry e = new Entry() { FileName = fileName, Compress = false, OriginalSize = (uint)bin.GetLength(0), Size = (uint)bin.GetLength(0), LastModified = DateTime.Now, Comment = comment, Crc32 = hash };
 			// Write header
-			WriteFileHeader(e);
+			this.WriteFileHeader(e);
 			// Write content
-			long eStartPos = stream.Position;
-			stream.Write(bin, 0, bin.GetLength(0));
+			this.stream.Write(bin, 0, bin.GetLength(0));
+			this.stream.Flush();
+
+			this.entries.Add(e);
+		}
+
+		/// <summary>
+		/// Add and compress stream to zip archive.
+		/// </summary>
+		/// <param name="fileName">File name.</param>
+		/// <param name="content">Stream to read from.</param>
+		public void AddStream(string fileName, Stream content)
+		{
+			AddStream(fileName, content, string.Empty);
+		}
+
+		/// <summary>
+		/// Add and compress stream to zip archive.
+		/// </summary>
+		/// <param name="fileName">File name.</param>
+		/// <param name="content">Stream to read from.</param>
+		/// <param name="comment">Comment.</param>
+		public void AddStream(string fileName, Stream content, string comment)
+		{
+			Entry e = new Entry() { FileName = fileName, Compress = true, LastModified = DateTime.Now, Comment = comment };
+			// Write header
+			this.WriteFileHeader(e);
+
+			CRC32 crc32 = new CRC32();
+            Stream def = new DeflateStream(this.stream, CompressionMode.Compress, true);
+
+            uint fileSize = 0;
+        	byte[] buffer = new byte[8192];
+			int r;
+			// Write content
+			while ( (r = content.Read(buffer, 0, buffer.GetLength(0))) > 0 )
+			{
+            	crc32.ComputeHash(buffer, 0, r);
+            	def.Write(buffer, 0, r);
+            	fileSize += (uint)r;
+			}
+			byte[] hash = (fileSize == 0 ? new byte[] {0, 0, 0, 0} : crc32.Hash);
+            Array.Reverse(hash);
+
+            e.OriginalSize = fileSize;
+			e.Size = (uint)(this.stream.Position - e.PositionInStream - e.HeaderSize);
+			e.Crc32 = hash;
+			this.stream.Flush();
+
+			this.entries.Add(e);
+		}
+		
+		/// <summary>
+		/// Write central directory entries and close zip file (Underlaying stream will not be closed).
+		/// </summary>
+		public void Close()
+		{
+			this.WriteCentralDirectory();
 		}
 	}
 }

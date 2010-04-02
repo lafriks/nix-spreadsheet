@@ -182,47 +182,5 @@ namespace Nix.SpreadSheet.Provider.Zip
             return finalHash;
         }
         #endregion
-
-        #region Public methods
-        /// <summary>
-        /// Overloaded. Computes the hash value for the specified Stream.
-        /// </summary>
-        /// <param name="input">The input to compute the hash code for.</param>
-        /// <returns>The computed CRC32 hash code.</returns>
-        new public byte[] ComputeHash(Stream input)
-        {
-            byte [] buffer = new byte [4096];
-            int bytesRead;
-            while ( (bytesRead = input.Read(buffer, 0, 4096)) > 0 )
-            {
-                this.HashCore(buffer, 0, bytesRead);
-            }
-            return HashFinal();
-        }
-
-
-        /// <summary>
-        /// Overloaded. Computes the hash value for the specified byte array.
-        /// </summary>
-        /// <param name="buffer">The input to compute the hash code for.</param>
-        /// <returns>The computed CRC32 hash code.</returns>
-        new public byte[] ComputeHash(byte[] buffer)
-        {
-            return ComputeHash(buffer, 0, buffer.Length);
-        }
-	
-        /// <summary>
-        /// Overloaded. Computes the hash value for the specified region of specified byte array.
-        /// </summary>
-        /// <param name="buffer">The input to compute the hash code for.</param>
-        /// <param name="offset">The offset into the byte array from which to begin using data.</param>
-        /// <param name="count">The number of bytes in the array to use as data.</param>
-        /// <returns>The computed CRC32 hash code.</returns>
-        new public byte[] ComputeHash( byte[] buffer, int offset, int count )
-        {
-            HashCore(buffer, offset, count);
-            return HashFinal();
-        }
-        #endregion
     }
 }
