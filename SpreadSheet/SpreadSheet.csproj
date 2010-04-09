@@ -165,7 +165,7 @@
     <Compile Include="Provider\Xls\BIFF\PALETTE.cs" />
     <Compile Include="Provider\Xls\BIFF\XF.cs" />
     <Compile Include="Provider\Zip\Adler32.cs" />
-    <Compile Include="Provider\Zip\CRC32.cs" />
+    <Compile Include="Provider\Zip\Crc32.cs" />
     <Compile Include="Provider\Zip\ZipStream.cs" />
     <Compile Include="Row.cs" />
     <Compile Include="Sheet.cs" />

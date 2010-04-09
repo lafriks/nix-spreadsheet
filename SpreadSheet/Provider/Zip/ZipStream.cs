@@ -241,7 +241,7 @@ namespace Nix.SpreadSheet.Provider.Zip
 			// Write header
 			this.WriteFileHeader(ref e);
 
-			CRC32 crc32 = new CRC32();
+			Crc32 crc32 = new Crc32();
 			Stream st = ( e.Compress ? new DeflateStream(this.stream, CompressionMode.Compress, true) : this.stream );
             uint fileSize = 0;
 
@@ -290,7 +290,7 @@ namespace Nix.SpreadSheet.Provider.Zip
 		public void AddFileWithStringContent(string fileName, string content, string comment)
 		{
 			byte[] bin = UTF8Encoding.UTF8.GetBytes(content);
-            CRC32 crc32 = new CRC32();
+			Crc32 crc32 = new Crc32();
             crc32.ComputeHash(bin);
             byte[] hash = crc32.Hash;
             Array.Reverse(hash);
