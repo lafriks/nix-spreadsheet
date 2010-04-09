@@ -45,7 +45,7 @@ namespace Nix.SpreadSheet.Provider
 
 		private List<Font> fontTable = new List<Font>();
 
-		private List<string> stringTable = new List<string>();
+		private Dictionary<string, uint> stringTable = new Dictionary<string, uint>();
 
 		/// <summary>
 		/// Find font index.
@@ -321,8 +321,8 @@ namespace Nix.SpreadSheet.Provider
 						{
 							count++;
 							string val = this.FormatValue(cell);
-							if ( stringTable.IndexOf(val) == -1 )
-								stringTable.Add(val);
+							if ( ! stringTable.ContainsKey(val) )
+								stringTable.Add(val, (uint)stringTable.Count);
 						}
 					}
 				}
@@ -337,10 +337,9 @@ namespace Nix.SpreadSheet.Provider
 		/// <returns>Index of string in table.</returns>
 		protected uint FindStringTableIndex(string value)
 		{
-			int idx = stringTable.IndexOf(value);
-			if ( idx == -1 )
+			if ( ! stringTable.ContainsKey(value) )
 				throw new ArgumentOutOfRangeException("value");
-			return (uint)idx;
+			return stringTable[value];
 		}
 
 		#region IFileFormatProvider Members

@@ -54,7 +54,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
 		}
 
 		public uint TotalCount { get; set; }
-		public List<string> StringTable { get; set; }
+		public Dictionary<string, uint> StringTable { get; set; }
 		private List<SplitItemCollection> RecordBlocks { get; set; }
 		
 		/// <summary>
@@ -71,20 +71,19 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
 			RecordBlocks = new List<SplitItemCollection>();
 			RecordBlocks.Add(new SplitItemCollection());
 			int left = MaximalRecordLength - 8;
-			foreach (string str in StringTable)
+			foreach (string str in StringTable.Keys)
 			{
 				SplitItem item = new SplitItem() { FullString = true, String = str, StringLength = (ushort)str.Length, StringFormating = null, GRBit = BIFFStringHelper.GetGRBIT(str, null, true) };
 				ushort len = BIFFStringHelper.GetStringByteCount(item.String, item.StringFormating, true, item.GRBit, !item.FullString);
 				while (true)
 				{
 					// Check if there is space left for string header and at least one character.
-					if ((item.FullString && (left < (3 + ((item.GRBit & 0x08) == 0x08 ? 2 : 0) + ((item.GRBit & 0x01) == 0x01 ? 2 : 1))))
+					if ((item.FullString && (left < 5 + (3 + ((item.GRBit & 0x08) == 0x08 ? 2 : 0) + ((item.GRBit & 0x01) == 0x01 ? 2 : 1))))
 						 || (!item.FullString && left < ((item.GRBit & 0x01) == 0x01 ? 2 : 1)))
 					{
 						// Start new record
 						RecordBlocks.Add(new SplitItemCollection());
 						left = MaximalRecordLength;
-						break;
 					}
 					if (len <= left)
 					{
@@ -98,9 +97,13 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
 						SplitItem part = new SplitItem() { FullString = false, StringLength = 0, StringFormating = null, GRBit = item.GRBit };
 						ushort has_len = 0;
 						if (!item.FullString)
-							has_len = (ushort)Math.Floor((decimal)left / ((item.GRBit & 0x01) == 0x01 ? 2 : 1));
+						{
+							has_len = (ushort)Math.Floor((decimal)(left - 1) / ((item.GRBit & 0x01) == 0x01 ? 2 : 1));
+						}
 						else
+						{
 							has_len = (ushort)Math.Floor((decimal)(left - (3 + ((item.GRBit & 0x08) == 0x08 ? 2 : 0))) / ((item.GRBit & 0x01) == 0x01 ? 2 : 1));
+						}
 						part.String = item.String.Substring(has_len);
 						// We can change GRBit in continued record
 						part.GRBit = BIFFStringHelper.GetGRBIT(part.String, null, true);
