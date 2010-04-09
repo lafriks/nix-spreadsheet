@@ -5,7 +5,6 @@ using System.Text;
 using System.Security.Cryptography;
 
 using Nix.SpreadSheet;
-using Nix.Zip;
 
 namespace Test
 {
@@ -15,12 +14,12 @@ namespace Test
     public class Test
     {
         // Generic function using HashAlgorithm 
-        public static void HashData(HashAlgorithm hashAlg, string str )
+        /*public static void HashData(HashAlgorithm hashAlg, string str )
         {
             byte[] rawBytes = System.Text.ASCIIEncoding.ASCII.GetBytes( str );
-            byte[] hashData = hashAlg.ComputeHash( rawBytes );
-            Console.WriteLine( BitConverter.ToString( hashData ) );
-        }
+            hashAlg.ComputeHash( rawBytes );
+			Console.WriteLine(BitConverter.ToString(hashAlg.Hash));
+        }*/
 
         /// <summary>
         /// The main entry point for the application.

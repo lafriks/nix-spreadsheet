@@ -1,14 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-# SharpDevelop 3.1.1.5327
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompoundFile", "CompoundFile\CompoundFile.csproj", "{092F19A4-5A93-4F47-B0A1-C132A0FCDB22}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{58161230-5EF9-46A6-A2DE-73A3DE3C592E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpreadSheet", "SpreadSheet\SpreadSheet.csproj", "{90F370AB-586A-473A-BAB1-002A808FB869}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zip", "Zip\Zip.csproj", "{A00A7EDF-AEE4-4F56-ABBD-25BE3E6CA5E4}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -32,10 +29,6 @@ Global
 		{90F370AB-586A-473A-BAB1-002A808FB869}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90F370AB-586A-473A-BAB1-002A808FB869}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90F370AB-586A-473A-BAB1-002A808FB869}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A00A7EDF-AEE4-4F56-ABBD-25BE3E6CA5E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A00A7EDF-AEE4-4F56-ABBD-25BE3E6CA5E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A00A7EDF-AEE4-4F56-ABBD-25BE3E6CA5E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A00A7EDF-AEE4-4F56-ABBD-25BE3E6CA5E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

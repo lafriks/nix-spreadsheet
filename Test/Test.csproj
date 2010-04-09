@@ -1,7 +1,7 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{58161230-5EF9-46A6-A2DE-73A3DE3C592E}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -92,11 +92,6 @@
     <ProjectReference Include="..\SpreadSheet\SpreadSheet.csproj">
       <Name>SpreadSheet</Name>
       <Project>{90F370AB-586A-473A-BAB1-002A808FB869}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\Zip\Zip.csproj">
-      <Name>Zip</Name>
-      <Project>{A00A7EDF-AEE4-4F56-ABBD-25BE3E6CA5E4}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
   </ItemGroup>

@@ -1,6 +1,6 @@
 /*
- * Library for creating Zip files.
- * Copyright (C) 2007, Lauris Bukðis-Haberkorns <lauris@nix.lv>
+ * Library for generating spreadsheet documents.
+ * Copyright (C) 2008, Lauris Bukðis-Haberkorns <lauris@nix.lv>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,12 +21,12 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 
-namespace Nix.Zip
+namespace Nix.SpreadSheet.Provider.Zip
 {
 	/// <summary>
 	/// Adler-32 Hash algorithm.
 	/// </summary>
-	public class Adler32 : HashAlgorithm
+	internal class Adler32 : HashAlgorithm
 	{
         #region Private members and constructor
         private uint adlerA;
@@ -99,48 +99,6 @@ namespace Nix.Zip
             finalHash[3] = (byte) ((finalAdler >>  0) & 0xFF);
 
             return finalHash;
-        }
-        #endregion
-
-        #region Public methods
-        /// <summary>
-        /// Overloaded. Computes the hash value for the specified Stream.
-        /// </summary>
-        /// <param name="input">The input to compute the hash code for.</param>
-        /// <returns>The computed Adler-32 hash code.</returns>
-        new public byte[] ComputeHash(Stream input)
-        {
-            byte [] buffer = new byte [4096];
-            int bytesRead;
-            while ( (bytesRead = input.Read(buffer, 0, 4096)) > 0 )
-            {
-                this.HashCore(buffer, 0, bytesRead);
-            }
-            return this.HashFinal();
-        }
-
-
-        /// <summary>
-        /// Overloaded. Computes the hash value for the specified byte array.
-        /// </summary>
-        /// <param name="buffer">The input to compute the hash code for.</param>
-        /// <returns>The computed Adler-32 hash code.</returns>
-        new public byte[] ComputeHash(byte[] buffer)
-        {
-            return ComputeHash(buffer, 0, buffer.Length);
-        }
-	
-        /// <summary>
-        /// Overloaded. Computes the hash value for the specified region of specified byte array.
-        /// </summary>
-        /// <param name="buffer">The input to compute the hash code for.</param>
-        /// <param name="offset">The offset into the byte array from which to begin using data.</param>
-        /// <param name="count">The number of bytes in the array to use as data.</param>
-        /// <returns>The computed Adler-32 hash code.</returns>
-        new public byte[] ComputeHash( byte[] buffer, int offset, int count )
-        {
-            this.HashCore(buffer, offset, count);
-            return this.HashFinal();
         }
         #endregion
     }
