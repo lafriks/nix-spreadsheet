@@ -32,6 +32,14 @@ namespace Nix.CompoundFile
 
         protected Encoding Encoding;
 
+		public long Position
+		{
+			get
+			{
+				return Stream.Position;
+			}
+		}
+
         #region Constructors
         /// <summary>
         /// Constructor

@@ -77,20 +77,20 @@ namespace Test
 			dt.Columns.Add("text10", typeof(string));
 			dt.Columns.Add("text11", typeof(string));
 
-			for (int i = 0; i < 8000; i++)
+			for (int i = 0; i < 30000; i++)
 			{
 				dt.Rows.Add(new object[] { i,
-									"Col_" + ((int)Math.Round(rnd.NextDouble() * 1000, 0)).ToString(),
-									"Pîp_" + ((int)Math.Round(rnd.NextDouble() * 1000, 0)).ToString(),
-									"Ðûòð_" + ((int)Math.Round(rnd.NextDouble() * 1000, 0)).ToString(),
-									"Ðíûns_" + ((int)Math.Round(rnd.NextDouble() * 1000, 0)).ToString(),
-									"Ban_" + ((int)Math.Round(rnd.NextDouble() * 1000, 0)).ToString(),
-									"Rîb_" + ((int)Math.Round(rnd.NextDouble() * 1000, 0)).ToString(),
-									"Bak8_" + ((int)Math.Round(rnd.NextDouble() * 1000, 0)).ToString(),
-									"Rot9_" + ((int)Math.Round(rnd.NextDouble() * 1000, 0)).ToString(),
-									"Þog10_" + ((int)Math.Round(rnd.NextDouble() * 1000, 0)).ToString(),
-									"Mâk11_" + ((int)Math.Round(rnd.NextDouble() * 1000, 0)).ToString(),
-									"Sâk12_" + ((int)Math.Round(rnd.NextDouble() * 1000, 0)).ToString()
+									"Col_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
+									"Pîp_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
+									"Ðûòð_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
+									"Ðíûns_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
+									"Ban_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
+									"Rîb_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
+									"Bak8_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
+									"Rot9_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
+									"Þog10_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
+									"Mâk11_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
+									"Sâk12_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString()
 							});
 			}
 

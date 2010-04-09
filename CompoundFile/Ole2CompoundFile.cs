@@ -93,18 +93,32 @@ namespace Nix.CompoundFile
             // Total number of sectors of master sector allocation table
             this.ewriter.WriteUInt32(MSATCount);
             // First part of the master sector allocation table (MSAT) - max 109
-            for (int i = 0; i < Math.Min(this.MSAT.Count, 110); i++)
+            for (int i = 0; i < Math.Min(this.MSAT.Count, 109); i++)
             {
                 this.ewriter.WriteInt32(this.MSAT[i]);
             }
-            // TODO: Should there be (this.MSAT.Count > 109)?
-            if (SATCount < 110)
+			// Fill left space with 0xFF
+			if (this.MSAT.Count < 109)
                 this.ewriter.WriteBytes(0xFF, 436 - (this.MSAT.Count * 4));
         }
         #endregion
 
-        #region Write SAT and SSAT
-        private void WriteSAT(EndianStream writer)
+        #region Write additional MSAT, SAT and SSAT
+		private void WriteAdditionalMSAT(EndianStream writer, int MSATStart)
+		{
+			int start = MSATStart;
+			for (int i = 109; i < this.MSAT.Count; i++)
+			{
+				writer.WriteInt32(this.MSAT[i]);
+				if ((writer.Position % this.sectorSize) == (this.sectorSize - 4) || i == this.MSAT.Count - 1)
+				{
+					start = this.SAT.FindNextSpecialSector(start + 1, -4);
+					writer.WriteInt32(start);
+				}
+			}
+		}
+
+		private void WriteSAT(EndianStream writer)
         {
             foreach (int x in this.SAT.Allocations)
             {
@@ -202,10 +216,10 @@ namespace Nix.CompoundFile
             uint MSATSectorCount = 0;
 
             // First 109 SIDs of SAT are stored in header, check if we need more
-            // TODO: Debug!!! Could be wrong
             if (SATSectorCount > 109)
             {
-                // Count how much do we need
+				// TODO: Debug!!! Could be wrong
+				// Count how much do we need
                 uint sect = SATSectorCount - 109;
                 uint frsect = (sect % (ushort)(this.sectorSize / 4));
                 sect = Convert.ToUInt32(Math.Ceiling((double)sect / (this.sectorSize / 4)));
@@ -251,6 +265,12 @@ namespace Nix.CompoundFile
             #endregion
 
             #region Create and allocate streams
+			// Create additional MSAT stream
+			MemoryStream mmem = new MemoryStream();
+			EndianStream mwriter = this.CreateEndianStream(mmem);
+			this.WriteAdditionalMSAT(mwriter, MSATNextSector);
+			this.SAT.AllocateStream(MSATNextSector, mmem, 0xFF);
+
             // Create SAT stream
             MemoryStream smem = new MemoryStream();
             EndianStream swriter = this.CreateEndianStream(smem);

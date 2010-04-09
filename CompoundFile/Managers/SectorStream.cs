@@ -32,7 +32,6 @@ namespace Nix.CompoundFile.Managers
 				for(int i = size; i < this.sectorSize; i++)
 					block[i] = defaultValue;
 			stream.Write(block, 0, this.sectorSize);
-			
 		}
 	}
 }

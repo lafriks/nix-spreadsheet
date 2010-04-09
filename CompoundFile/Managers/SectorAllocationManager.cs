@@ -33,7 +33,7 @@ namespace Nix.CompoundFile.Managers
     {
         #region Private variables
         private int SectorSize = 0;
-		private ArrayList Sectors = new ArrayList();
+		private List<int> Sectors = new List<int>();
 		private List<ISector> SectorsData = new List<ISector>();
 
         private bool sync = false;
@@ -69,13 +69,14 @@ namespace Nix.CompoundFile.Managers
         {
             for (int i = from; i < this.Sectors.Count; i++)
             {
-            	if ((int)this.Sectors[i] == -1)
+            	if (this.Sectors[i] == -1)
                     return i;
             }
             // No free sectors found
     		// Keep in sync arrays
     		this.SectorsData.Add(null);
-    		return this.Sectors.Add(-1);
+			this.Sectors.Add(-1);
+			return this.Sectors.Count - 1;
         }
 
         public int Allocate(uint size)
@@ -106,16 +107,26 @@ namespace Nix.CompoundFile.Managers
             this.OnAllocation(this, current);
             return first;
         }
-        #endregion
 
-        #region Allocations
-        public int[] Allocations
+		public int FindNextSpecialSector(int start, int val)
+		{
+			for (int i = start; i < this.Sectors.Count; i++)
+			{
+				if (this.Sectors[i] == val)
+					return i;
+			}
+			return -2;
+		}
+		#endregion
+
+		#region Allocations
+		public int[] Allocations
         {
             get
             {
                 if ( ! this.sync)
                 {
-                    this.allocations = (int[])this.Sectors.ToArray(typeof(int));
+                    this.allocations = this.Sectors.ToArray();
                     this.sync = true;
                 }
                 return this.allocations;
@@ -138,7 +149,7 @@ namespace Nix.CompoundFile.Managers
                 this.SectorsData[start] = new SectorStream(stream, offset, this.SectorSize, def);
                 offset += this.SectorSize;
                 // Go to next sector
-				start = ((int)this.Sectors[start] == -3 || (int)this.Sectors[start] == -4 ? start + 1 : (int)this.Sectors[start]);
+				start = (this.Sectors[start] == -3 || this.Sectors[start] == -4 ? FindNextSpecialSector(start + 1, this.Sectors[start]) : this.Sectors[start]);
             }
         }
         #endregion
