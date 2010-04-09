@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Data;
 using System.Text;
@@ -81,16 +81,16 @@ namespace Test
 			{
 				dt.Rows.Add(new object[] { i,
 									"Col_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
-									"Pîp_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
-									"Ğûòğ_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
-									"Ğíûns_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
+									"PÄ«p_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
+									"Å Å«Å†Å¡_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
+									"Å Å«ns_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
 									"Ban_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
-									"Rîb_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
+									"RÄ«b_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
 									"Bak8_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
 									"Rot9_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
-									"Şog10_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
-									"Mâk11_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
-									"Sâk12_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString()
+									"Å½og10_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
+									"MÄk11_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString(),
+									"SÄk12_" + ((int)Math.Round(rnd.NextDouble() * 10000, 0)).ToString()
 							});
 			}
 
