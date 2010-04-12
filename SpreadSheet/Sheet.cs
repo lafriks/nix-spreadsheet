@@ -428,7 +428,12 @@ namespace Nix.SpreadSheet
 				c = 0;
 				foreach (string columnName in columnHeaders.Keys)
 				{
-					this[r + firstRow + (showHeader ? 1 : 0), c + firstColumn].Value = dataView[r][columnName];
+                    object val = dataView[r][columnName];
+                    if (val is DateTime && (((DateTime)val).Hour == 0 && ((DateTime)val).Minute == 0 && ((DateTime)val).Second == 0))
+                    {
+                        val = ((DateTime)val).ToShortDateString();
+                    }
+					this[r + firstRow + (showHeader ? 1 : 0), c + firstColumn].Value = val;
 					c++;
 				}
 			}
