@@ -55,7 +55,15 @@ namespace Nix.SpreadSheet
                 
 			}
 		}
-		
+
+        public ColumnRange this[int start, int end]
+        {
+            get
+            {
+                return new ColumnRange(this.sheet, start, end);
+            }
+        }
+
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
 		{
 			return this.m_columns.Values.GetEnumerator();

@@ -136,6 +136,7 @@
     <Compile Include="ColorPalette.cs" />
     <Compile Include="Column.cs" />
     <Compile Include="ColumnList.cs" />
+    <Compile Include="ColumnRange.cs" />
     <Compile Include="Comment.cs">
       <SubType>Code</SubType>
     </Compile>
