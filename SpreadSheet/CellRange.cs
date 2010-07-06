@@ -203,5 +203,39 @@ namespace Nix.SpreadSheet
 			}
 			return this;
 		}
-	}
+
+        /// <summary>
+        /// Set font.
+        /// </summary>
+        /// <param name="font">Font.</param>
+        /// <returns>Current range instance.</returns>
+        public CellRange SetFont(Font font)
+        {
+            for (int r = FirstRow; r <= LastRow; r++)
+            {
+                for (int c = FirstColumn; c <= LastColumn; c++)
+                {
+                    sheet[r, c].Formatting.Font.CopyValuesFrom(font);
+                }
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// Set cell style.
+        /// </summary>
+        /// <param name="font">Font.</param>
+        /// <returns>Current range instance.</returns>
+        public CellRange SetFormatting(Style style)
+        {
+            for (int r = FirstRow; r <= LastRow; r++)
+            {
+                for (int c = FirstColumn; c <= LastColumn; c++)
+                {
+                    sheet[r, c].Formatting.CopyValuesFrom(style);
+                }
+            }
+            return this;
+        }
+    }
 }

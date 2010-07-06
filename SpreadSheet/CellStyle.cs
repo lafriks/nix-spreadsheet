@@ -146,5 +146,14 @@ namespace Nix.SpreadSheet
 			// To be equal parent styles should match
 			return base.Equals(other) && other is CellStyle && ((CellStyle)other).Parent.Equals(this.Parent);
 		}
+
+        public override void CopyValuesFrom(Style other)
+        {
+            base.CopyValuesFrom(other);
+            if (other is CellStyle)
+            {
+                this.Parent.CopyValuesFrom(((CellStyle)other).Parent);
+            }
+        }
     }
 }

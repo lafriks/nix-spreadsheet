@@ -93,6 +93,20 @@ namespace Nix.SpreadSheet
 			font.weight = this.weight;
 			return font;
 		}
+
+        public void CopyValuesFrom(Font other)
+        {
+            this.charSet = other.charSet;
+            this.color = other.color;
+            this.fontFace = other.fontFace;
+            this.italic = other.italic;
+            this.name = other.name;
+            this.scriptpos = other.scriptpos;
+            this.size = other.size;
+            this.strikeout = other.strikeout;
+            this.underline = other.underline;
+            this.weight = other.weight;
+        }
 		#endregion
 
         #region Color

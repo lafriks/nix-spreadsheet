@@ -411,5 +411,33 @@ namespace Nix.SpreadSheet
                      || (this.BackgroundPatternColor != other.BackgroundPatternColor)
                      || (this.BackgroundPattern != other.BackgroundPattern));
         }
+
+        public virtual void CopyValuesFrom(Style other)
+        {
+            this.CellLocked = other.CellLocked;
+            this.HiddenFormula = other.HiddenFormula;
+            this.WrapText = other.WrapText;
+            this.ShrinkToFit = other.ShrinkToFit;
+            this.Font.CopyValuesFrom(other.Font);
+            this.Format = other.Format;
+            this.IndentLevel = other.IndentLevel;
+            this.TextDirection = other.TextDirection;
+            this.WrapTextAtRightBorder = other.WrapTextAtRightBorder;
+            this.HorizontalAlignment = other.HorizontalAlignment;
+            this.VerticalAlignment = other.VerticalAlignment;
+            this.JustifyTextAtLastLine = other.JustifyTextAtLastLine;
+            this.Rotation = other.Rotation;
+            this.TopBorderLineStyle = other.TopBorderLineStyle;
+            this.TopBorderLineColor = other.TopBorderLineColor;
+            this.LeftBorderLineStyle = other.LeftBorderLineStyle;
+            this.LeftBorderLineColor = other.LeftBorderLineColor;
+            this.RightBorderLineStyle = other.RightBorderLineStyle;
+            this.RightBorderLineColor = other.RightBorderLineColor;
+            this.BottomBorderLineStyle = other.BottomBorderLineStyle;
+            this.BottomBorderLineColor = other.BottomBorderLineColor;
+            this.BackgroundColor = other.BackgroundColor;
+            this.BackgroundPatternColor = other.BackgroundPatternColor;
+            this.BackgroundPattern = other.BackgroundPattern;
+        }
     }
 }
