@@ -250,6 +250,10 @@ namespace Nix.SpreadSheet.Provider
 					}
 				}
 			}
+            if (this.styleTable.Count == 0)
+            {
+                this.styleTable.Add(Style.Default);
+            }
 		}
 
 		/// <summary>
