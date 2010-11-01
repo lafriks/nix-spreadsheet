@@ -23,13 +23,13 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("Nix.SpreadSheet")]
 [assembly: AssemblyDescription("Library for generating spreadsheet files.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("NIX Software")]
+[assembly: AssemblyCompany("Nix Software")]
 [assembly: AssemblyProduct("")]
 [assembly: AssemblyCopyright("Copyright (C) 2007-2010, Lauris Bukšis-Haberkorns")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 
-[assembly: AssemblyVersion("0.0.6")]
+[assembly: AssemblyVersion("0.0.7")]
 
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]

@@ -164,7 +164,7 @@ namespace Nix.SpreadSheet
         #endregion
 
         #region Alignment
-        private bool wrapTextAtRightBorder = true;
+        private bool wrapTextAtRightBorder = false;
 
         public bool WrapTextAtRightBorder {
             get
