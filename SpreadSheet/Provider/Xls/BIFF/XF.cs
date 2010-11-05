@@ -246,13 +246,13 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 				| (this.GetLineStyle(this.Style.RightBorderLineStyle) << 4)
 				| (this.GetLineStyle(this.Style.TopBorderLineStyle) << 8)
 				| (this.GetLineStyle(this.Style.BottomBorderLineStyle) << 12));
-			bord_bits |= ((uint)ColorTranslator.ToOle(this.Style.LeftBorderLineColor) << 16)
-				| ((uint)ColorTranslator.ToOle(this.Style.RightBorderLineColor) << 23);
+            bord_bits |= ((uint)palette.GetColorIndex(this.Style.LeftBorderLineColor) << 16)
+                | ((uint)palette.GetColorIndex(this.Style.RightBorderLineColor) << 23);
 			// TODO: Diagonal lines to show
 			stream.WriteUInt32(bord_bits);
 			// Background (4)
-			uint back_bits = (uint)ColorTranslator.ToOle(this.Style.TopBorderLineColor)
-				| ((uint)ColorTranslator.ToOle(this.Style.BottomBorderLineColor) << 7);
+            uint back_bits = (uint)palette.GetColorIndex(this.Style.TopBorderLineColor)
+                | ((uint)palette.GetColorIndex(this.Style.BottomBorderLineColor) << 7);
 			// TODO: Diagonal line color and style
 			back_bits |= ((uint)this.GetBgPattern() << 26);
 			stream.WriteUInt32(back_bits);

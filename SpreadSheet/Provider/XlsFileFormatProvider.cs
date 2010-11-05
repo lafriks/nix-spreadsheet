@@ -437,7 +437,7 @@ namespace Nix.SpreadSheet.Provider
 			this.Write(new WINDOW1());
 			// Font table
             foreach (Font font in this.fontTable)
-                this.Write(new FONT() { Font = font });
+                this.Write(new FONT() { Font = font, Palette = palette });
 			// Format table
 			foreach ( ushort fi in this.formatsToWrite )
 				this.Write(new FORMAT() { Index = fi, Format = this.formatTable[fi] });

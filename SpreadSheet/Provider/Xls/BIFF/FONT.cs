@@ -33,6 +33,13 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 			}
 		}
 
+        private ColorPalette palette = null;
+
+        public ColorPalette Palette
+        {
+            set { palette = value; }
+        }
+
 		private Font font = null;
 		
 		public Font Font {
@@ -147,7 +154,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 				grbit |= 0x08;
 			// TODO: Outline and Shadow grbit
 			stream.WriteUInt16(grbit); // Font options
-			stream.WriteUInt16((ushort)ColorTranslator.ToOle(this.Font.Color)); // Color index
+			stream.WriteUInt16(this.palette.GetColorIndex(this.Font.Color)); // Color index
 			stream.WriteUInt16(this.Font.Weight); // Font weight
 			stream.WriteUInt16(ScriptPositionToInt(this.Font.ScriptPosition)); // Script position
 			stream.WriteByte(UnderlineStyleToByte(this.Font.UnderlineStyle)); // Underline style
