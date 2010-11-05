@@ -129,6 +129,7 @@
     <Compile Include="CellBackgroundPatern.cs" />
     <Compile Include="CellHorizontalAlignment.cs" />
     <Compile Include="CellRange.cs" />
+    <Compile Include="CellRangeList.cs" />
     <Compile Include="CellStyle.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -144,6 +145,7 @@
     <Compile Include="Font.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MergedCellsBehaviour.cs" />
     <Compile Include="Provider\IFileFormatProvider.cs" />
     <Compile Include="Provider\OpenDocumentFileFormatProvider.cs" />
     <Compile Include="Provider\XlsFileFormatProvider.cs" />
@@ -153,6 +155,7 @@
     <Compile Include="Provider\Xls\BIFF\BIFF5\SHEET.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFF8\DIMENSION.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFF8\LABELSST.cs" />
+    <Compile Include="Provider\Xls\BIFF\BIFF8\MERGEDCELLS.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFF8\SST.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFF8\WINDOW2.cs" />
     <Compile Include="Provider\Xls\BIFF\BIFFRecord.cs" />

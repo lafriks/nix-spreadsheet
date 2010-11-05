@@ -56,6 +56,7 @@ namespace Test
             //s["IV65536"].Value = "MAX";
 			Sheet big = doc.AddSheet("Big");
 			big.InsertTable(0, 0, BigTestData().DefaultView);
+            big.GetCellRange(0, 0, 1, 3).Merge();
             doc.Save(@"test.xls", new Nix.SpreadSheet.Provider.XlsFileFormatProvider());
 			doc.Save(@"test.ods", new Nix.SpreadSheet.Provider.OpenDocumentFileFormatProvider());
 		}

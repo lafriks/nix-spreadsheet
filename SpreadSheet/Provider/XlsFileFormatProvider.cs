@@ -513,6 +513,19 @@ namespace Nix.SpreadSheet.Provider
 					rows.Clear();
 				}
 				this.Write(new WINDOW2());
+
+                int mergedCellRangeCount = sheet.mergedCells.Count;
+                int mi = 0;
+
+                // Write merged cell ranges
+                while (mergedCellRangeCount > 0)
+                {
+                    this.Write(new MERGEDCELLS() { CellRangeList = sheet.mergedCells.GetRange(mi, Math.Min(1027, mergedCellRangeCount)) });
+
+                    mi += 1027;
+                    mergedCellRangeCount -= 1027;
+                }
+
 				this.Write(new EOF());
 			}
 

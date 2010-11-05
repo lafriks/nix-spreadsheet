@@ -42,6 +42,8 @@ namespace Nix.SpreadSheet
 		/// </summary>
         public const int MaxColumns = 256;
 
+        internal CellRangeList mergedCells = new CellRangeList();
+
         private SortedDictionary<int, Row> m_rows = new SortedDictionary<int, Row>();
         
         private ColumnList columns;
@@ -62,6 +64,25 @@ namespace Nix.SpreadSheet
 		{
 			get { return document; }
 		}
+
+        internal void AddMergedCellRange(CellRange range)
+        {
+            if (this.mergedCells.IntersectsWith(range))
+                throw new Exception("Merged ranges overlap");
+
+
+            for (int r = range.FirstRow; r <= range.LastRow; r++)
+            {
+                for (int c = range.FirstColumn; c <= range.LastColumn; c++)
+                {
+                    if (r == range.FirstRow && c == range.FirstColumn)
+                        continue;
+                    if (m_rows.ContainsKey(r) && m_rows[r].HasCellInColumn(c))
+                        m_rows[r].RemoveCellAtColumn(c);
+                }
+            }
+            this.mergedCells.Add(range);
+        }
 
 		/// <summary>
 		/// Last used row index.
@@ -217,6 +238,20 @@ namespace Nix.SpreadSheet
         {
             get
             {
+                CellRange cr = this.mergedCells.GetAtPosition(row, column);
+                if (cr != null)
+                {
+                    if (this.Document.MergedCellsBehaviour == MergedCellsBehaviour.AccessFirstCell)
+                    {
+                        row = cr.FirstRow;
+                        column = cr.FirstColumn;
+                    }
+                    else if (this.Document.MergedCellsBehaviour == MergedCellsBehaviour.ThrowExceptionOnAccess
+                                && (row != cr.FirstRow || column != cr.FirstColumn))
+                    {
+                        throw new Exception("Can not access merged cell at this position");
+                    }
+                }
             	return this[row][column];
             }
         }

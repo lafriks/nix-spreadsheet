@@ -237,5 +237,10 @@ namespace Nix.SpreadSheet
             }
             return this;
         }
+
+        public void Merge()
+        {
+            this.Sheet.AddMergedCellRange(this);
+        }
     }
 }

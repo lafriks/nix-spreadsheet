@@ -152,7 +152,18 @@ namespace Nix.SpreadSheet
 
 		#endregion
 
-		#region Locale
+		#region Custom properties
+        private MergedCellsBehaviour mergedCellsBehaviour = MergedCellsBehaviour.ThrowExceptionOnAccess;
+
+        /// <summary>
+        /// Merged cells behaviour.
+        /// </summary>
+        public MergedCellsBehaviour MergedCellsBehaviour
+        {
+            get { return mergedCellsBehaviour; }
+            set { mergedCellsBehaviour = value; }
+        }
+
 		private RegionInfo locale = RegionInfo.CurrentRegion;
 
 		/// <summary>

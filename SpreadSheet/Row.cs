@@ -52,6 +52,16 @@ namespace Nix.SpreadSheet
             }
         }
 
+        internal bool HasCellInColumn(int column)
+        {
+            return m_cells.ContainsKey(column);
+        }
+
+        internal bool RemoveCellAtColumn(int column)
+        {
+            return m_cells.Remove(column);
+        }
+        
         private ushort? height = null;
 
         /// <summary>
