@@ -35,9 +35,11 @@ namespace Test
             Sheet s = doc.AddSheet();
             s["A1"].Formatting.WrapText = true;
             s["A1"].Value = 13;
-            s["A1"].Formatting.BackgroundPatternColor = System.Drawing.Color.Red;
-            s["A1"].Formatting.BackgroundPattern = CellBackgroundPattern.Fill;
-            s["B2"].Value = "Test";
+            s["A1"].Formatting.Format = "+0.00;[Red]-0.00;0";
+            //s["A1"].Formatting.BackgroundPatternColor = System.Drawing.Color.Red;
+            //s["A1"].Formatting.BackgroundPattern = CellBackgroundPattern.Fill;
+            s["B2"].Value = -12;
+            s["B2"].Formatting.Format = "+0.00;[Red]-0.00;0";
             s["B3"].Value = "TestX";
             s["B4"].Value = "TestXX";
             s["B5"].Value = "Test";
