@@ -146,6 +146,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MergedCellsBehaviour.cs" />
+    <Compile Include="Provider\CsvFileFormatProvicer.cs" />
     <Compile Include="Provider\IFileFormatProvider.cs" />
     <Compile Include="Provider\OpenDocumentFileFormatProvider.cs" />
     <Compile Include="Provider\XlsFileFormatProvider.cs" />
