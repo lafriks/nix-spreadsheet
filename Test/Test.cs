@@ -34,17 +34,17 @@ namespace Test
             SpreadSheetDocument doc = new SpreadSheetDocument();
             Sheet s = doc.AddSheet();
             s["A1"].Formatting.WrapText = true;
-            s["A1"].Value = 13;
+            s["A1"].Value = (decimal)13.02;
             s["A1"].Formatting.Format = "+0.00;[Red]-0.00;0";
             //s["A1"].Formatting.BackgroundPatternColor = System.Drawing.Color.Red;
             //s["A1"].Formatting.BackgroundPattern = CellBackgroundPattern.Fill;
-            s["B2"].Value = -12;
+            s["B2"].Value = (decimal)-7012.12;
             s["B2"].Formatting.Format = "+0.00;[Red]-0.00;0";
             s["B3"].Value = "TestX";
             s["B4"].Value = "TestXX";
             s["B5"].Value = "Test";
             s["B6"].Value = "TestXX";
-            s.GetCellRange("B2:E6").DrawTable(System.Drawing.Color.Black, BorderLineStyle.Thin, BorderLineStyle.Medium);
+            /*s.GetCellRange("B2:E6").DrawTable(System.Drawing.Color.Black, BorderLineStyle.Thin, BorderLineStyle.Medium);
             s.GetCellRange("B2:B6").SetBackground(System.Drawing.Color.Gray)
             					   .DrawBorder(System.Drawing.Color.Black, BorderLineStyle.Medium)
             					   .SetAlignment(CellHorizontalAlignment.Centred, CellVerticalAlignment.Centred);
@@ -58,7 +58,7 @@ namespace Test
             //s["IV65536"].Value = "MAX";
 			Sheet big = doc.AddSheet("Big");
 			big.InsertTable(0, 0, BigTestData().DefaultView);
-            big.GetCellRange(0, 0, 1, 3).Merge();
+            big.GetCellRange(0, 0, 1, 3).Merge();*/
             doc.Save(@"test.xls", new Nix.SpreadSheet.Provider.XlsFileFormatProvider());
 			doc.Save(@"test.ods", new Nix.SpreadSheet.Provider.OpenDocumentFileFormatProvider());
 		}

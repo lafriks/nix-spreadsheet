@@ -10,6 +10,17 @@ namespace Nix.SpreadSheet.Provider
     /// </summary>
     public class CsvFileFormatProvicer : IFileFormatProvider
     {
+        private string seperator = ",";
+
+        /// <summary>
+        /// Seperator to use between cells (default is comma)
+        /// </summary>
+        public string Seperator
+        {
+            get { return this.seperator; }
+            set { this.seperator = value; }
+        }
+
         public void Save(SpreadSheetDocument document, System.IO.Stream stream)
         {
             foreach (Sheet s in document)
@@ -20,7 +31,7 @@ namespace Nix.SpreadSheet.Provider
                     for (int c = 0; c <= s.LastColumn; c++)
                     {
                         if (c != 0)
-                            t.Write(",");
+                            t.Write(this.Seperator);
                         object val = s[r][c].Value;
                         if (val == null || (val is string && (string)val == string.Empty))
                             t.Write("\"\"");
