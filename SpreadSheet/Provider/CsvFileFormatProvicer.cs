@@ -45,6 +45,7 @@ namespace Nix.SpreadSheet.Provider
                     }
                     t.WriteLine();
                 }
+                t.Flush();
                 break;
             }
         }
