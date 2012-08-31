@@ -221,6 +221,7 @@ namespace Nix.SpreadSheet.Provider
 		/// <param name="document">Spreadsheet document to search used styles in.</param>
 		protected void BuildStyleTable(SpreadSheetDocument document)
 		{
+            this.styleTable.Add(new Style());
 			// Find all parent styles
 			foreach ( Sheet sheet in document )
 			{
