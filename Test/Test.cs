@@ -33,6 +33,8 @@ namespace Test
             HashData(crc32, "Wikipedia");*/
             SpreadSheetDocument doc = new SpreadSheetDocument();
             Sheet s = doc.AddSheet();
+            s.PageSettings.Landscape = false;
+            s.PageSettings.PapeSize = Nix.SpreadSheet.PageSettings.PageSize.A5;
             s["A1"].Formatting.WrapText = true;
             s["A1"].Value = (decimal)13.02;
             s["A1"].Formatting.Format = "+0.00;[Red]-0.00;0";
@@ -41,7 +43,10 @@ namespace Test
             s["B2"].Value = (decimal)-7012.12;
             s["B2"].Formatting.Format = "+0.00;[Red]-0.00;0";
             s["B3"].Value = "TestX";
-            s["B4"].Value = "TestXX";
+            s["B4"].Value = "TestXX sdsd sd sd sd sdsd sdsd sdsddd";
+            s["B4"].Formatting.WrapTextAtRightBorder = true;
+            s["B4"].Formatting.WrapText = true;
+            s[4].Height = null;
             s["B5"].Value = "Test";
             s["B6"].Value = "TestXX";
             /*s.GetCellRange("B2:E6").DrawTable(System.Drawing.Color.Black, BorderLineStyle.Thin, BorderLineStyle.Medium);
@@ -60,7 +65,7 @@ namespace Test
 			big.InsertTable(0, 0, BigTestData().DefaultView);
             big.GetCellRange(0, 0, 1, 3).Merge();*/
             doc.Save(@"test.xls", new Nix.SpreadSheet.Provider.XlsFileFormatProvider());
-			doc.Save(@"test.ods", new Nix.SpreadSheet.Provider.OpenDocumentFileFormatProvider());
+			//doc.Save(@"test.ods", new Nix.SpreadSheet.Provider.OpenDocumentFileFormatProvider());
 		}
 
 		public static DataTable BigTestData()

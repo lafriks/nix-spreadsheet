@@ -65,6 +65,8 @@ namespace Nix.SpreadSheet
 			get { return document; }
 		}
 
+        public PageSetting PageSettings { get; set; }
+
         internal void AddMergedCellRange(CellRange range)
         {
             if (this.mergedCells.IntersectsWith(range))
@@ -192,6 +194,7 @@ namespace Nix.SpreadSheet
 			this.document = document;
 			this.name = name;
 			this.columns = new ColumnList(this);
+            this.PageSettings = new PageSetting();
 		}
 
 		private string name = "Sheet";

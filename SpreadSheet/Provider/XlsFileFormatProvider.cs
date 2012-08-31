@@ -480,7 +480,9 @@ namespace Nix.SpreadSheet.Provider
                 sheetNamesLength += BIFFStringHelper.GetStringByteCount(sheet.Name, false);
 
 				this.Write(new BOF() { Type = BOF.SheetType.WorkSheet});
-				
+
+                this.Write(new PAGESETUP() { PageSettings = sheet.PageSettings });
+
 				foreach (Column col in sheet.Columns)
 				{
 					// Convert pixels to MS mystical units

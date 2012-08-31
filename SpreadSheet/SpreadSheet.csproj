@@ -146,6 +146,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MergedCellsBehaviour.cs" />
+    <Compile Include="PageSettings.cs" />
+    <Compile Include="PageSettings\PageSize.cs" />
     <Compile Include="Provider\CsvFileFormatProvicer.cs" />
     <Compile Include="Provider\IFileFormatProvider.cs" />
     <Compile Include="Provider\OpenDocumentFileFormatProvider.cs" />
@@ -170,6 +172,7 @@
     <Compile Include="Provider\Xls\BIFF\EOF.cs" />
     <Compile Include="Provider\Xls\BIFF\FONT.cs" />
     <Compile Include="Provider\Xls\BIFF\FORMAT.cs" />
+    <Compile Include="Provider\Xls\BIFF\PAGESETUP.cs" />
     <Compile Include="Provider\Xls\BIFF\PALETTE.cs" />
     <Compile Include="Provider\Xls\BIFF\XF.cs" />
     <Compile Include="Provider\Zip\Adler32.cs" />
