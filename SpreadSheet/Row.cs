@@ -30,14 +30,18 @@ namespace Nix.SpreadSheet
 	{
 		private int row;
 
+        private Sheet sheet;
+
         private SortedDictionary<int, Cell> m_cells = new SortedDictionary<int, Cell>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Row"/> class.
         /// </summary>
+        /// <param name="sheet">Owner sheet.</param>
         /// <param name="row">Row index.</param>
-		public Row(int row)
+		internal Row(Sheet sheet, int row)
 		{
+            this.sheet = sheet;
 			this.row = row;
 		}
 
@@ -80,7 +84,7 @@ namespace Nix.SpreadSheet
         {
         	get
         	{
-        		int result = (m_cells.Count == 0 ? -1 : int.MaxValue);
+        		int result = int.MaxValue;
         		foreach (int idx in m_cells.Keys)
         		{
         			if (idx < result)
@@ -88,7 +92,14 @@ namespace Nix.SpreadSheet
         				result = idx;
         			}
         		}
-        		return result;
+                foreach (CellRange cr in this.sheet.mergedCells)
+                {
+                    if (cr.FirstRow <= this.RowIndex && cr.LastRow >= this.RowIndex && cr.FirstColumn < result)
+                    {
+                        result = cr.FirstColumn;
+                    }
+                }
+                return (result == int.MaxValue ? -1 : result);
         	}
         }
 
@@ -107,7 +118,14 @@ namespace Nix.SpreadSheet
         				result = (uint)idx;
         			}
         		}
-        		return result;
+                foreach (CellRange cr in this.sheet.mergedCells)
+                {
+                    if (cr.FirstRow <= this.RowIndex && cr.LastRow >= this.RowIndex && cr.LastColumn > result)
+                    {
+                        result = (uint)cr.LastColumn;
+                    }
+                }
+                return result;
         	}
         }
 
@@ -124,7 +142,7 @@ namespace Nix.SpreadSheet
                 	return this.m_cells[column];
                 else
                 {
-                    Cell nc = new Cell(this.row, column);
+                    Cell nc = new Cell(this.sheet, this.row, column);
                     this.m_cells.Add(column, nc);
                     return nc;
                 }
@@ -140,5 +158,39 @@ namespace Nix.SpreadSheet
 		{
 			return this.m_cells.Values.GetEnumerator();
 		}
+
+        /// <summary>
+        /// Adjust row height to fit all cell content
+        /// </summary>
+        /// <param name="allRows">If false than do not override row height if already set</param>
+        public void AutoSizeRowHeight(bool allRows = false)
+        {
+            int f = FirstCell;
+            if (f == -1 || (!allRows && this.Height.HasValue))
+                return;
+
+            ushort height = 17;
+
+            for (int i = f; i <= LastCell; ++i)
+            {
+                int cheight = 0;
+                CellRange cr = this.sheet.mergedCells.GetAtPosition(RowIndex, i);
+                if (cr != null)
+                {
+                    if (!(cr.LastRow == RowIndex && cr.FirstColumn == i))
+                        break;
+                    
+                    cheight = 0;
+                    for (int r = cr.FirstRow; r < cr.LastRow; ++r)
+                        cheight += (this.sheet[cr.LastRow].Height ?? 17);
+                }
+
+                ushort nheight = (ushort)Math.Max((int)this[i].CalculateCellHeight() + 2 - cheight, 0);
+
+                height = Math.Max(height, nheight);
+            }
+
+            this.Height = height;
+        }
 	}
 }

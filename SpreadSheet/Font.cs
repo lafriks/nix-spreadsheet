@@ -242,7 +242,7 @@ namespace Nix.SpreadSheet
 		}
         #endregion
 
-		#region Char set        
+		#region Char set
         private CharSet charSet = CharSet.Default;
         
 		public CharSet CharSet {
@@ -250,6 +250,81 @@ namespace Nix.SpreadSheet
 			set { charSet = value; }
 		}
 		#endregion
+
+        #region C# native font object
+        public System.Drawing.Font ToNativeFont()
+        {
+            FontStyle fs = FontStyle.Regular;
+            if (this.Italic)
+                fs |= FontStyle.Italic;
+            if (this.Weight >= BoldWeight)
+                fs |= FontStyle.Bold;
+            if (this.Strikeout)
+                fs |= FontStyle.Strikeout;
+            if (this.UnderlineStyle != SpreadSheet.UnderlineStyle.None)
+                fs |= FontStyle.Underline;
+            byte gdiCharset;
+            switch (this.CharSet)
+            {
+                default:
+                case SpreadSheet.CharSet.Ansi:
+                    gdiCharset = 0;
+                    break;
+                case SpreadSheet.CharSet.Arabic:
+                    gdiCharset = 178;
+                    break;
+                case SpreadSheet.CharSet.Baltic:
+                    gdiCharset = 186;
+                    break;
+                case SpreadSheet.CharSet.ChineseBig5:
+                    gdiCharset = 136;
+                    break;
+                case SpreadSheet.CharSet.Default:
+                    gdiCharset = 1;
+                    break;
+                case SpreadSheet.CharSet.EastEurope:
+                    gdiCharset = 238;
+                    break;
+                case SpreadSheet.CharSet.GB2312:
+                    gdiCharset = 134;
+                    break;
+                case SpreadSheet.CharSet.Greek:
+                    gdiCharset = 161;
+                    break;
+                case SpreadSheet.CharSet.Hangeul:
+                    gdiCharset = 129;
+                    break;
+                case SpreadSheet.CharSet.Hebrew:
+                    gdiCharset = 177;
+                    break;
+                case SpreadSheet.CharSet.Johab:
+                    gdiCharset = 130;
+                    break;
+                case SpreadSheet.CharSet.MAC:
+                    gdiCharset = 77;
+                    break;
+                case SpreadSheet.CharSet.OEM:
+                    gdiCharset = 255;
+                    break;
+                case SpreadSheet.CharSet.Russian:
+                    gdiCharset = 204;
+                    break;
+                case SpreadSheet.CharSet.Shiftjis:
+                    gdiCharset = 128;
+                    break;
+                case SpreadSheet.CharSet.Symbol:
+                    gdiCharset = 2;
+                    break;
+                case SpreadSheet.CharSet.Thai:
+                    gdiCharset = 222;
+                    break;
+                case SpreadSheet.CharSet.Turkish:
+                    gdiCharset = 162;
+                    break;
+            }
+            return new System.Drawing.Font(this.Name, (float)this.Size / 20, fs, GraphicsUnit.Point, gdiCharset);
+        }
+        #endregion
     }
 
     public enum UnderlineStyle

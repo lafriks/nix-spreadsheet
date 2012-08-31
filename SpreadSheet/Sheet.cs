@@ -65,7 +65,22 @@ namespace Nix.SpreadSheet
 			get { return document; }
 		}
 
+        /// <summary>
+        /// Page settings
+        /// </summary>
         public PageSetting PageSettings { get; set; }
+
+        /// <summary>
+        /// Adjust row height to fit all cell content
+        /// </summary>
+        /// <param name="allRows">If false than do not override row height if already set</param>
+        public void AutoSizeRowHeight(bool allRows = false)
+        {
+            for (int i = (int)FirstRow; i <= LastRow; ++i)
+            {
+                this[i].AutoSizeRowHeight(allRows);
+            }
+        }
 
         internal void AddMergedCellRange(CellRange range)
         {
@@ -100,6 +115,13 @@ namespace Nix.SpreadSheet
                     if (key > result)
                     {
                         result = (uint)key;
+                    }
+                }
+                foreach (CellRange cr in this.mergedCells)
+                {
+                    if (cr.LastRow > result)
+                    {
+                        result = (uint)cr.LastRow;
                     }
                 }
                 return result;
@@ -170,7 +192,7 @@ namespace Nix.SpreadSheet
         			{
         				result = row.LastCell;
         			}
-        		}
+                }
         		
         		foreach (Column col in columns)
         		{
@@ -226,7 +248,7 @@ namespace Nix.SpreadSheet
                 	return this.m_rows[row];
                 else
                 {
-                	Row nr = new Row(row);
+                	Row nr = new Row(this, row);
                 	this.m_rows.Add(row, nr);
                 	return nr;
                 }

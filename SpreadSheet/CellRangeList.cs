@@ -20,7 +20,7 @@ namespace Nix.SpreadSheet
         {
             foreach (CellRange cr in this)
             {
-                if (cr.FirstColumn >= column && cr.FirstRow >= row && cr.LastColumn <= column && cr.LastRow <= row)
+                if (cr.FirstColumn <= column && cr.FirstRow <= row && cr.LastColumn >= column && cr.LastRow >= row)
                     return cr;
             }
             return null;

@@ -18,6 +18,9 @@
  */
 
 using System;
+using System.Drawing.Text;
+using System.Windows.Forms;
+using System.Drawing;
 
 namespace Nix.SpreadSheet
 {
@@ -31,13 +34,16 @@ namespace Nix.SpreadSheet
         // Column of the value
         private int column;
 
+        private Sheet sheet;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Cell"/> class.
         /// </summary>
         /// <param name="row">Row position</param>
         /// <param name="col">Column position</param>
-        public Cell (int row, int col)
+        internal Cell (Sheet sheet, int row, int col)
         {
+            this.sheet = sheet;
             this.column = col;
             this.row = row;
         }
@@ -83,5 +89,49 @@ namespace Nix.SpreadSheet
                 return Utils.CellName(this.column, this.row);
             }
         }
+
+
+        #region Cell height calculation
+        public ushort CalculateCellHeight()
+        {
+            CellRange cr = this.sheet.mergedCells.GetAtPosition(this.RowIndex, this.ColumnIndex);
+            int width;
+            int height;
+            string val;
+            bool wrap;
+            if (cr != null)
+            {
+                // Merged cell
+                height = 0;
+                for (int r = cr.FirstRow; r <= cr.LastRow; ++r)
+                    height += (this.sheet[this.RowIndex].Height ?? 17);
+                width = 0;
+                for (int c = cr.FirstColumn; c <= cr.LastColumn; ++c)
+                    width += (int)this.sheet.Columns[c].Width;
+
+                Cell cell = this.sheet[cr.FirstRow, cr.FirstColumn];
+                val = cell.DisplayValue;
+                wrap = (cell.formatting != null ? cell.formatting.WrapTextAtRightBorder : false);
+            }
+            else
+            {
+                width = (int)this.sheet.Columns[this.ColumnIndex].Width;
+                height = this.sheet[this.RowIndex].Height ?? 17;
+                val = this.DisplayValue;
+                wrap = (this.formatting != null ? this.formatting.WrapTextAtRightBorder : false);
+            }
+            TextFormatFlags tff = TextFormatFlags.Default
+                                  | TextFormatFlags.ExpandTabs
+                                  | TextFormatFlags.NoPrefix
+                                  | TextFormatFlags.TextBoxControl
+                                  | TextFormatFlags.NoPadding
+                                  | TextFormatFlags.NoFullWidthCharacterBreak;
+            if (wrap)
+                tff |= TextFormatFlags.WordBreak;
+
+            Size s = TextRenderer.MeasureText(val, this.Formatting.Font.ToNativeFont(), new Size(width + 6, height), tff);
+            return (ushort)Math.Round((double)s.Height);
+        }
+        #endregion
     }
 }

@@ -43,12 +43,16 @@ namespace Test
             s["B2"].Value = (decimal)-7012.12;
             s["B2"].Formatting.Format = "+0.00;[Red]-0.00;0";
             s["B3"].Value = "TestX";
-            s["B4"].Value = "TestXX sdsd sd sd sd sdsd sdsd sdsddd";
+            s["B4"].Value = "TestXX sdsd sd sd sd sdsd sdsd sdsddd" + Environment.NewLine + "sdfsdf sddf gdffdgdfgfdgdfgdfgfdgfdgg dfgdfg gdfgdfgf sdfsdfdsf sdf";
             s["B4"].Formatting.WrapTextAtRightBorder = true;
-            s["B4"].Formatting.WrapText = true;
-            s[4].Height = null;
+            s.GetCellRange("D5:H7").Merge();
+            s["D5"].Value = "TestXX sdsd sd sd sd sdsd sdsd sdsddd" + Environment.NewLine + "sdfsdf sddf gdffdgdfgfdgdfgdfgfdgfdgg dfgdfg gdfgdfgf sdfsdfdsf sdf" + Environment.NewLine + "sdfsdf sddf gdffdgdfgfdgdfgdfgfdgfdgg dfgdfg gdfgdfgf sdfsdfdsf sdf";
+            s["D5"].Formatting.WrapTextAtRightBorder = true;
+            s["D5"].Formatting.VerticalAlignment = CellVerticalAlignment.Top;
             s["B5"].Value = "Test";
             s["B6"].Value = "TestXX";
+
+            s.AutoSizeRowHeight();
             /*s.GetCellRange("B2:E6").DrawTable(System.Drawing.Color.Black, BorderLineStyle.Thin, BorderLineStyle.Medium);
             s.GetCellRange("B2:B6").SetBackground(System.Drawing.Color.Gray)
             					   .DrawBorder(System.Drawing.Color.Black, BorderLineStyle.Medium)

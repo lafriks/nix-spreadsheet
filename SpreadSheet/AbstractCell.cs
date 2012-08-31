@@ -48,7 +48,7 @@ namespace Nix.SpreadSheet
         #endregion
 
         #region Style
-        private CellStyle formatting = null;
+        protected CellStyle formatting = null;
 
         /// <summary>
         /// Gets or sets cell style.
@@ -97,7 +97,6 @@ namespace Nix.SpreadSheet
         {
             get
             {
-                // TODO: Evalute formula to get real value
                 if (this.formula != string.Empty)
                     return this.formula;
                 else
@@ -107,6 +106,22 @@ namespace Nix.SpreadSheet
             {
                 this.formula = string.Empty;
                 this.val = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets display value
+        /// </summary>
+        public string DisplayValue
+        {
+            get
+            {
+                // TODO: Decimal/Date formatting
+                if (string.IsNullOrEmpty(this.formula))
+                    return Convert.ToString(this.val);
+                else
+                    // TODO: Evalute formula to get real value
+                    return Convert.ToString(this.val);
             }
         }
         #endregion
