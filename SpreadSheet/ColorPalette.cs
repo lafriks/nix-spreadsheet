@@ -42,28 +42,48 @@ namespace Nix.SpreadSheet
             switch (col.ToKnownColor())
 	        {
                 case KnownColor.Black:
-                    result = 0;
+                    result = 0x08;
                     break;
                 case KnownColor.White:
-                    result = 1;
+                    result = 0x09;
                     break;
                 case KnownColor.Red:
-                    result = 2;
+                    result = 0x0A;
                     break;
                 case KnownColor.Green:
-                    result = 3;
+                    result = 0x11;
                     break;
                 case KnownColor.Blue:
-                    result = 4;
+                    result = 0x0C;
                     break;
                 case KnownColor.Yellow:
-                    result = 5;
+                    result = 0x0D;
                     break;
+                case KnownColor.Fuchsia:
                 case KnownColor.Magenta:
-                    result = 6;
+                    result = 0x0E;
                     break;
+                case KnownColor.Aqua:
                 case KnownColor.Cyan:
-                    result = 7;
+                    result = 0x0F;
+                    break;
+                case KnownColor.Brown:
+                    result = 0x10;
+                    break;
+                case KnownColor.Gray:
+                    result = 0x17;
+                    break;
+                case KnownColor.Lime:
+                    result = 0x0B;
+                    break;
+                case KnownColor.Orange:
+                    result = 0x35;
+                    break;
+                case KnownColor.Purple:
+                    result = 0x14;
+                    break;
+                case KnownColor.Silver:
+                    result = 0x16;
                     break;
 		        default:
                     colorFound = false;

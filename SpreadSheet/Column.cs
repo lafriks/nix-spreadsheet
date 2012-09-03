@@ -46,6 +46,17 @@ namespace Nix.SpreadSheet
         private CellStyle formatting = null;
 
         /// <summary>
+        /// Returns if column has set formatting
+        /// </summary>
+        public bool HasFormatting
+        {
+            get
+            {
+                return (this.formatting != null || !this.formatting.Equals(Style.Default));
+            }
+        }
+
+        /// <summary>
         /// Gets or sets cell style.
         /// </summary>
         public CellStyle Formatting

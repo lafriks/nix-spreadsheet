@@ -29,19 +29,10 @@ namespace Nix.SpreadSheet
     /// </summary>
     public class Style : IEquatable<Style>
     {
-        private static Style def = new Style();
-
-        public static Style Default
-        {
-            get
-            {
-                return def;
-            }
-            set
-            {
-                def = value;
-            }
-        }
+        /// <summary>
+        /// Default style
+        /// </summary>
+        internal static readonly Style Default = new Style();
 
         #region Cell protection
         private bool cellLocked = false;

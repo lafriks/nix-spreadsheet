@@ -221,8 +221,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 				prot_bit |= 0x02;
 			if ( ! this.ParentStyleIndex.HasValue )
 				prot_bit |= 0x04;
-			prot_bit = (ushort)(((this.ParentStyleIndex.HasValue ? this.ParentStyleIndex.Value : 0xFFF) << 4)
-			                    | prot_bit); // Parent index (15 - 4)
+			prot_bit |= (ushort)((this.ParentStyleIndex.HasValue ? this.ParentStyleIndex.Value : 0xFFFF) << 4); // Parent index (15 - 4)
 			stream.WriteUInt16(prot_bit);
 			// Alignment and text break (1)
 			byte align_bit = this.GetHorizontalAlignment(this.Style.HorizontalAlignment);
@@ -242,16 +241,16 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 			// TODO: For now parent style elements are all valid
 			stream.WriteByte((byte)((this.ParentStyleIndex.HasValue ? this.GetUsedAtributes() : 0) << 2));
 			// Borders (4)
-			uint bord_bits = (uint)(this.GetLineStyle(this.Style.LeftBorderLineStyle)
-				| (this.GetLineStyle(this.Style.RightBorderLineStyle) << 4)
-				| (this.GetLineStyle(this.Style.TopBorderLineStyle) << 8)
-				| (this.GetLineStyle(this.Style.BottomBorderLineStyle) << 12));
+            uint bord_bits = ((uint)this.GetLineStyle(this.Style.LeftBorderLineStyle))
+                 | ((uint)this.GetLineStyle(this.Style.RightBorderLineStyle) << 4)
+                 | ((uint)this.GetLineStyle(this.Style.TopBorderLineStyle) << 8)
+                 | ((uint)this.GetLineStyle(this.Style.BottomBorderLineStyle) << 12);
             bord_bits |= ((uint)palette.GetColorIndex(this.Style.LeftBorderLineColor) << 16)
                 | ((uint)palette.GetColorIndex(this.Style.RightBorderLineColor) << 23);
 			// TODO: Diagonal lines to show
 			stream.WriteUInt32(bord_bits);
 			// Background (4)
-            uint back_bits = (uint)palette.GetColorIndex(this.Style.TopBorderLineColor)
+            uint back_bits = ((uint)palette.GetColorIndex(this.Style.TopBorderLineColor))
                 | ((uint)palette.GetColorIndex(this.Style.BottomBorderLineColor) << 7);
 			// TODO: Diagonal line color and style
 			back_bits |= ((uint)this.GetBgPattern() << 26);

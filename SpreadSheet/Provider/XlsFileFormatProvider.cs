@@ -187,7 +187,7 @@ namespace Nix.SpreadSheet.Provider
 				{
 					foreach ( Cell cell in row )
 					{
-						if ( ! this.formatTable.ContainsValue(cell.Formatting.Format) )
+						if ( cell.HasFormatting && ! this.formatTable.ContainsValue(cell.Formatting.Format) )
 						{
 							this.formatTable.Add(this.formatTableSeq, cell.Formatting.Format);
 							this.formatsToWrite.Add(this.formatTableSeq);
@@ -221,39 +221,36 @@ namespace Nix.SpreadSheet.Provider
 		/// <param name="document">Spreadsheet document to search used styles in.</param>
 		protected void BuildStyleTable(SpreadSheetDocument document)
 		{
-            this.styleTable.Add(new Style());
+            this.styleTable.Add(Style.Default);
 			// Find all parent styles
 			foreach ( Sheet sheet in document )
 			{
-				foreach ( Row row in sheet )
-				{
-					foreach ( Cell cell in row )
-					{
-						if ( FindStyleIndex(cell.Formatting.Parent) == -1 )
-						{
-							this.styleTable.Add(cell.Formatting.Parent);
-						}
-						if ( FindStyleIndex(cell.Formatting) == -1 )
-						{
-							this.styleTable.Add(cell.Formatting);
-						}
-					}
-				}
-				foreach (Column col in sheet.Columns)
-				{
-					if ( FindStyleIndex(col.Formatting.Parent) == -1 )
-					{
-						this.styleTable.Add(col.Formatting.Parent);
-					}
-					if ( FindStyleIndex(col.Formatting) == -1 )
-					{
-						this.styleTable.Add(col.Formatting);
-					}
-				}
-			}
-            if (this.styleTable.Count == 0)
-            {
-                this.styleTable.Add(Style.Default);
+                foreach (Column col in sheet.Columns)
+                {
+                    if (col.HasFormatting && FindStyleIndex(col.Formatting.Parent) == -1)
+                    {
+                        this.styleTable.Add(col.Formatting.Parent);
+                    }
+                    if (col.HasFormatting && FindStyleIndex(col.Formatting) == -1)
+                    {
+                        this.styleTable.Add(col.Formatting);
+                    }
+                }
+
+                foreach (Row row in sheet)
+                {
+                    foreach (Cell cell in row)
+                    {
+                        if (cell.HasFormatting && FindStyleIndex(cell.Formatting.Parent) == -1)
+                        {
+                            this.styleTable.Add(cell.Formatting.Parent);
+                        }
+                        if (cell.HasFormatting && FindStyleIndex(cell.Formatting) == -1)
+                        {
+                            this.styleTable.Add(cell.Formatting);
+                        }
+                    }
+                }
             }
 		}
 
@@ -425,10 +422,15 @@ namespace Nix.SpreadSheet.Provider
 
             foreach (Style s in this.styleTable)
             {
-                ushort format = FindFormatIndex(s.Format);
-                if (!formatsToWrite.Contains(format))
+                try
                 {
-                    formatsToWrite.Add(format);
+                    ushort format = FindFormatIndex(s.Format);
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    this.formatTable.Add(this.formatTableSeq, s.Format);
+                    this.formatsToWrite.Add(this.formatTableSeq);
+                    this.formatTableSeq++;
                 }
             }
 

@@ -217,7 +217,9 @@ namespace Nix.SpreadSheet
             if (wrap)
                 tff |= TextFormatFlags.WordBreak;
 
-            Size s = TextRenderer.MeasureText(val, this.Formatting.Font.ToNativeFont(), new Size(width + 6, height), tff);
+            System.Drawing.Font font = (this.HasFormatting ? this.Formatting.Font : Style.Default.Font).ToNativeFont();
+
+            Size s = TextRenderer.MeasureText(val, font, new Size(width + 6, height), tff);
             return (ushort)Math.Round((double)s.Height);
         }
         #endregion
