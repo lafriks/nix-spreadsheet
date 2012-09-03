@@ -52,7 +52,7 @@ namespace Nix.SpreadSheet
         {
             get
             {
-                return (this.formatting != null || !this.formatting.Equals(Style.Default));
+                return (this.formatting != null && !this.formatting.Equals(Style.Default));
             }
         }
 

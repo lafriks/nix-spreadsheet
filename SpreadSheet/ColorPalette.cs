@@ -41,7 +41,7 @@ namespace Nix.SpreadSheet
 
             switch (col.ToKnownColor())
 	        {
-                case KnownColor.Black:
+                /*case KnownColor.Black:
                     result = 0x08;
                     break;
                 case KnownColor.White:
@@ -84,7 +84,7 @@ namespace Nix.SpreadSheet
                     break;
                 case KnownColor.Silver:
                     result = 0x16;
-                    break;
+                    break;*/
 		        default:
                     colorFound = false;
                     break;
