@@ -91,6 +91,94 @@ namespace Nix.SpreadSheet
         }
 
 
+        #region Value
+        internal object InternalValue
+        {
+            get
+            {
+                return base.Value;
+            }
+        }
+
+        internal string InternalDisplayValue
+        {
+            get
+            {
+                return base.DisplayValue;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets value. When setting value formula is removed.
+        /// </summary>
+        public override object Value
+        {
+            get
+            {
+                CellRange cr = this.sheet.mergedCells.GetAtPosition(row, column);
+                if (cr != null && (row != cr.FirstRow || column != cr.FirstColumn))
+                {
+                    if (this.sheet.Document.MergedCellsBehaviour == MergedCellsBehaviour.AccessFirstCell)
+                    {
+                        return this.sheet[cr.FirstRow, cr.FirstColumn].Value;
+                    }
+                    else if (this.sheet.Document.MergedCellsBehaviour == MergedCellsBehaviour.ThrowExceptionOnAccess
+                                && (row != cr.FirstRow || column != cr.FirstColumn))
+                    {
+                        throw new Exception("Can not access merged cell value at this position");
+                    }
+                }
+
+                return base.Value;
+            }
+            set
+            {
+                CellRange cr = this.sheet.mergedCells.GetAtPosition(row, column);
+                if (cr != null && (row != cr.FirstRow || column != cr.FirstColumn))
+                {
+                    if (this.sheet.Document.MergedCellsBehaviour == MergedCellsBehaviour.AccessFirstCell)
+                    {
+                        this.sheet[cr.FirstRow, cr.FirstColumn].Value = value;
+                    }
+                    else if (this.sheet.Document.MergedCellsBehaviour == MergedCellsBehaviour.ThrowExceptionOnAccess
+                                && (row != cr.FirstRow || column != cr.FirstColumn))
+                    {
+                        throw new Exception("Can not access merged cell value at this position");
+                    }
+                }
+                else
+                {
+                    base.Value = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets display value
+        /// </summary>
+        public override string DisplayValue
+        {
+            get
+            {
+                CellRange cr = this.sheet.mergedCells.GetAtPosition(row, column);
+                if (cr != null && (row != cr.FirstRow || column != cr.FirstColumn))
+                {
+                    if (this.sheet.Document.MergedCellsBehaviour == MergedCellsBehaviour.AccessFirstCell)
+                    {
+                        return this.sheet[cr.FirstRow, cr.FirstColumn].DisplayValue;
+                    }
+                    else if (this.sheet.Document.MergedCellsBehaviour == MergedCellsBehaviour.ThrowExceptionOnAccess
+                                && (row != cr.FirstRow || column != cr.FirstColumn))
+                    {
+                        throw new Exception("Can not access merged cell value at this position");
+                    }
+                }
+
+                return base.DisplayValue;
+            }
+        }
+        #endregion
+
         #region Cell height calculation
         public ushort CalculateCellHeight()
         {

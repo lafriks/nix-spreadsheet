@@ -264,12 +264,12 @@ namespace Nix.SpreadSheet.Provider
 		/// <returns>-1 - empty; 0 - string; 1 - number; 2 - boolean or error.</returns>
 		protected int GetValueType(Cell cell)
 		{
-			if (cell.Value == null || (cell.Value is string && (string)cell.Value == string.Empty))
+            if (cell.InternalValue == null || (cell.InternalValue is string && (string)cell.InternalValue == string.Empty))
 				return -1;
-			if (cell.Value is ErrorCode || cell.Value is bool)
+            if (cell.InternalValue is ErrorCode || cell.InternalValue is bool)
 				return 2;
-			if (cell.Value is int || cell.Value is float || cell.Value is double ||
-                	cell.Value is decimal || cell.Value is long || cell.Value is short)
+            if (cell.InternalValue is int || cell.InternalValue is float || cell.InternalValue is double ||
+                    cell.InternalValue is decimal || cell.InternalValue is long || cell.InternalValue is short)
             	return 1;
 			return 0;
 		}
@@ -282,7 +282,7 @@ namespace Nix.SpreadSheet.Provider
 		protected string FormatValue(Cell cell)
 		{
 			// TODO: Better value convertation to string
-			return Convert.ToString(cell.Value);
+			return cell.InternalDisplayValue;
 		}
 		
 		protected byte GetErrorCodeValue(ErrorCode code)
@@ -367,7 +367,7 @@ namespace Nix.SpreadSheet.Provider
 								ColIndex = (ushort)cell.ColumnIndex,
 								RowIndex = (ushort)cell.RowIndex,
 								XfIndex = (ushort)FindStyleIndex(cell.Formatting),
-								Value = Convert.ToDouble(cell.Value)
+								Value = Convert.ToDouble(cell.InternalValue)
 							});
 							break;
 						case 2:
@@ -376,8 +376,8 @@ namespace Nix.SpreadSheet.Provider
 								ColIndex = (ushort)cell.ColumnIndex,
 								RowIndex = (ushort)cell.RowIndex,
 								XfIndex = (ushort)FindStyleIndex(cell.Formatting),
-								Value = (byte)(cell.Value is bool ? ((bool)cell.Value ? 1 : 0) : GetErrorCodeValue((ErrorCode)cell.Value)),
-								Type = (byte)(cell.Value is bool ? 0 : 1)
+                                Value = (byte)(cell.InternalValue is bool ? ((bool)cell.InternalValue ? 1 : 0) : GetErrorCodeValue((ErrorCode)cell.InternalValue)),
+                                Type = (byte)(cell.InternalValue is bool ? 0 : 1)
 							});
 							break;
 						case -1:

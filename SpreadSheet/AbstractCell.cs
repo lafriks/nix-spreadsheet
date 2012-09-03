@@ -93,7 +93,7 @@ namespace Nix.SpreadSheet
         /// <summary>
         /// Gets or sets value on one or more cells. When setting value formula is removed.
         /// </summary>
-        public object Value
+        public virtual object Value
         {
             get
             {
@@ -112,7 +112,7 @@ namespace Nix.SpreadSheet
         /// <summary>
         /// Gets display value
         /// </summary>
-        public string DisplayValue
+        public virtual string DisplayValue
         {
             get
             {

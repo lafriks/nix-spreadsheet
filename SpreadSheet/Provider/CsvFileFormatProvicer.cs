@@ -32,7 +32,7 @@ namespace Nix.SpreadSheet.Provider
                     {
                         if (c != 0)
                             t.Write(this.Seperator);
-                        object val = s[r][c].Value;
+                        object val = s[r][c].InternalValue;
                         if (val == null || (val is string && (string)val == string.Empty))
                             t.Write("\"\"");
 			            else if (val is int || val is float || val is double ||

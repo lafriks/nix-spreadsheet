@@ -263,20 +263,6 @@ namespace Nix.SpreadSheet
         {
             get
             {
-                CellRange cr = this.mergedCells.GetAtPosition(row, column);
-                if (cr != null)
-                {
-                    if (this.Document.MergedCellsBehaviour == MergedCellsBehaviour.AccessFirstCell)
-                    {
-                        row = cr.FirstRow;
-                        column = cr.FirstColumn;
-                    }
-                    else if (this.Document.MergedCellsBehaviour == MergedCellsBehaviour.ThrowExceptionOnAccess
-                                && (row != cr.FirstRow || column != cr.FirstColumn))
-                    {
-                        throw new Exception("Can not access merged cell at this position");
-                    }
-                }
             	return this[row][column];
             }
         }
