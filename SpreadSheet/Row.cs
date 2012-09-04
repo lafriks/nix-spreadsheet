@@ -178,7 +178,7 @@ namespace Nix.SpreadSheet
                 if (cr != null)
                 {
                     if (!(cr.LastRow == RowIndex && cr.FirstColumn == i))
-                        break;
+                        continue;
                     
                     cheight = 0;
                     for (int r = cr.FirstRow; r < cr.LastRow; ++r)

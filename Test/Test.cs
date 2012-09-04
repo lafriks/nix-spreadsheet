@@ -49,13 +49,23 @@ namespace Test
             s["B3"].Value = "TestX";
             s["B4"].Value = "TestXX sdsd sd sd sd sdsd sdsd sdsddd" + Environment.NewLine + "sdfsdf sddf gdffdgdfgfdgdfgdfgfdgfdgg dfgdfg gdfgdfgf sdfsdfdsf sdf";
             s["B4"].Formatting.WrapTextAtRightBorder = true;
-            s.GetCellRange("D5:H7").Merge();
+            s.GetCellRange("D5:H5").Merge();
             s["D5"].Value = "TestXX sdsd sd sd sd sdsd sdsd sdsddd" + Environment.NewLine + "sdfsdf sddf gdffdgdfgfdgdfgdfgfdgfdgg dfgdfg gdfgdfgf sdfsdfdsf sdf" + Environment.NewLine + "sdfsdf sddf gdffdgdfgfdgdfgdfgfdgfdgg dfgdfg gdfgdfgf sdfsdfdsf sdf";
             s["D5"].Formatting.WrapTextAtRightBorder = true;
             s["D5"].Formatting.VerticalAlignment = CellVerticalAlignment.Top;
-            s.GetCellRange("D5:H7").DrawBorder(Color.Black, BorderLineStyle.Medium);
+            s.GetCellRange("D5:H5").DrawBorder(Color.Black, BorderLineStyle.Medium);
             s["B5"].Value = "Test";
             s["B6"].Value = "TestXX";
+
+            s.Columns[5].Width = 200;
+            s.GetCellRange("A8:B8").Merge();
+            s["C8"].Value = "Jānis Testiņš";
+            s["D8"].Value = "Test";
+            s["E8"].Value = "Pētris Testiņš";
+            s["F8"].Value = "fffg dddddddddddddddd aaaaaaaaaaaaaaaaaa dddddddddd";
+            s["F8"].Formatting.WrapTextAtRightBorder = true;
+            s["G8"].Value = new DateTime(2012, 9, 3);
+            s["G8"].Formatting.Format = "dd.MM.yyyy";
 
             s.AutoSizeRowHeight();
             /*s.GetCellRange("B2:E6").DrawTable(System.Drawing.Color.Black, BorderLineStyle.Thin, BorderLineStyle.Medium);
