@@ -86,7 +86,7 @@ namespace Nix.SpreadSheet
         {
             get
             {
-                return Utils.CellName(this.column, this.row);
+                return Utils.CellName(this.row, this.column);
             }
         }
 
