@@ -14,6 +14,8 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <ProjectGuid>{0D21978A-F366-4C06-A6C4-6B754FA14353}</ProjectGuid>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>Nix.CompoundFile</AssemblyName>
+    <RootNamespace>Nix.CompoundFile</RootNamespace>
   </PropertyGroup>
 
 </Project>

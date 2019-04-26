@@ -13,6 +13,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <ProjectGuid>{F552A71A-D3C4-4DEE-9807-650B5BA28AFC}</ProjectGuid>
+    <AssemblyName>Nix.SpreadSheet</AssemblyName>
+    <RootNamespace>Nix.SpreadSheet</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
