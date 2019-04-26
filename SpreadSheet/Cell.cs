@@ -18,8 +18,6 @@
  */
 
 using System;
-using System.Drawing.Text;
-using System.Windows.Forms;
 using System.Drawing;
 
 namespace Nix.SpreadSheet
@@ -208,19 +206,21 @@ namespace Nix.SpreadSheet
                 val = this.DisplayValue;
                 wrap = (this.formatting != null ? this.formatting.WrapTextAtRightBorder : false);
             }
-            TextFormatFlags tff = TextFormatFlags.Default
-                                  | TextFormatFlags.ExpandTabs
-                                  | TextFormatFlags.NoPrefix
-                                  | TextFormatFlags.TextBoxControl
-                                  | TextFormatFlags.NoPadding
-                                  | TextFormatFlags.NoFullWidthCharacterBreak;
-            if (wrap)
-                tff |= TextFormatFlags.WordBreak;
+
+            // TODO: Bring back word wrap measurment
+            //TextFormatFlags tff = TextFormatFlags.Default
+            //                      | TextFormatFlags.ExpandTabs
+            //                      | TextFormatFlags.NoPrefix
+            //                      | TextFormatFlags.TextBoxControl
+            //                      | TextFormatFlags.NoPadding
+            //                      | TextFormatFlags.NoFullWidthCharacterBreak;
+            //if (wrap)
+            //    tff |= TextFormatFlags.WordBreak;
 
             System.Drawing.Font font = (this.HasFormatting ? this.Formatting.Font : Style.Default.Font).ToNativeFont();
 
-            Size s = TextRenderer.MeasureText(val, font, new Size(width + 6, height), tff);
-            return (ushort)Math.Round((double)s.Height);
+            var s = Graphics.FromImage(new Bitmap(1, 1)).MeasureString(val, font, width + 6);
+            return (ushort)Math.Round(s.Height);
         }
         #endregion
     }

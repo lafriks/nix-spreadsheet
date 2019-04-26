@@ -1,184 +1,19 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <ProjectType>Local</ProjectType>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{092F19A4-5A93-4F47-B0A1-C132A0FCDB22}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>
-    </ApplicationIcon>
-    <AssemblyKeyContainerName>
-    </AssemblyKeyContainerName>
-    <AssemblyName>Nix.CompoundFile</AssemblyName>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
-    <DefaultClientScript>JScript</DefaultClientScript>
-    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
-    <DefaultTargetSchema>IE50</DefaultTargetSchema>
-    <DelaySign>false</DelaySign>
-    <OutputType>Library</OutputType>
-    <RootNamespace>Nix.CompoundFile</RootNamespace>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>
-    </StartupObject>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <IsWebBootstrapper>true</IsWebBootstrapper>
-    <SourceAnalysisOverrideSettingsFile>C:\Documents and Settings\User.YOUR-2F73F42422\Application Data\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <DocumentationFile>bin\Debug\Nix.CompoundFile.xml</DocumentationFile>
-    <PublishUrl>http://localhost/Nix.CompoundFile/</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Web</InstallFrom>
-    <UpdateEnabled>true</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\Debug\</OutputPath>
+    <PackageVersion>0.1.0</PackageVersion>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <FileVersion>0.1.0.0</FileVersion>
+    <Version>0.1.0</Version>
+    <Authors>Lauris Bukšis-Haberkorns</Authors>
+    <Company></Company>
+    <Product>Nix.CompoundFile</Product>
+    <Description>Library for writing OLE 2 Compount Document file format.</Description>
+    <Copyright>Copyright © 2007-2019, Lauris Bukšis-Haberkorns</Copyright>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <ProjectGuid>{0D21978A-F366-4C06-A6C4-6B754FA14353}</ProjectGuid>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugSymbols>true</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <NoStdLib>false</NoStdLib>
-    <Optimize>false</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <DebugType>Full</DebugType>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>bin\Release\</OutputPath>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>TRACE</DefineConstants>
-    <DebugSymbols>false</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <NoStdLib>false</NoStdLib>
-    <Optimize>true</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <DebugType>none</DebugType>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
-    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System">
-      <Name>System</Name>
-    </Reference>
-    <Reference Include="System.Data">
-      <Name>System.Data</Name>
-    </Reference>
-    <Reference Include="System.Xml">
-      <Name>System.XML</Name>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BigEndianStream.cs" />
-    <Compile Include="Common.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="EndianStream.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="External\Mono\DataConverter.cs" />
-    <Compile Include="LittleEndianStream.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Managers\DirectoryManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Managers\MasterSectorAllocationManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Managers\SectorAllocationManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Managers\SectorStream.cs" />
-    <Compile Include="Ole2CompoundFile.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Ole2DirectoryEntry.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Ole2Storage.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Ole2Stream.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="RedBlackEnumerator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="RedBlackTree.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ISector.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
+
 </Project>

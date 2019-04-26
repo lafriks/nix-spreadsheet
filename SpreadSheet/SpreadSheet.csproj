@@ -1,225 +1,26 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <ProjectType>Local</ProjectType>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{90F370AB-586A-473A-BAB1-002A808FB869}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>
-    </ApplicationIcon>
-    <AssemblyKeyContainerName>
-    </AssemblyKeyContainerName>
-    <AssemblyName>Nix.SpreadSheet</AssemblyName>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
-    <DefaultClientScript>JScript</DefaultClientScript>
-    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
-    <DefaultTargetSchema>IE50</DefaultTargetSchema>
-    <DelaySign>false</DelaySign>
-    <OutputType>Library</OutputType>
-    <RootNamespace>Nix.SpreadSheet</RootNamespace>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>
-    </StartupObject>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <IsWebBootstrapper>true</IsWebBootstrapper>
-    <SourceAnalysisOverrideSettingsFile>C:\Documents and Settings\Lauris\Application Data\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <PublishUrl>http://localhost/Nix.SpreadSheet/</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Web</InstallFrom>
-    <UpdateEnabled>true</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <PackageVersion>0.2.0</PackageVersion>
+    <AssemblyVersion>0.2.0.0</AssemblyVersion>
+    <FileVersion>0.2.0.0</FileVersion>
+    <Version>0.2.0</Version>
+    <Authors>Lauris Bukšis-Haberkorns</Authors>
+    <Company></Company>
+    <Product>Nix.SpreadSheet</Product>
+    <Description>Library for generating spreadsheet files.</Description>
+    <Copyright>Copyright © 2007-2019, Lauris Bukšis-Haberkorns</Copyright>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <ProjectGuid>{F552A71A-D3C4-4DEE-9807-650B5BA28AFC}</ProjectGuid>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\Debug\</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>TRACE;DEBUG;NET_2_0</DefineConstants>
-    <DocumentationFile>bin\Debug\Nix.SpreadSheet.xml</DocumentationFile>
-    <DebugSymbols>true</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <NoStdLib>false</NoStdLib>
-    <Optimize>false</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <DebugType>Full</DebugType>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>bin\Release\</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
-    <DebugSymbols>false</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
-    <Optimize>true</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <DebugType>none</DebugType>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
-    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System">
-      <Name>System</Name>
-    </Reference>
-    <Reference Include="System.Data">
-      <Name>System.Data</Name>
-    </Reference>
-    <Reference Include="System.Drawing">
-      <Name>System.Drawing</Name>
-    </Reference>
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml">
-      <Name>System.XML</Name>
-    </Reference>
-    <ProjectReference Include="..\CompoundFile\CompoundFile.csproj">
-      <Name>CompoundFile</Name>
-      <Project>{092F19A4-5A93-4F47-B0A1-C132A0FCDB22}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
+    <ProjectReference Include="..\CompoundFile\CompoundFile.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="AbstractCell.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BorderLineStyle.cs" />
-    <Compile Include="Cell.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CellBackgroundPatern.cs" />
-    <Compile Include="CellHorizontalAlignment.cs" />
-    <Compile Include="CellRange.cs" />
-    <Compile Include="CellRangeList.cs" />
-    <Compile Include="CellStyle.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CellVerticalAlignment.cs" />
-    <Compile Include="ColorPalette.cs" />
-    <Compile Include="Column.cs" />
-    <Compile Include="ColumnList.cs" />
-    <Compile Include="ColumnRange.cs" />
-    <Compile Include="Comment.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ErrorCode.cs" />
-    <Compile Include="Font.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MergedCellsBehaviour.cs" />
-    <Compile Include="PageSettings.cs" />
-    <Compile Include="PageSettings\PageSize.cs" />
-    <Compile Include="Provider\CsvFileFormatProvicer.cs" />
-    <Compile Include="Provider\IFileFormatProvider.cs" />
-    <Compile Include="Provider\OpenDocumentFileFormatProvider.cs" />
-    <Compile Include="Provider\XlsFileFormatProvider.cs" />
-    <Compile Include="Provider\Xls\BIFF\BIFF5\ROW.cs" />
-    <Compile Include="Provider\Xls\BIFF\BIFF5\WINDOW1.cs" />
-    <Compile Include="Provider\Xls\BIFF\BIFF8\BOF.cs" />
-    <Compile Include="Provider\Xls\BIFF\BIFF5\SHEET.cs" />
-    <Compile Include="Provider\Xls\BIFF\BIFF8\DIMENSION.cs" />
-    <Compile Include="Provider\Xls\BIFF\BIFF8\LABELSST.cs" />
-    <Compile Include="Provider\Xls\BIFF\BIFF8\MERGEDCELLS.cs" />
-    <Compile Include="Provider\Xls\BIFF\BIFF8\SST.cs" />
-    <Compile Include="Provider\Xls\BIFF\BIFF8\WINDOW2.cs" />
-    <Compile Include="Provider\Xls\BIFF\BIFFRecord.cs" />
-    <Compile Include="Provider\Xls\BIFF\BIFFStringHelper.cs" />
-    <Compile Include="Provider\Xls\BIFF\BLANK.cs" />
-    <Compile Include="Provider\Xls\BIFF\BOOLERR.cs" />
-    <Compile Include="Provider\Xls\BIFF\CellBIFFRecord.cs" />
-    <Compile Include="Provider\Xls\BIFF\CONTINUE.cs" />
-    <Compile Include="Provider\Xls\BIFF\NUMBER.cs" />
-    <Compile Include="Provider\Xls\BIFF\COLUMN.cs" />
-    <Compile Include="Provider\Xls\BIFF\EOF.cs" />
-    <Compile Include="Provider\Xls\BIFF\FONT.cs" />
-    <Compile Include="Provider\Xls\BIFF\FORMAT.cs" />
-    <Compile Include="Provider\Xls\BIFF\PAGESETUP.cs" />
-    <Compile Include="Provider\Xls\BIFF\PALETTE.cs" />
-    <Compile Include="Provider\Xls\BIFF\XF.cs" />
-    <Compile Include="Provider\Zip\Adler32.cs" />
-    <Compile Include="Provider\Zip\Crc32.cs" />
-    <Compile Include="Provider\Zip\ZipStream.cs" />
-    <Compile Include="Row.cs" />
-    <Compile Include="Sheet.cs" />
-    <Compile Include="SpreadSheetDocument.cs" />
-    <Compile Include="StringFormating.cs" />
-    <Compile Include="Style.cs" />
-    <Compile Include="TextDirection.cs" />
-    <Compile Include="Utils.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
   </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
+
 </Project>
