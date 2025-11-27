@@ -28,7 +28,7 @@ namespace Nix.CompoundFile
         {
         }
 
-        public CompoundFileException(string message) : base (message)
+        public CompoundFileException(string message) : base(message)
         {
         }
     }

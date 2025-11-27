@@ -20,6 +20,8 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Nix.CompoundFile
 {
@@ -32,20 +34,20 @@ namespace Nix.CompoundFile
 
         protected Encoding Encoding;
 
-		public long Position
-		{
-			get
-			{
-				return Stream.Position;
-			}
-		}
+        public long Position
+        {
+            get
+            {
+                return Stream.Position;
+            }
+        }
 
         #region Constructors
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="stream">Stream to write output to</param>
-        public EndianStream(Stream stream) : this (stream, Encoding.Unicode)
+        public EndianStream(Stream stream) : this(stream, Encoding.Unicode)
         {
         }
 
@@ -67,28 +69,34 @@ namespace Nix.CompoundFile
         /// </summary>
         /// <param name="value"></param>
         public abstract void WriteUInt16(ushort value);
+        public abstract Task WriteUInt16Async(ushort value, CancellationToken cancellationToken = default);
 
         public abstract void WriteInt16(short value);
+        public abstract Task WriteInt16Async(short value, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Write 4 bytes in the output
         /// </summary>
         /// <param name="value"></param>
         public abstract void WriteUInt32(uint value);
+        public abstract Task WriteUInt32Async(uint value, CancellationToken cancellationToken = default);
 
         public abstract void WriteInt32(int value);
+        public abstract Task WriteInt32Async(int value, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Write a 4 byte float in the output
         /// </summary>
         /// <param name="value"></param>
         public abstract void WriteFloatIEEE(float value);
+        public abstract Task WriteFloatIEEEAsync(float value, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Write a 8 byte double in the output
         /// </summary>
         /// <param name="value"></param>
         public abstract void WriteDoubleIEEE(double value);
+        public abstract Task WriteDoubleIEEEAsync(double value, CancellationToken cancellationToken = default);
         #endregion
 
         #region Abstract read methods
@@ -125,14 +133,32 @@ namespace Nix.CompoundFile
             return dest.GetLength(0);
         }
 
+        public async Task<int> WriteStringAsync(string data, CancellationToken cancellationToken = default)
+        {
+            byte[] src = Encoding.Default.GetBytes(data);
+            byte[] dest = Encoding.Convert(Encoding.Default, this.Encoding, src);
+            await this.Stream.WriteAsync(dest, 0, dest.GetLength(0), cancellationToken).ConfigureAwait(false);
+            return dest.GetLength(0);
+        }
+
         public void Write(byte[] buffer, int offset, int count)
         {
             this.Stream.Write(buffer, offset, count);
         }
 
+        public async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken = default)
+        {
+            await this.Stream.WriteAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
+        }
+
         public void Write(byte[] value)
         {
-        	this.Write(value, 0, value.GetLength(0));
+            this.Write(value, 0, value.GetLength(0));
+        }
+
+        public async Task WriteAsync(byte[] value, CancellationToken cancellationToken = default)
+        {
+            await this.WriteAsync(value, 0, value.GetLength(0), cancellationToken).ConfigureAwait(false);
         }
 
         public void WriteByte(byte value)
@@ -140,18 +166,32 @@ namespace Nix.CompoundFile
             this.Stream.WriteByte(value);
         }
 
+        public async Task WriteByteAsync(byte value, CancellationToken cancellationToken = default)
+        {
+            byte[] buffer = new byte[] { value };
+            await this.Stream.WriteAsync(buffer, 0, 1, cancellationToken).ConfigureAwait(false);
+        }
+
         public void WriteBytes(byte value, int count)
         {
-            for(int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
                 this.Stream.WriteByte(value);
+        }
+
+        public async Task WriteBytesAsync(byte value, int count, CancellationToken cancellationToken = default)
+        {
+            byte[] buffer = new byte[count];
+            for (int i = 0; i < count; i++)
+                buffer[i] = value;
+            await this.Stream.WriteAsync(buffer, 0, count, cancellationToken).ConfigureAwait(false);
         }
         #endregion
 
         #region Read methods
         public string ReadString(int byteCount)
         {
-        	byte[] src = new byte[byteCount];
-        	int sc = this.Stream.Read(src, 0, byteCount);
+            byte[] src = new byte[byteCount];
+            int sc = this.Stream.Read(src, 0, byteCount);
             byte[] dest = Encoding.Convert(this.Encoding, Encoding.Default, src, 0, sc);
             return this.Encoding.GetString(dest);
         }
@@ -160,21 +200,21 @@ namespace Nix.CompoundFile
         {
             return this.Stream.Read(buffer, offset, count);
         }
-        
+
         public byte[] ReadBytes(int count)
         {
-        	byte[] buffer = new byte[count];
-        	if ( this.Stream.Read(buffer, 0, count) == count )
-        		return buffer;
-        	else
-        		throw new EndOfStreamException();
+            byte[] buffer = new byte[count];
+            if (this.Stream.Read(buffer, 0, count) == count)
+                return buffer;
+            else
+                throw new EndOfStreamException();
         }
 
         public byte ReadByte()
         {
             int b = this.Stream.ReadByte();
-            if ( b == -1 )
-            	throw new EndOfStreamException();
+            if (b == -1)
+                throw new EndOfStreamException();
             return (byte)b;
         }
         #endregion

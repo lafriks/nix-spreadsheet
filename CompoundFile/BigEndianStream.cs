@@ -1,6 +1,6 @@
 /*
  * Library for writing OLE 2 Compount Document file format.
- * Copyright (C) 2007, Lauris Bukðis-Haberkorns <lauris@nix.lv>
+ * Copyright (C) 2007, Lauris Bukï¿½is-Haberkorns <lauris@nix.lv>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,8 @@
 
 using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using Mono;
 
 namespace Nix.CompoundFile
@@ -42,7 +44,7 @@ namespace Nix.CompoundFile
         /// <param name="value">The value.</param>
         public override void WriteUInt16(ushort value)
         {
-        	this.Write(DataConverter.BigEndian.GetBytes(value));
+            this.Write(DataConverter.BigEndian.GetBytes(value));
         }
 
         /// <summary>
@@ -51,7 +53,7 @@ namespace Nix.CompoundFile
         /// <param name="value">The value.</param>
         public override void WriteInt16(short value)
         {
-        	this.Write(DataConverter.BigEndian.GetBytes(value));
+            this.Write(DataConverter.BigEndian.GetBytes(value));
         }
 
         /// <summary>
@@ -60,7 +62,7 @@ namespace Nix.CompoundFile
         /// <param name="value">The value.</param>
         public override void WriteUInt32(uint value)
         {
-        	this.Write(DataConverter.BigEndian.GetBytes(value));
+            this.Write(DataConverter.BigEndian.GetBytes(value));
         }
 
         /// <summary>
@@ -69,7 +71,7 @@ namespace Nix.CompoundFile
         /// <param name="value">The value.</param>
         public override void WriteInt32(int value)
         {
-        	this.Write(DataConverter.BigEndian.GetBytes(value));
+            this.Write(DataConverter.BigEndian.GetBytes(value));
         }
 
         /// <summary>
@@ -78,36 +80,66 @@ namespace Nix.CompoundFile
         /// <param name="value"></param>
         public override void WriteFloatIEEE(float value)
         {
-        	this.Write(DataConverter.BigEndian.GetBytes(value));
+            this.Write(DataConverter.BigEndian.GetBytes(value));
         }
 
         /// <summary>
         /// Write a 8 byte double type value to the output (big endian order)
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name=\"value\"></param>
         public override void WriteDoubleIEEE(double value)
         {
-        	this.Write(DataConverter.BigEndian.GetBytes(value));
+            this.Write(DataConverter.BigEndian.GetBytes(value));
         }
 
-		public override ushort Read2()
-		{
-			return DataConverter.BigEndian.GetUInt16(this.ReadBytes(2), 0);
-		}
+        public override async Task WriteUInt16Async(ushort value, CancellationToken cancellationToken = default)
+        {
+            await this.WriteAsync(DataConverter.BigEndian.GetBytes(value), cancellationToken).ConfigureAwait(false);
+        }
 
-		public override uint Read4()
-		{
-			return DataConverter.BigEndian.GetUInt32(this.ReadBytes(4), 0);
-		}
+        public override async Task WriteInt16Async(short value, CancellationToken cancellationToken = default)
+        {
+            await this.WriteAsync(DataConverter.BigEndian.GetBytes(value), cancellationToken).ConfigureAwait(false);
+        }
 
-		public override float ReadFloatIEEE()
-		{
-			return DataConverter.BigEndian.GetFloat(this.ReadBytes(4), 0);
-		}
+        public override async Task WriteUInt32Async(uint value, CancellationToken cancellationToken = default)
+        {
+            await this.WriteAsync(DataConverter.BigEndian.GetBytes(value), cancellationToken).ConfigureAwait(false);
+        }
 
-		public override double ReadDoubleIEEE()
-		{
-			return DataConverter.BigEndian.GetDouble(this.ReadBytes(8), 0);
-		}
+        public override async Task WriteInt32Async(int value, CancellationToken cancellationToken = default)
+        {
+            await this.WriteAsync(DataConverter.BigEndian.GetBytes(value), cancellationToken).ConfigureAwait(false);
+        }
+
+        public override async Task WriteFloatIEEEAsync(float value, CancellationToken cancellationToken = default)
+        {
+            await this.WriteAsync(DataConverter.BigEndian.GetBytes(value), cancellationToken).ConfigureAwait(false);
+        }
+
+        public override async Task WriteDoubleIEEEAsync(double value, CancellationToken cancellationToken = default)
+        {
+            await this.WriteAsync(DataConverter.BigEndian.GetBytes(value), cancellationToken).ConfigureAwait(false);
+        }
+
+        public override ushort Read2()
+        {
+            return DataConverter.BigEndian.GetUInt16(this.ReadBytes(2), 0);
+        }
+
+        public override uint Read4()
+        {
+            return DataConverter.BigEndian.GetUInt32(this.ReadBytes(4), 0);
+        }
+
+        public override float ReadFloatIEEE()
+        {
+            return DataConverter.BigEndian.GetFloat(this.ReadBytes(4), 0);
+        }
+
+        public override double ReadDoubleIEEE()
+        {
+            return DataConverter.BigEndian.GetDouble(this.ReadBytes(8), 0);
+        }
     }
 }

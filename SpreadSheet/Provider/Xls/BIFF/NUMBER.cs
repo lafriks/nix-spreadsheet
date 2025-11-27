@@ -54,7 +54,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 
         public override void Read(EndianStream stream)
         {
-			throw new NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

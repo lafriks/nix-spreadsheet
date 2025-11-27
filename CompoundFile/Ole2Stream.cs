@@ -37,17 +37,17 @@ namespace Nix.CompoundFile
         #endregion
 
         #region Stream
-		public Stream BaseStream
-		{
-			get
-			{
-				return this.stream;
-			}
-			set
-			{
-				this.stream = value;
-			}
-		}
+        public Stream BaseStream
+        {
+            get
+            {
+                return this.stream;
+            }
+            set
+            {
+                this.stream = value;
+            }
+        }
         #endregion
 
         #region Size

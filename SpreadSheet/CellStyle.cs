@@ -44,108 +44,132 @@ namespace Nix.SpreadSheet
         }
 
         #region Compare values to parent values
-        public bool IsModifiedCellLocked () {
-          return (this.CellLocked != this.Parent.CellLocked);
+        public bool IsModifiedCellLocked()
+        {
+            return (this.CellLocked != this.Parent.CellLocked);
         }
 
-        public bool IsModifiedHiddenFormula () {
-          return (this.HiddenFormula != this.Parent.HiddenFormula);
+        public bool IsModifiedHiddenFormula()
+        {
+            return (this.HiddenFormula != this.Parent.HiddenFormula);
         }
 
-        public bool IsModifiedWrapText () {
-          return (this.WrapText != this.Parent.WrapText);
+        public bool IsModifiedWrapText()
+        {
+            return (this.WrapText != this.Parent.WrapText);
         }
 
-        public bool IsModifiedShrinkToFit () {
-          return (this.ShrinkToFit != this.Parent.ShrinkToFit);
+        public bool IsModifiedShrinkToFit()
+        {
+            return (this.ShrinkToFit != this.Parent.ShrinkToFit);
         }
 
-        public bool IsModifiedFont () {
-          return (this.Font.Equals(this.Parent.Font) == false);
+        public bool IsModifiedFont()
+        {
+            return (this.Font.Equals(this.Parent.Font) == false);
         }
 
-        public bool IsModifiedFormat () {
-          return (this.Format != this.Parent.Format);
+        public bool IsModifiedFormat()
+        {
+            return (this.Format != this.Parent.Format);
         }
 
-        public bool IsModifiedIndentLevel () {
-          return (this.IndentLevel != this.Parent.IndentLevel);
+        public bool IsModifiedIndentLevel()
+        {
+            return (this.IndentLevel != this.Parent.IndentLevel);
         }
 
-        public bool IsModifiedTextDirection () {
-          return (this.TextDirection != this.Parent.TextDirection);
+        public bool IsModifiedTextDirection()
+        {
+            return (this.TextDirection != this.Parent.TextDirection);
         }
 
-        public bool IsModifiedWrapTextAtRightBorder () {
-          return (this.WrapTextAtRightBorder != this.Parent.WrapTextAtRightBorder);
+        public bool IsModifiedWrapTextAtRightBorder()
+        {
+            return (this.WrapTextAtRightBorder != this.Parent.WrapTextAtRightBorder);
         }
 
-        public bool IsModifiedHorizontalAlignment () {
-          return (this.HorizontalAlignment != this.Parent.HorizontalAlignment);
+        public bool IsModifiedHorizontalAlignment()
+        {
+            return (this.HorizontalAlignment != this.Parent.HorizontalAlignment);
         }
 
-        public bool IsModifiedVerticalAlignment () {
-          return (this.VerticalAlignment != this.Parent.VerticalAlignment);
+        public bool IsModifiedVerticalAlignment()
+        {
+            return (this.VerticalAlignment != this.Parent.VerticalAlignment);
         }
 
-        public bool IsModifiedJustifyTextAtLastLine () {
-          return (this.JustifyTextAtLastLine != this.Parent.JustifyTextAtLastLine);
+        public bool IsModifiedJustifyTextAtLastLine()
+        {
+            return (this.JustifyTextAtLastLine != this.Parent.JustifyTextAtLastLine);
         }
 
-        public bool IsModifiedRotation () {
-          return (this.Rotation != this.Parent.Rotation);
+        public bool IsModifiedRotation()
+        {
+            return (this.Rotation != this.Parent.Rotation);
         }
 
-        public bool IsModifiedTopBorderLineStyle () {
-          return (this.TopBorderLineStyle != this.Parent.TopBorderLineStyle);
+        public bool IsModifiedTopBorderLineStyle()
+        {
+            return (this.TopBorderLineStyle != this.Parent.TopBorderLineStyle);
         }
 
-        public bool IsModifiedTopBorderLineColor () {
-          return (this.TopBorderLineColor != this.Parent.TopBorderLineColor);
+        public bool IsModifiedTopBorderLineColor()
+        {
+            return (this.TopBorderLineColor != this.Parent.TopBorderLineColor);
         }
 
-        public bool IsModifiedLeftBorderLineStyle () {
-          return (this.LeftBorderLineStyle != this.Parent.LeftBorderLineStyle);
+        public bool IsModifiedLeftBorderLineStyle()
+        {
+            return (this.LeftBorderLineStyle != this.Parent.LeftBorderLineStyle);
         }
 
-        public bool IsModifiedLeftBorderLineColor () {
-          return (this.LeftBorderLineColor != this.Parent.LeftBorderLineColor);
+        public bool IsModifiedLeftBorderLineColor()
+        {
+            return (this.LeftBorderLineColor != this.Parent.LeftBorderLineColor);
         }
 
-        public bool IsModifiedRightBorderLineStyle () {
-          return (this.RightBorderLineStyle != this.Parent.RightBorderLineStyle);
+        public bool IsModifiedRightBorderLineStyle()
+        {
+            return (this.RightBorderLineStyle != this.Parent.RightBorderLineStyle);
         }
 
-        public bool IsModifiedRightBorderLineColor () {
-          return (this.RightBorderLineColor != this.Parent.RightBorderLineColor);
+        public bool IsModifiedRightBorderLineColor()
+        {
+            return (this.RightBorderLineColor != this.Parent.RightBorderLineColor);
         }
 
-        public bool IsModifiedBottomBorderLineStyle () {
-          return (this.BottomBorderLineStyle != this.Parent.BottomBorderLineStyle);
+        public bool IsModifiedBottomBorderLineStyle()
+        {
+            return (this.BottomBorderLineStyle != this.Parent.BottomBorderLineStyle);
         }
 
-        public bool IsModifiedBottomBorderLineColor () {
-          return (this.BottomBorderLineColor != this.Parent.BottomBorderLineColor);
+        public bool IsModifiedBottomBorderLineColor()
+        {
+            return (this.BottomBorderLineColor != this.Parent.BottomBorderLineColor);
         }
 
-        public bool IsModifiedBackgroundColor () {
-          return (this.BackgroundColor != this.Parent.BackgroundColor);
+        public bool IsModifiedBackgroundColor()
+        {
+            return (this.BackgroundColor != this.Parent.BackgroundColor);
         }
 
-        public bool IsModifiedBackgroundPatternColor () {
-          return (this.BackgroundPatternColor != this.Parent.BackgroundPatternColor);
+        public bool IsModifiedBackgroundPatternColor()
+        {
+            return (this.BackgroundPatternColor != this.Parent.BackgroundPatternColor);
         }
 
-        public bool IsModifiedBackgroundPattern () {
-          return (this.BackgroundPattern != this.Parent.BackgroundPattern);
+        public bool IsModifiedBackgroundPattern()
+        {
+            return (this.BackgroundPattern != this.Parent.BackgroundPattern);
         }
         #endregion
 
-		public override bool Equals(Style other)
-		{
-			// To be equal parent styles should match
-			return base.Equals(other) && other is CellStyle && ((CellStyle)other).Parent.Equals(this.Parent);
-		}
+        public override bool Equals(Style other)
+        {
+            // To be equal parent styles should match
+            return base.Equals(other) && other is CellStyle && ((CellStyle)other).Parent.Equals(this.Parent);
+        }
 
         public override void CopyValuesFrom(Style other)
         {

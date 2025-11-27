@@ -22,11 +22,11 @@ using Nix.CompoundFile;
 
 namespace Nix.SpreadSheet.Provider.Xls.BIFF
 {
-	/// <summary>
-	/// BOOLERR record.
-	/// </summary>
-	internal class BOOLERR : CellBIFFRecord
-	{
+    /// <summary>
+    /// BOOLERR record.
+    /// </summary>
+    internal class BOOLERR : CellBIFFRecord
+    {
         /// <summary>
         /// BOOLERR record OPCODE.
         /// </summary>
@@ -60,7 +60,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
 
         public override void Read(EndianStream stream)
         {
-			throw new NotImplementedException();
+            throw new NotImplementedException();
         }
-	}
+    }
 }

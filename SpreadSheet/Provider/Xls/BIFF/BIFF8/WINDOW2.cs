@@ -24,26 +24,28 @@ using Nix.CompoundFile;
 
 namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
 {
-	internal class WINDOW2 : BIFFRecord
-	{
-		/// <summary>
-		/// BOF OPCODE
-		/// </summary>
-		protected override ushort OPCODE {
-			get {
-				return 0x023E;
-			}
-		}
+    internal class WINDOW2 : BIFFRecord
+    {
+        /// <summary>
+        /// BOF OPCODE
+        /// </summary>
+        protected override ushort OPCODE
+        {
+            get
+            {
+                return 0x023E;
+            }
+        }
 
 
-		/// <summary>
-		/// Writes BIFF record to the specified stream.
-		/// </summary>
-		/// <param name="stream">The stream.</param>
-		public override void Write ( EndianStream stream )
-		{
-			this.WriteHeader(stream, 18);
-			stream.WriteUInt16((UInt16)0x06B6); // Option flags
+        /// <summary>
+        /// Writes BIFF record to the specified stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        public override void Write(EndianStream stream)
+        {
+            this.WriteHeader(stream, 18);
+            stream.WriteUInt16((UInt16)0x06B6); // Option flags
             stream.WriteUInt16(0); // Index to first visible row
             stream.WriteUInt16(0); // Index to first visible column
             stream.WriteUInt16((UInt16)0x0040); // Colour index of grid line colour
@@ -51,15 +53,15 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
             stream.WriteUInt16((UInt16)0x0000); // Cached magnification factor in page break preview (in percent); 0 = Default (60%)
             stream.WriteUInt16((UInt16)0x0000); // Cached magnification factor in normal view (in percent); 0 = Default (100%)
             stream.WriteUInt32(0); // Not used
-		}
+        }
 
-		/// <summary>
-		/// Reads BIFF record from the specified stream.
-		/// </summary>
-		/// <param name="stream">The stream.</param>
-		public override void Read ( EndianStream stream )
-		{
-		}
-	}
+        /// <summary>
+        /// Reads BIFF record from the specified stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        public override void Read(EndianStream stream)
+        {
+        }
+    }
 }
 

@@ -21,19 +21,29 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Nix.SpreadSheet.Provider
 {
-	/// <summary>
-	/// Spreadsheet file format provider interface.
-	/// </summary>
-	public interface IFileFormatProvider
-	{
-		/// <summary>
-		/// Save document to stream.
-		/// </summary>
-		/// <param name="document">Spreadsheet document.</param>
-		/// <param name="stream">Stream to write to.</param>
-		void Save(SpreadSheetDocument document, Stream stream);
-	}
+    /// <summary>
+    /// Spreadsheet file format provider interface.
+    /// </summary>
+    public interface IFileFormatProvider
+    {
+        /// <summary>
+        /// Save document to stream.
+        /// </summary>
+        /// <param name="document">Spreadsheet document.</param>
+        /// <param name="stream">Stream to write to.</param>
+        void Save(SpreadSheetDocument document, Stream stream);
+
+        /// <summary>
+        /// Save document to stream asynchronously.
+        /// </summary>
+        /// <param name="document">Spreadsheet document.</param>
+        /// <param name="stream">Stream to write to.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        Task SaveAsync(SpreadSheetDocument document, Stream stream, CancellationToken cancellationToken = default);
+    }
 }

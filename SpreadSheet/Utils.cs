@@ -69,8 +69,8 @@ namespace Nix.SpreadSheet
             }
             if (row == 0 || col == 0)
                 throw new ArgumentException("Invalid cell name");
-            col --;
-            row --;
+            col--;
+            row--;
         }
         #endregion
     }

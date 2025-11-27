@@ -21,22 +21,22 @@ using System;
 
 namespace Nix.SpreadSheet
 {
-	/// <summary>
-	/// Text direction.
-	/// </summary>
-	public enum TextDirection
-	{
-		/// <summary>
-		/// Detect automaticaly.
-		/// </summary>
-		Automatic = 0,
-		/// <summary>
-		/// Right to left.
-		/// </summary>
-		RightToLeft,
-		/// <summary>
-		/// Left to right.
-		/// </summary>
-		LeftToRight
-	}
+    /// <summary>
+    /// Text direction.
+    /// </summary>
+    public enum TextDirection
+    {
+        /// <summary>
+        /// Detect automaticaly.
+        /// </summary>
+        Automatic = 0,
+        /// <summary>
+        /// Right to left.
+        /// </summary>
+        RightToLeft,
+        /// <summary>
+        /// Left to right.
+        /// </summary>
+        LeftToRight
+    }
 }

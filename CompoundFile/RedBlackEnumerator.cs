@@ -45,7 +45,7 @@ namespace Nix.CompoundFile
         /// </summary>
         /// <param name="tnode">Node to start with.</param>
         /// <param name="ascending">Sort order</param>
-        public RedBlackEnumerator(Ole2DirectoryEntry tnode, bool ascending) 
+        public RedBlackEnumerator(Ole2DirectoryEntry tnode, bool ascending)
         {
             this.ascending = ascending;
             this.root = tnode;
@@ -110,12 +110,12 @@ namespace Nix.CompoundFile
             if (this.ascending)
             {
                 if (node.Right == RedBlackTree.SentinelNode)
-                {	
+                {
                     // yes, top node is lowest node in subtree - pop node off stack 
                     Ole2DirectoryEntry tn = (Ole2DirectoryEntry)this.stack.Pop();
                     // peek at right node's parent 
                     // get rid of it if it has already been used
-                    while(this.stack.Count > 0 && ((Ole2DirectoryEntry)this.stack.Peek()).Right == tn)
+                    while (this.stack.Count > 0 && ((Ole2DirectoryEntry)this.stack.Peek()).Right == tn)
                         tn = (Ole2DirectoryEntry)this.stack.Pop();
                 }
                 else
@@ -137,7 +137,7 @@ namespace Nix.CompoundFile
                 {
                     // walk the tree
                     Ole2DirectoryEntry tn = (Ole2DirectoryEntry)this.stack.Pop();
-                    while(stack.Count > 0 && ((Ole2DirectoryEntry)this.stack.Peek()).Left == tn)
+                    while (stack.Count > 0 && ((Ole2DirectoryEntry)this.stack.Peek()).Left == tn)
                         tn = (Ole2DirectoryEntry)this.stack.Pop();
                 }
                 else

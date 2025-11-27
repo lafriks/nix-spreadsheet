@@ -37,7 +37,8 @@ namespace Nix.SpreadSheet
         #region Cell protection
         private bool cellLocked = false;
 
-        public bool CellLocked {
+        public bool CellLocked
+        {
             get
             {
                 return this.cellLocked;
@@ -50,7 +51,8 @@ namespace Nix.SpreadSheet
 
         private bool hiddenFormula = false;
 
-        public bool HiddenFormula {
+        public bool HiddenFormula
+        {
             get
             {
                 return this.hiddenFormula;
@@ -68,7 +70,8 @@ namespace Nix.SpreadSheet
         /// <summary>
         /// Gets or sets if cell value is wrapped.
         /// </summary>
-        public bool WrapText {
+        public bool WrapText
+        {
             get
             {
                 return this.wrapText;
@@ -84,7 +87,8 @@ namespace Nix.SpreadSheet
         /// <summary>
         /// Gets or sets if cell value should shrunk to fit the cell.
         /// </summary>
-        public bool ShrinkToFit {
+        public bool ShrinkToFit
+        {
             get
             {
                 return this.shrinkToFit;
@@ -99,7 +103,8 @@ namespace Nix.SpreadSheet
         #region Font
         private Font font = new Font();
 
-        public Font Font {
+        public Font Font
+        {
             get
             {
                 return this.font;
@@ -114,7 +119,8 @@ namespace Nix.SpreadSheet
         #region Format
         private string format = "General";
 
-        public string Format {
+        public string Format
+        {
             get
             {
                 return this.format;
@@ -129,7 +135,8 @@ namespace Nix.SpreadSheet
         #region Indent level, text direction
         private byte indentLevel = 0;
 
-        public byte IndentLevel {
+        public byte IndentLevel
+        {
             get
             {
                 return this.indentLevel;
@@ -142,7 +149,8 @@ namespace Nix.SpreadSheet
 
         private TextDirection textDirection = TextDirection.Automatic;
 
-        public TextDirection TextDirection {
+        public TextDirection TextDirection
+        {
             get
             {
                 return this.textDirection;
@@ -157,7 +165,8 @@ namespace Nix.SpreadSheet
         #region Alignment
         private bool wrapTextAtRightBorder = false;
 
-        public bool WrapTextAtRightBorder {
+        public bool WrapTextAtRightBorder
+        {
             get
             {
                 return this.wrapTextAtRightBorder;
@@ -170,7 +179,8 @@ namespace Nix.SpreadSheet
 
         private CellHorizontalAlignment horizontalAlignment = CellHorizontalAlignment.General;
 
-        public CellHorizontalAlignment HorizontalAlignment {
+        public CellHorizontalAlignment HorizontalAlignment
+        {
             get
             {
                 return this.horizontalAlignment;
@@ -183,7 +193,8 @@ namespace Nix.SpreadSheet
 
         private CellVerticalAlignment verticalAlignment = CellVerticalAlignment.Top;
 
-        public CellVerticalAlignment VerticalAlignment {
+        public CellVerticalAlignment VerticalAlignment
+        {
             get
             {
                 return this.verticalAlignment;
@@ -196,7 +207,8 @@ namespace Nix.SpreadSheet
 
         private bool justifyTextAtLastLine = false;
 
-        public bool JustifyTextAtLastLine {
+        public bool JustifyTextAtLastLine
+        {
             get
             {
                 return this.justifyTextAtLastLine;
@@ -216,7 +228,8 @@ namespace Nix.SpreadSheet
         /// degrees clockwise;
         /// 255 Letters are stacked top-to-bottom, but not rotated.
         /// </summary>
-        public byte Rotation {
+        public byte Rotation
+        {
             get
             {
                 return this.rotation;
@@ -231,7 +244,8 @@ namespace Nix.SpreadSheet
         #region Borders
         private BorderLineStyle topBorderLineStyle = BorderLineStyle.None;
 
-        public BorderLineStyle TopBorderLineStyle {
+        public BorderLineStyle TopBorderLineStyle
+        {
             get
             {
                 return this.topBorderLineStyle;
@@ -244,7 +258,8 @@ namespace Nix.SpreadSheet
 
         private Color topBorderLineColor = Color.Black;
 
-        public Color TopBorderLineColor {
+        public Color TopBorderLineColor
+        {
             get
             {
                 return this.topBorderLineColor;
@@ -257,7 +272,8 @@ namespace Nix.SpreadSheet
 
         private BorderLineStyle leftBorderLineStyle = BorderLineStyle.None;
 
-        public BorderLineStyle LeftBorderLineStyle {
+        public BorderLineStyle LeftBorderLineStyle
+        {
             get
             {
                 return this.leftBorderLineStyle;
@@ -270,7 +286,8 @@ namespace Nix.SpreadSheet
 
         private Color leftBorderLineColor = Color.Black;
 
-        public Color LeftBorderLineColor {
+        public Color LeftBorderLineColor
+        {
             get
             {
                 return this.leftBorderLineColor;
@@ -283,7 +300,8 @@ namespace Nix.SpreadSheet
 
         private BorderLineStyle rightBorderLineStyle = BorderLineStyle.None;
 
-        public BorderLineStyle RightBorderLineStyle {
+        public BorderLineStyle RightBorderLineStyle
+        {
             get
             {
                 return this.rightBorderLineStyle;
@@ -296,7 +314,8 @@ namespace Nix.SpreadSheet
 
         private Color rightBorderLineColor = Color.Black;
 
-        public Color RightBorderLineColor {
+        public Color RightBorderLineColor
+        {
             get
             {
                 return this.rightBorderLineColor;
@@ -309,7 +328,8 @@ namespace Nix.SpreadSheet
 
         private BorderLineStyle bottomBorderLineStyle = BorderLineStyle.None;
 
-        public BorderLineStyle BottomBorderLineStyle {
+        public BorderLineStyle BottomBorderLineStyle
+        {
             get
             {
                 return this.bottomBorderLineStyle;
@@ -322,7 +342,8 @@ namespace Nix.SpreadSheet
 
         private Color bottomBorderLineColor = Color.Black;
 
-        public Color BottomBorderLineColor {
+        public Color BottomBorderLineColor
+        {
             get
             {
                 return this.bottomBorderLineColor;
@@ -337,7 +358,8 @@ namespace Nix.SpreadSheet
         #region Background
         private Color backgroundColor = Color.White;
 
-        public Color BackgroundColor {
+        public Color BackgroundColor
+        {
             get
             {
                 return this.backgroundColor;
@@ -350,7 +372,8 @@ namespace Nix.SpreadSheet
 
         private Color backgroundPatternColor = Color.White;
 
-        public Color BackgroundPatternColor {
+        public Color BackgroundPatternColor
+        {
             get
             {
                 return this.backgroundPatternColor;
@@ -363,7 +386,8 @@ namespace Nix.SpreadSheet
 
         private CellBackgroundPattern backgroundPattern = CellBackgroundPattern.None;
 
-        public CellBackgroundPattern BackgroundPattern {
+        public CellBackgroundPattern BackgroundPattern
+        {
             get
             {
                 return this.backgroundPattern;
@@ -377,7 +401,7 @@ namespace Nix.SpreadSheet
 
         public virtual bool Equals(Style other)
         {
-            return ! ((this.CellLocked != other.CellLocked)
+            return !((this.CellLocked != other.CellLocked)
                      || (this.HiddenFormula != other.HiddenFormula)
                      || (this.WrapText != other.WrapText)
                      || (this.ShrinkToFit != other.ShrinkToFit)

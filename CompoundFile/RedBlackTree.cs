@@ -56,7 +56,7 @@ namespace Nix.CompoundFile
 
         #region Sentinel node
         //  sentinelNode is convenient way of indicating a leaf node.
-        private static Ole2DirectoryEntry sentinelNode;          
+        private static Ole2DirectoryEntry sentinelNode;
 
         public static Ole2DirectoryEntry SentinelNode
         {
@@ -70,7 +70,7 @@ namespace Nix.CompoundFile
         {
             // set up the sentinel node. the sentinel node is the key to a successfull
             // implementation and for understanding the red-black tree properties.
-            sentinelNode        = new SentinelEntry();
+            sentinelNode = new SentinelEntry();
             /*sentinelNode.Left   = sentinelNode;
             sentinelNode.Right  = sentinelNode;
             sentinelNode.Parent = null;
@@ -81,8 +81,8 @@ namespace Nix.CompoundFile
         #region Constructor
         public RedBlackTree()
         {
-            this.rbTree         = SentinelNode;
-            this.lastNodeFound  = SentinelNode;
+            this.rbTree = SentinelNode;
+            this.lastNodeFound = SentinelNode;
         }
         #endregion
 
@@ -93,7 +93,7 @@ namespace Nix.CompoundFile
         /// <param name="node">Node to add.</param>
         public void Add(Ole2DirectoryEntry node)
         {
-            if(node == null)
+            if (node == null)
                 throw new ArgumentNullException("Directory entry must not be null");
 
             // traverse tree - find where node belongs
@@ -115,11 +115,11 @@ namespace Nix.CompoundFile
             }
 
             // setup node
-            node.Left  = SentinelNode;
+            node.Left = SentinelNode;
             node.Right = SentinelNode;
 
             // insert node into tree starting at parent's location
-            if (node.Parent != null)	
+            if (node.Parent != null)
             {
                 result = node.DID.CompareTo(node.Parent.DID);
                 if (result > 0)
@@ -157,7 +157,7 @@ namespace Nix.CompoundFile
             while (x != this.rbTree && x.Parent.Color == NodeColor.Red)
             {
                 // Parent node is .Colored red; 
-                if(x.Parent == x.Parent.Parent.Left)    // determine traversal path
+                if (x.Parent == x.Parent.Parent.Left)    // determine traversal path
                 {                                       // is it on the Left or Right subtree?
                     y = x.Parent.Parent.Right;          // get uncle
                     if (y.Color == NodeColor.Red)       // y != null && ???
@@ -174,7 +174,7 @@ namespace Nix.CompoundFile
                     else
                     {
                         // uncle is black; determine if x is greater than Parent
-                        if (x == x.Parent.Right) 
+                        if (x == x.Parent.Right)
                         {	// yes, x is greater than Parent; rotate Left
                             // make x a Left child
                             x = x.Parent;
@@ -205,7 +205,7 @@ namespace Nix.CompoundFile
                     }
                     else
                     {
-                        if(x == x.Parent.Left)
+                        if (x == x.Parent.Left)
                         {
                             x = x.Parent;
                             this.RotateRight(x);
@@ -260,7 +260,7 @@ namespace Nix.CompoundFile
                 else
                     x.Parent.Right = y;   // set Right Parent to y
             }
-            else 
+            else
             {
                 // at rbTree, set it to y
                 this.rbTree = y;
@@ -314,7 +314,7 @@ namespace Nix.CompoundFile
                     x.Parent.Right = y;  // set Right Parent to y
                 else
                     x.Parent.Left = y;   // set Left Parent to y
-            } 
+            }
             else
             {
                 // at rbTree, set it to y
@@ -360,7 +360,7 @@ namespace Nix.CompoundFile
                         treeNode = treeNode.Right;
                 }
 
-                throw(new ArgumentException("Directory entry with such DID was not found"));
+                throw (new ArgumentException("Directory entry with such DID was not found"));
             }
         }
 
@@ -373,7 +373,7 @@ namespace Nix.CompoundFile
             Ole2DirectoryEntry treeNode = this.rbTree;
 
             if (this.IsEmpty())
-                throw(new ArgumentException("RedBlack tree is empty"));
+                throw (new ArgumentException("RedBlack tree is empty"));
 
             // traverse to the extreme left to find the smallest key
             while (treeNode.Left != SentinelNode)
@@ -393,7 +393,7 @@ namespace Nix.CompoundFile
             Ole2DirectoryEntry treeNode = this.rbTree;
 
             if (this.IsEmpty())
-                throw(new ArgumentException("RedBlack tree is empty"));
+                throw (new ArgumentException("RedBlack tree is empty"));
 
             // traverse to the extreme right to find the largest key
             while (treeNode.Right != SentinelNode)
@@ -482,12 +482,12 @@ namespace Nix.CompoundFile
 
             // find the replacement node (the successor to x) - the node one with 
             // at *most* one child. 
-            if(z.Left == SentinelNode || z.Right == SentinelNode)
+            if (z.Left == SentinelNode || z.Right == SentinelNode)
             {
                 // node has sentinel as a child
                 y = z;
             }
-            else 
+            else
             {
                 // z has two children, find replacement node which will 
                 // be the leftmost node greater than z
@@ -541,12 +541,12 @@ namespace Nix.CompoundFile
         /// required to restore it
         /// </summary>
         /// <param name="x">Node to start with.</param>
-        private void RestoreAfterDelete (Ole2DirectoryEntry x)
+        private void RestoreAfterDelete(Ole2DirectoryEntry x)
         {
             // maintain Red-Black tree balance after deleting node
             Ole2DirectoryEntry y;
 
-            while (x != this.rbTree && x.Color == NodeColor.Black) 
+            while (x != this.rbTree && x.Color == NodeColor.Black)
             {
                 // determine sub tree from parent
                 if (x == x.Parent.Left)
@@ -568,9 +568,9 @@ namespace Nix.CompoundFile
                         // move up the tree
                         x = x.Parent;
                     }
-                    else 
+                    else
                     {
-                        if (y.Right.Color == NodeColor.Black) 
+                        if (y.Right.Color == NodeColor.Black)
                         {
                             y.Left.Color = NodeColor.Black;
                             y.Color = NodeColor.Red;
@@ -587,22 +587,22 @@ namespace Nix.CompoundFile
                 else
                 {   // right subtree - same as code above with right and left swapped
                     y = x.Parent.Left;
-                    if (y.Color == NodeColor.Red) 
+                    if (y.Color == NodeColor.Red)
                     {
                         y.Color = NodeColor.Black;
                         x.Parent.Color = NodeColor.Red;
                         this.RotateRight(x.Parent);
                         y = x.Parent.Left;
                     }
-                    if (y.Right.Color == NodeColor.Black && 
-                        y.Left.Color == NodeColor.Black) 
+                    if (y.Right.Color == NodeColor.Black &&
+                        y.Left.Color == NodeColor.Black)
                     {
                         y.Color = NodeColor.Red;
                         x = x.Parent;
                     }
                     else
                     {
-                        if (y.Left.Color == NodeColor.Black) 
+                        if (y.Left.Color == NodeColor.Black)
                         {
                             y.Right.Color = NodeColor.Black;
                             y.Color = NodeColor.Red;
@@ -610,8 +610,8 @@ namespace Nix.CompoundFile
                             y = x.Parent.Left;
                         }
                         y.Color = x.Parent.Color;
-                        x.Parent.Color	= NodeColor.Black;
-                        y.Left.Color	= NodeColor.Black;
+                        x.Parent.Color = NodeColor.Black;
+                        y.Left.Color = NodeColor.Black;
                         this.RotateRight(x.Parent);
                         x = this.rbTree;
                     }
@@ -693,7 +693,7 @@ namespace Nix.CompoundFile
         /// <returns>RedBlackTree enumerator</returns>
         public RedBlackEnumerator Keys(bool ascending)
         {
-            return new RedBlackEnumerator(this.rbTree,  ascending);
+            return new RedBlackEnumerator(this.rbTree, ascending);
         }
 
         public IEnumerator GetEnumerator()

@@ -28,7 +28,7 @@ namespace Nix.CompoundFile.Managers
     internal class MasterSectorAllocationManager : IEnumerable<int>
     {
         #region Private variables and constructor
-		private List<int> Sectors = new List<int>();
+        private List<int> Sectors = new List<int>();
         private SectorAllocationManager SAT;
 
         public MasterSectorAllocationManager(SectorAllocationManager sat)
@@ -58,10 +58,10 @@ namespace Nix.CompoundFile.Managers
         #endregion
 
         #region Master table allocations
-		/// <summary>
-		/// Gets the sector at the specified index.
-		/// </summary>
-		/// <value></value>
+        /// <summary>
+        /// Gets the sector at the specified index.
+        /// </summary>
+        /// <value></value>
         public int this[int index]
         {
             get
@@ -70,35 +70,35 @@ namespace Nix.CompoundFile.Managers
             }
         }
 
-		/// <summary>
-		/// Gets the sector count.
-		/// </summary>
-		/// <value>The count.</value>
+        /// <summary>
+        /// Gets the sector count.
+        /// </summary>
+        /// <value>The count.</value>
         public int Count
         {
-			get
-			{
-				return this.Sectors.Count;
-			}
+            get
+            {
+                return this.Sectors.Count;
+            }
         }
         #endregion
 
-		#region IEnumerable<int> Members
+        #region IEnumerable<int> Members
 
-		public IEnumerator<int> GetEnumerator()
-		{
-			return this.Sectors.GetEnumerator();
-		}
+        public IEnumerator<int> GetEnumerator()
+        {
+            return this.Sectors.GetEnumerator();
+        }
 
-		#endregion
+        #endregion
 
-		#region IEnumerable Members
+        #region IEnumerable Members
 
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-		{
-			return this.Sectors.GetEnumerator();
-		}
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.Sectors.GetEnumerator();
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

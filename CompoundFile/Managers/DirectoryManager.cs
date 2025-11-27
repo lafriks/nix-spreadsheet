@@ -27,76 +27,76 @@ namespace Nix.CompoundFile.Managers
     /// </summary>
     internal class DirectoryManager : IEnumerable<Ole2DirectoryEntry>
     {
-		private Dictionary<int, Ole2DirectoryEntry> directories = new Dictionary<int, Ole2DirectoryEntry>();
+        private Dictionary<int, Ole2DirectoryEntry> directories = new Dictionary<int, Ole2DirectoryEntry>();
         private int sequence = -1;
 
-		/// <summary>
-		/// Register new directory entry.
-		/// </summary>
-		/// <param name="entry">Directory entry.</param>
-		/// <returns>Directory ID.</returns>
+        /// <summary>
+        /// Register new directory entry.
+        /// </summary>
+        /// <param name="entry">Directory entry.</param>
+        /// <returns>Directory ID.</returns>
         public int Register(Ole2DirectoryEntry entry)
         {
             if (entry == null)
                 throw new ArgumentNullException("Directory entry can not be null");
-			this.directories.Add(++this.sequence, entry);
-			return this.sequence;
+            this.directories.Add(++this.sequence, entry);
+            return this.sequence;
         }
 
-		/// <summary>
-		/// Directory entry.
-		/// </summary>
-		/// <value>Directory entry.</value>
+        /// <summary>
+        /// Directory entry.
+        /// </summary>
+        /// <value>Directory entry.</value>
         public Ole2DirectoryEntry this[int id]
         {
             get
             {
-                if ( ! this.directories.ContainsKey(id))
-					throw new ArgumentOutOfRangeException("There is no such directory entry with such ID.");
-				return this.directories[id];
+                if (!this.directories.ContainsKey(id))
+                    throw new ArgumentOutOfRangeException("There is no such directory entry with such ID.");
+                return this.directories[id];
             }
         }
 
-		/// <summary>
-		/// Gets the directory count.
-		/// </summary>
-		/// <value>The count.</value>
+        /// <summary>
+        /// Gets the directory count.
+        /// </summary>
+        /// <value>The count.</value>
         public uint Count
         {
-			get
-			{
-				return (uint)this.directories.Count;
-			}
+            get
+            {
+                return (uint)this.directories.Count;
+            }
         }
 
-		#region IEnumerable<Ole2DirectoryEntry> Members
+        #region IEnumerable<Ole2DirectoryEntry> Members
 
-		/// <summary>
-		/// Returns an enumerator that iterates through the collection.
-		/// </summary>
-		/// <returns>
-		/// A <see cref="T:System.Collections.Generic.IEnumerator`1"></see> that can be used to iterate through the collection.
-		/// </returns>
-		public IEnumerator<Ole2DirectoryEntry> GetEnumerator()
-		{
-			return this.directories.Values.GetEnumerator();
-		}
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"></see> that can be used to iterate through the collection.
+        /// </returns>
+        public IEnumerator<Ole2DirectoryEntry> GetEnumerator()
+        {
+            return this.directories.Values.GetEnumerator();
+        }
 
-		#endregion
+        #endregion
 
-		#region IEnumerable Members
+        #region IEnumerable Members
 
-		/// <summary>
-		/// Returns an enumerator that iterates through a collection.
-		/// </summary>
-		/// <returns>
-		/// An <see cref="T:System.Collections.IEnumerator"></see> object that can be used to iterate through the collection.
-		/// </returns>
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-		{
-			return this.directories.Values.GetEnumerator();
-		}
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"></see> object that can be used to iterate through the collection.
+        /// </returns>
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.directories.Values.GetEnumerator();
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

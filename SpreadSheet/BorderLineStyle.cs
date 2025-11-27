@@ -21,66 +21,66 @@ using System;
 
 namespace Nix.SpreadSheet
 {
-	/// <summary>
-	/// Border line style.
-	/// </summary>
-	public enum BorderLineStyle
-	{
-		/// <summary>
-		/// None.
-		/// </summary>
-		None = 0,
-		/// <summary>
-		/// Thin.
-		/// </summary>
-		Thin,
-		/// <summary>
-		/// Medium.
-		/// </summary>
-		Medium,
-		/// <summary>
-		/// Dashed.
-		/// </summary>
-		Dashed,
-		/// <summary>
-		/// Dotted.
-		/// </summary>
-		Dotted,
-		/// <summary>
-		/// Thick.
-		/// </summary>
-		Thick,
-		/// <summary>
-		/// Double.
-		/// </summary>
-		Double,
-		/// <summary>
-		/// Hair.
-		/// </summary>
-		Hair,
-		/// <summary>
-		/// Medium dashed.
-		/// </summary>
-		MediumDashed,
-		/// <summary>
-		/// Thin dash dotted.
-		/// </summary>
-		ThinDashDotted,
-		/// <summary>
-		/// Medium dash dotted.
-		/// </summary>
-		MediumDashDotted,
-		/// <summary>
-		/// Thin dash dot dotted.
-		/// </summary>
-		ThinDashDotDotted,
-		/// <summary>
-		/// Medium dash dot dotted.
-		/// </summary>
-		MediumDashDotDotted,
-		/// <summary>
-		/// Slanted medium dash dotted
-		/// </summary>
-		SlantedMediumDashDotted
-	}
+    /// <summary>
+    /// Border line style.
+    /// </summary>
+    public enum BorderLineStyle
+    {
+        /// <summary>
+        /// None.
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// Thin.
+        /// </summary>
+        Thin,
+        /// <summary>
+        /// Medium.
+        /// </summary>
+        Medium,
+        /// <summary>
+        /// Dashed.
+        /// </summary>
+        Dashed,
+        /// <summary>
+        /// Dotted.
+        /// </summary>
+        Dotted,
+        /// <summary>
+        /// Thick.
+        /// </summary>
+        Thick,
+        /// <summary>
+        /// Double.
+        /// </summary>
+        Double,
+        /// <summary>
+        /// Hair.
+        /// </summary>
+        Hair,
+        /// <summary>
+        /// Medium dashed.
+        /// </summary>
+        MediumDashed,
+        /// <summary>
+        /// Thin dash dotted.
+        /// </summary>
+        ThinDashDotted,
+        /// <summary>
+        /// Medium dash dotted.
+        /// </summary>
+        MediumDashDotted,
+        /// <summary>
+        /// Thin dash dot dotted.
+        /// </summary>
+        ThinDashDotDotted,
+        /// <summary>
+        /// Medium dash dot dotted.
+        /// </summary>
+        MediumDashDotDotted,
+        /// <summary>
+        /// Slanted medium dash dotted
+        /// </summary>
+        SlantedMediumDashDotted
+    }
 }
