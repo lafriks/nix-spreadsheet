@@ -24,40 +24,42 @@ using Nix.CompoundFile;
 
 namespace Nix.SpreadSheet.Provider.Xls.BIFF
 {
-	internal class PALETTE : BIFFRecord
-	{
-		/// <summary>
-		/// EOF record OPCODE.
-		/// </summary>
-		protected override ushort OPCODE {
-			get {
-				return 0x0092;
-			}
-		}
-        
-		private ColorPalette palette = null;
-
-		public ColorPalette Palette
+    internal class PALETTE : BIFFRecord
+    {
+        /// <summary>
+        /// EOF record OPCODE.
+        /// </summary>
+        protected override ushort OPCODE
         {
-        	set { palette = value; }
+            get
+            {
+                return 0x0092;
+            }
         }
-		
-		public override void Write ( EndianStream stream )
-		{
-			if (palette != null && palette.Count > 0)
-			{
-				this.WriteHeader(stream, (ushort)(2 + 4* palette.Count));
-				stream.WriteUInt16(palette.Count);
-				foreach (uint color in palette)
-				{
-					stream.WriteUInt32(color);
-				}
-			}
-		}
 
-		public override void Read(EndianStream stream)
-		{
-			throw new NotImplementedException();
-		}
-	}
+        private ColorPalette palette = null;
+
+        public ColorPalette Palette
+        {
+            set { palette = value; }
+        }
+
+        public override void Write(EndianStream stream)
+        {
+            if (palette != null && palette.Count > 0)
+            {
+                this.WriteHeader(stream, (ushort)(2 + 4 * palette.Count));
+                stream.WriteUInt16(palette.Count);
+                foreach (uint color in palette)
+                {
+                    stream.WriteUInt32(color);
+                }
+            }
+        }
+
+        public override void Read(EndianStream stream)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

@@ -20,38 +20,38 @@ using System;
 
 namespace Nix.SpreadSheet
 {
-	/// <summary>
-	/// Error code.
-	/// </summary>
-	public enum ErrorCode
-	{
-		/// <summary>
-		/// Intersection of two cell ranges is empty.
-		/// </summary>
-		Null,
-		/// <summary>
-		/// Division by zero.
-		/// </summary>
-		DivisionByZero,
-		/// <summary>
-		/// Wrong type of operand.
-		/// </summary>
-		WrongType,
-		/// <summary>
-		/// Illegal or deleted cell reference.
-		/// </summary>
-		IllegalCellReference,
-		/// <summary>
-		/// Wrong function or range name.
-		/// </summary>
-		WrongFunctionOrRange,
-		/// <summary>
-		/// Value range overflow.
-		/// </summary>
-		ValueRangeOverflow,
-		/// <summary>
-		/// Argument or function not available.
-		/// </summary>
-		ArgumentOrFunctionNotAvailable
-	}
+    /// <summary>
+    /// Error code.
+    /// </summary>
+    public enum ErrorCode
+    {
+        /// <summary>
+        /// Intersection of two cell ranges is empty.
+        /// </summary>
+        Null,
+        /// <summary>
+        /// Division by zero.
+        /// </summary>
+        DivisionByZero,
+        /// <summary>
+        /// Wrong type of operand.
+        /// </summary>
+        WrongType,
+        /// <summary>
+        /// Illegal or deleted cell reference.
+        /// </summary>
+        IllegalCellReference,
+        /// <summary>
+        /// Wrong function or range name.
+        /// </summary>
+        WrongFunctionOrRange,
+        /// <summary>
+        /// Value range overflow.
+        /// </summary>
+        ValueRangeOverflow,
+        /// <summary>
+        /// Argument or function not available.
+        /// </summary>
+        ArgumentOrFunctionNotAvailable
+    }
 }

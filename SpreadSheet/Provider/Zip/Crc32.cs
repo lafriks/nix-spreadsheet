@@ -24,15 +24,15 @@ using System.Security.Cryptography;
 
 namespace Nix.SpreadSheet.Provider.Zip
 {
-	/// <summary>
-	/// CRC-32 Hash algorithm.
-	/// </summary>
-	internal class Crc32 : HashAlgorithm
-	{
+    /// <summary>
+    /// CRC-32 Hash algorithm.
+    /// </summary>
+    internal class Crc32 : HashAlgorithm
+    {
         #region Static methods and caching
         protected static Hashtable cached;
         protected static bool cache = true;
-	
+
         /// <summary>
         /// Polynomial for CRC-32, big endian.
         /// </summary>
@@ -62,7 +62,7 @@ namespace Nix.SpreadSheet.Provider.Zip
         /// </summary>
         static Crc32()
         {
-            cached = Hashtable.Synchronized( new Hashtable() );
+            cached = Hashtable.Synchronized(new Hashtable());
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Nix.SpreadSheet.Provider.Zip
         /// </summary>
         /// <param name="polynomial">Polynomial</param>
         /// <returns>CRC32 table</returns>
-        protected static uint[] BuildTable( uint polynomial )
+        protected static uint[] BuildTable(uint polynomial)
         {
             uint lcrc;
             uint[] table = new uint[256];
@@ -119,7 +119,7 @@ namespace Nix.SpreadSheet.Provider.Zip
         public Crc32(uint polynomial) : this(polynomial, Crc32.Cache)
         {
         }
-	
+
         /// <summary>
         /// Construct a CRC32 object
         /// </summary>
@@ -129,12 +129,12 @@ namespace Nix.SpreadSheet.Provider.Zip
         {
             this.HashSizeValue = 32;
 
-            if ( cached.ContainsKey(polynomial) )
-                this.table = (uint [])cached[polynomial];
+            if (cached.ContainsKey(polynomial))
+                this.table = (uint[])cached[polynomial];
             else
             {
                 this.table = Crc32.BuildTable(polynomial);
-                if ( cache )
+                if (cache)
                     cached.Add(polynomial, this.table);
             }
             this.Initialize();
@@ -149,7 +149,7 @@ namespace Nix.SpreadSheet.Provider.Zip
         {
             this.crc = 0xFFFFFFFF;
         }
-	
+
         /// <summary>
         /// Core hash computations.
         /// </summary>
@@ -164,21 +164,21 @@ namespace Nix.SpreadSheet.Provider.Zip
                 this.crc = (uint)(this.table[(this.crc & 0xFF) ^ buffer[i]] ^ (this.crc >> 8));
             }
         }
-	
+
         /// <summary>
         /// Calculate final CRC32 hash value.
         /// </summary>
         /// <returns>Final CRC32 hash value.</returns>
         protected override byte[] HashFinal()
         {
-            byte [] finalHash = new byte [ 4 ];
-            uint finalCRC = ~ this.crc;
-		
-            finalHash[0] = (byte) ((finalCRC >> 24) & 0xFF);
-            finalHash[1] = (byte) ((finalCRC >> 16) & 0xFF);
-            finalHash[2] = (byte) ((finalCRC >>  8) & 0xFF);
-            finalHash[3] = (byte) ((finalCRC >>  0) & 0xFF);
-		
+            byte[] finalHash = new byte[4];
+            uint finalCRC = ~this.crc;
+
+            finalHash[0] = (byte)((finalCRC >> 24) & 0xFF);
+            finalHash[1] = (byte)((finalCRC >> 16) & 0xFF);
+            finalHash[2] = (byte)((finalCRC >> 8) & 0xFF);
+            finalHash[3] = (byte)((finalCRC >> 0) & 0xFF);
+
             return finalHash;
         }
         #endregion

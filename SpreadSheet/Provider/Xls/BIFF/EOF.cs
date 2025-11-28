@@ -24,26 +24,28 @@ using Nix.CompoundFile;
 
 namespace Nix.SpreadSheet.Provider.Xls.BIFF
 {
-	internal class EOF : BIFFRecord
-	{
-		/// <summary>
-		/// EOF record OPCODE.
-		/// </summary>
-		protected override ushort OPCODE {
-			get {
-				return 0x000A;
-			}
-		}
+    internal class EOF : BIFFRecord
+    {
+        /// <summary>
+        /// EOF record OPCODE.
+        /// </summary>
+        protected override ushort OPCODE
+        {
+            get
+            {
+                return 0x000A;
+            }
+        }
 
-		public override void Write ( EndianStream stream )
-		{
-			this.WriteHeader(stream, 0);
-		}
+        public override void Write(EndianStream stream)
+        {
+            this.WriteHeader(stream, 0);
+        }
 
-		public override void Read(EndianStream stream)
-		{
-			if ( this.ReadHeader(stream) != 0 )
-				throw new IndexOutOfRangeException("Invalid EOF record");
-		}
-	}
+        public override void Read(EndianStream stream)
+        {
+            if (this.ReadHeader(stream) != 0)
+                throw new IndexOutOfRangeException("Invalid EOF record");
+        }
+    }
 }

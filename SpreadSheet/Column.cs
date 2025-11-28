@@ -26,14 +26,14 @@ namespace Nix.SpreadSheet
     /// </summary>
     public class Column
     {
-		private Sheet sheet;
+        private Sheet sheet;
 
-		// Column of the value
+        // Column of the value
         private int columnIndex;
 
-        public Column (Sheet sheet, int col)
+        public Column(Sheet sheet, int col)
         {
-        	this.sheet = sheet;
+            this.sheet = sheet;
             this.columnIndex = col;
         }
 

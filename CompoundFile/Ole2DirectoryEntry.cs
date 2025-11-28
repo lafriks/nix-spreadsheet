@@ -35,11 +35,11 @@ namespace Nix.CompoundFile
     /// </summary>
     public enum EntryType
     {
-        Empty       = 0x00,
+        Empty = 0x00,
         UserStorage = 0x01,
-        UserStream  = 0x02,
-        LockBytes   = 0x03,
-        Property    = 0x04,
+        UserStream = 0x02,
+        LockBytes = 0x03,
+        Property = 0x04,
         RootStorage = 0x05
     }
 
@@ -49,7 +49,7 @@ namespace Nix.CompoundFile
     public abstract class Ole2DirectoryEntry
     {
         #region Constructors
-        internal Ole2DirectoryEntry(string name, EntryType type, Ole2CompoundFile owner) : this (name, type, owner, null)
+        internal Ole2DirectoryEntry(string name, EntryType type, Ole2CompoundFile owner) : this(name, type, owner, null)
         {
         }
 
@@ -141,7 +141,7 @@ namespace Nix.CompoundFile
             }
         }
 
-        public void RenameTo (string name)
+        public void RenameTo(string name)
         {
             if (this.parentDir == null || this.type == EntryType.RootStorage)
                 throw new CompoundFileException("Root storage name can not be changed");

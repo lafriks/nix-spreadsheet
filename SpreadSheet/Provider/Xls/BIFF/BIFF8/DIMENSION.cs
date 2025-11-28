@@ -24,18 +24,20 @@ using Nix.CompoundFile;
 
 namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
 {
-	internal class DIMENSION : BIFFRecord
-	{
-		/// <summary>
-		/// BOF OPCODE
-		/// </summary>
-		protected override ushort OPCODE {
-			get {
-				return 0x0200;
-			}
-		}
+    internal class DIMENSION : BIFFRecord
+    {
+        /// <summary>
+        /// BOF OPCODE
+        /// </summary>
+        protected override ushort OPCODE
+        {
+            get
+            {
+                return 0x0200;
+            }
+        }
 
-		
+
 
         private uint firstRow = 0;
         private uint lastRow = 0;
@@ -50,7 +52,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
             get { return firstRow; }
             set { firstRow = value; }
         }
-        
+
         /// <summary>
         /// Index to last used row, increased by 1
         /// </summary>
@@ -68,7 +70,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
             get { return firstCol; }
             set { firstCol = value; }
         }
-        
+
         /// <summary>
         /// Index to last used column, increased by 1
         /// </summary>
@@ -78,28 +80,28 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
             set { lastCol = value; }
         }
 
-		/// <summary>
-		/// Writes BIFF record to the specified stream.
-		/// </summary>
-		/// <param name="stream">The stream.</param>
-		public override void Write ( EndianStream stream )
-		{
-			this.WriteHeader(stream, 14);
-			stream.WriteUInt32(firstRow); // first row
-			stream.WriteUInt32(lastRow); // last row
-			stream.WriteUInt16(firstCol); // first column
-			stream.WriteUInt16(lastCol); // last column
-			stream.WriteUInt16(0); // Not used
-		}
+        /// <summary>
+        /// Writes BIFF record to the specified stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        public override void Write(EndianStream stream)
+        {
+            this.WriteHeader(stream, 14);
+            stream.WriteUInt32(firstRow); // first row
+            stream.WriteUInt32(lastRow); // last row
+            stream.WriteUInt16(firstCol); // first column
+            stream.WriteUInt16(lastCol); // last column
+            stream.WriteUInt16(0); // Not used
+        }
 
-		/// <summary>
-		/// Reads BIFF record from the specified stream.
-		/// </summary>
-		/// <param name="stream">The stream.</param>
-		public override void Read ( EndianStream stream )
-		{
+        /// <summary>
+        /// Reads BIFF record from the specified stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        public override void Read(EndianStream stream)
+        {
             // TODO: datu ielasīšana
-		}
-	}
+        }
+    }
 }
 

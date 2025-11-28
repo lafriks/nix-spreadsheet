@@ -21,41 +21,45 @@ using System;
 
 namespace Nix.SpreadSheet.Provider.Xls.BIFF
 {
-	/// <summary>
-	/// FORMAT BIFF record.
-	/// </summary>
-	internal class FORMAT : BIFFRecord
-	{
-		protected override ushort OPCODE {
-			get {
-				return 0x41E;
-			}
-		}
+    /// <summary>
+    /// FORMAT BIFF record.
+    /// </summary>
+    internal class FORMAT : BIFFRecord
+    {
+        protected override ushort OPCODE
+        {
+            get
+            {
+                return 0x41E;
+            }
+        }
 
-		private ushort index = 0;
-		
-		public ushort Index {
-			get { return index; }
-			set { index = value; }
-		}
+        private ushort index = 0;
 
-		private string format = string.Empty;
-		
-		public string Format {
-			get { return format; }
-			set { format = value; }
-		}
+        public ushort Index
+        {
+            get { return index; }
+            set { index = value; }
+        }
 
-		public override void Write(Nix.CompoundFile.EndianStream stream)
-		{
-			this.WriteHeader(stream, (ushort)(2 + BIFFStringHelper.GetStringByteCount(this.Format)));
-			stream.WriteUInt16(this.Index);
-			BIFFStringHelper.WriteString(stream, this.Format);
-		}
+        private string format = string.Empty;
 
-		public override void Read(Nix.CompoundFile.EndianStream stream)
-		{
-			throw new NotImplementedException();
-		}
-	}
+        public string Format
+        {
+            get { return format; }
+            set { format = value; }
+        }
+
+        public override void Write(Nix.CompoundFile.EndianStream stream)
+        {
+            this.WriteHeader(stream, (ushort)(2 + BIFFStringHelper.GetStringByteCount(this.Format)));
+            stream.WriteUInt16(this.Index);
+            BIFFStringHelper.WriteString(stream, this.Format);
+        }
+
+        public override void Read(Nix.CompoundFile.EndianStream stream)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

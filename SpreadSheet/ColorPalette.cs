@@ -31,7 +31,7 @@ namespace Nix.SpreadSheet
 
         private SortedDictionary<ushort, uint> m_colors = new SortedDictionary<ushort, uint>();
         private SortedDictionary<uint, ushort> m_indexes = new SortedDictionary<uint, ushort>();
-        
+
         private static uint maxIdx = 63;
 
         public ushort GetColorIndex(Color col)
@@ -89,51 +89,51 @@ namespace Nix.SpreadSheet
                     colorFound = false;
                     break;
 	        }*/
-            
+
             if (!colorFound)
             {
-            	uint color = (((uint)col.B)<<16)|(((uint)col.G)<<8)|((uint)col.R);
-            	if ( this.m_indexes.ContainsKey(color) )
-            	{
-                	result = this.m_indexes[color];
-                	colorFound =true;
-            	}
-            	else
-            	{
-            		result = (ushort)(m_indexes.Count + 8);
-            		if (result > maxIdx)
-            		{
-						throw new IndexOutOfRangeException("Colors' count exceeded");
-            		}
-            		else
-            		{
-            			m_indexes.Add(color, result);
-            			m_colors.Add(result, color);
-            		}
-            	}
+                uint color = (((uint)col.B) << 16) | (((uint)col.G) << 8) | ((uint)col.R);
+                if (this.m_indexes.ContainsKey(color))
+                {
+                    result = this.m_indexes[color];
+                    colorFound = true;
+                }
+                else
+                {
+                    result = (ushort)(m_indexes.Count + 8);
+                    if (result > maxIdx)
+                    {
+                        throw new IndexOutOfRangeException("Colors' count exceeded");
+                    }
+                    else
+                    {
+                        m_indexes.Add(color, result);
+                        m_colors.Add(result, color);
+                    }
+                }
             }
 
             return result;
         }
-        
+
         public uint this[ushort idx]
-		{
-			get { return m_colors[idx]; }
-		}
-        
+        {
+            get { return m_colors[idx]; }
+        }
+
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-		{
-			return this.m_colors.Values.GetEnumerator();
-		}
-		
-		IEnumerator<uint> IEnumerable<uint>.GetEnumerator()
-		{
-			return this.m_colors.Values.GetEnumerator();
-		}
-		
-		public ushort Count
-		{
-			get { return (ushort)m_colors.Count;}
-		}
+        {
+            return this.m_colors.Values.GetEnumerator();
+        }
+
+        IEnumerator<uint> IEnumerable<uint>.GetEnumerator()
+        {
+            return this.m_colors.Values.GetEnumerator();
+        }
+
+        public ushort Count
+        {
+            get { return (ushort)m_colors.Count; }
+        }
     }
 }

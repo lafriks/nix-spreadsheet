@@ -22,54 +22,59 @@ using Nix.CompoundFile;
 
 namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF5
 {
-	/// <summary>
-	/// Description of ROW.
-	/// </summary>
-	internal class ROW : BIFFRecord
-	{
-		/// <summary>
-		/// ROW OPCODE
-		/// </summary>
-		protected override ushort OPCODE {
-			get {
-				return 0x0208;
-			}
-		}
+    /// <summary>
+    /// Description of ROW.
+    /// </summary>
+    internal class ROW : BIFFRecord
+    {
+        /// <summary>
+        /// ROW OPCODE
+        /// </summary>
+        protected override ushort OPCODE
+        {
+            get
+            {
+                return 0x0208;
+            }
+        }
 
-		private Row row;
-		
-		public Row Row {
-			get { return row; }
-			set { row = value; }
-		}
+        private Row row;
 
-		private int firstCellIndex;
-		
-		public int FirstCellIndex {
-			get { return firstCellIndex; }
-			set { firstCellIndex = value; }
-		}
+        public Row Row
+        {
+            get { return row; }
+            set { row = value; }
+        }
 
-		private int lastCellIndex;
-		
-		public int LastCellIndex {
-			get { return lastCellIndex; }
-			set { lastCellIndex = value; }
-		}
+        private int firstCellIndex;
 
-		/// <summary>
-		/// Writes BIFF record to the specified stream.
-		/// </summary>
-		/// <param name="stream">The stream.</param>
-		public override void Write(EndianStream stream)
-		{
-			this.WriteHeader(stream, 16);
+        public int FirstCellIndex
+        {
+            get { return firstCellIndex; }
+            set { firstCellIndex = value; }
+        }
+
+        private int lastCellIndex;
+
+        public int LastCellIndex
+        {
+            get { return lastCellIndex; }
+            set { lastCellIndex = value; }
+        }
+
+        /// <summary>
+        /// Writes BIFF record to the specified stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        public override void Write(EndianStream stream)
+        {
+            this.WriteHeader(stream, 16);
             stream.WriteUInt16((ushort)this.Row.RowIndex);
             stream.WriteUInt16((ushort)(Row.FirstCell < 0 ? 0 : Row.FirstCell));
             stream.WriteUInt16((ushort)(Row.LastCell + 1));
             if (row.Height.HasValue)
             {
-				stream.WriteUInt16((ushort)((row.Height.Value * 15) & 0x7fff));
+                stream.WriteUInt16((ushort)((row.Height.Value * 15) & 0x7fff));
             }
             else
             {
@@ -84,15 +89,15 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF5
                 flags |= 0x00000040;
             }
             stream.WriteUInt32(flags);
-		}
+        }
 
-		/// <summary>
-		/// Reads BIFF record from the specified stream.
-		/// </summary>
-		/// <param name="stream">The stream.</param>
-		public override void Read(EndianStream stream)
-		{
-			throw new NotImplementedException();
-		}
-	}
+        /// <summary>
+        /// Reads BIFF record from the specified stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        public override void Read(EndianStream stream)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

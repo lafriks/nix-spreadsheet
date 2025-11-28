@@ -23,11 +23,11 @@ using System.Security.Cryptography;
 
 namespace Nix.SpreadSheet.Provider.Zip
 {
-	/// <summary>
-	/// Adler-32 Hash algorithm.
-	/// </summary>
-	internal class Adler32 : HashAlgorithm
-	{
+    /// <summary>
+    /// Adler-32 Hash algorithm.
+    /// </summary>
+    internal class Adler32 : HashAlgorithm
+    {
         #region Private members and constructor
         private uint adlerA;
         private uint adlerB;
@@ -86,17 +86,17 @@ namespace Nix.SpreadSheet.Provider.Zip
             if (a >= AdlerMod)
                 a -= AdlerMod;
             // It can be shown that b can reach 0xFFEF1 here.
-            b = (b & 0xffff) + (b >> 16) * (65536-AdlerMod);
+            b = (b & 0xffff) + (b >> 16) * (65536 - AdlerMod);
             if (b >= AdlerMod)
                 b -= AdlerMod;
             ulong finalAdler = (b << 16) | a;
 
-            byte [] finalHash = new byte [ 4 ];
+            byte[] finalHash = new byte[4];
 
-            finalHash[0] = (byte) ((finalAdler >> 24) & 0xFF);
-            finalHash[1] = (byte) ((finalAdler >> 16) & 0xFF);
-            finalHash[2] = (byte) ((finalAdler >>  8) & 0xFF);
-            finalHash[3] = (byte) ((finalAdler >>  0) & 0xFF);
+            finalHash[0] = (byte)((finalAdler >> 24) & 0xFF);
+            finalHash[1] = (byte)((finalAdler >> 16) & 0xFF);
+            finalHash[2] = (byte)((finalAdler >> 8) & 0xFF);
+            finalHash[3] = (byte)((finalAdler >> 0) & 0xFF);
 
             return finalHash;
         }

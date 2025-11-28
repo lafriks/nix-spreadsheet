@@ -21,6 +21,8 @@ using System;
 using System.IO;
 using System.Text;
 using System.Collections;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Nix.CompoundFile.Managers;
 
@@ -55,70 +57,75 @@ namespace Nix.CompoundFile
         #endregion
 
         #region Write header to stream
-        private void WriteHeader(Stream output, uint SATCount, int RootStart, int SSATStart, uint SSATCount, int MSATStart, uint MSATCount)
+        private async Task WriteHeaderAsync(Stream output, uint SATCount, int RootStart, int SSATStart, uint SSATCount, int MSATStart, uint MSATCount, CancellationToken cancellationToken = default)
         {
             //this.CalculateSizes();
             // File identifier
-            this.ewriter.Write(new byte[]{0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1}, 0, 8);
+            await this.ewriter.WriteAsync(new byte[] { 0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1 }, 0, 8, cancellationToken).ConfigureAwait(false);
             // UID
-            this.ewriter.WriteBytes(0x00, 16);
+            await this.ewriter.WriteBytesAsync(0x00, 16, cancellationToken).ConfigureAwait(false);
             // Revision number an version of file format
-            this.ewriter.Write(new byte[]{0x3E, 0x00}, 0, 2);
-            this.ewriter.Write(new byte[]{0x03, 0x00}, 0, 2);
+            await this.ewriter.WriteAsync(new byte[] { 0x3E, 0x00 }, 0, 2, cancellationToken).ConfigureAwait(false);
+            await this.ewriter.WriteAsync(new byte[] { 0x03, 0x00 }, 0, 2, cancellationToken).ConfigureAwait(false);
             // Byte order
             if (this.byteOrder == ByteOrder.LittleEndian)
-                this.ewriter.Write(new byte[]{0xFE, 0xFF}, 0, 2);
+                await this.ewriter.WriteAsync(new byte[] { 0xFE, 0xFF }, 0, 2, cancellationToken).ConfigureAwait(false);
             else
-                this.ewriter.Write(new byte[]{0xFF, 0xFE}, 0, 2);
+                await this.ewriter.WriteAsync(new byte[] { 0xFF, 0xFE }, 0, 2, cancellationToken).ConfigureAwait(false);
             // Sector size (deflaut is 9 -> 512 bytes)
-            this.ewriter.WriteUInt16(this.sectorSizeC);
+            await this.ewriter.WriteUInt16Async(this.sectorSizeC, cancellationToken).ConfigureAwait(false);
             // Short sector size (deflaut is 6 -> 64 bytes)
-            this.ewriter.WriteUInt16(this.shortSectorSizeC);
+            await this.ewriter.WriteUInt16Async(this.shortSectorSizeC, cancellationToken).ConfigureAwait(false);
             // Not used
-            this.ewriter.WriteBytes(0x00, 10);
+            await this.ewriter.WriteBytesAsync(0x00, 10, cancellationToken).ConfigureAwait(false);
             // Total number of sectors used for sector allocation table
-            this.ewriter.WriteUInt32(SATCount);
+            await this.ewriter.WriteUInt32Async(SATCount, cancellationToken).ConfigureAwait(false);
             // Directory stream first SID
-            this.ewriter.WriteInt32(RootStart);
+            await this.ewriter.WriteInt32Async(RootStart, cancellationToken).ConfigureAwait(false);
             // Not used
-            this.ewriter.WriteBytes(0x00, 4);
+            await this.ewriter.WriteBytesAsync(0x00, 4, cancellationToken).ConfigureAwait(false);
             // Minimum size of standart stream
-            this.ewriter.WriteUInt32(this.minStreamSize);
+            await this.ewriter.WriteUInt32Async(this.minStreamSize, cancellationToken).ConfigureAwait(false);
             // SID of short-sector allocation table
-            this.ewriter.WriteInt32(SSATStart);
+            await this.ewriter.WriteInt32Async(SSATStart, cancellationToken).ConfigureAwait(false);
             // Total number of sectors of short-sector allocation table
-            this.ewriter.WriteUInt32(SSATCount);
+            await this.ewriter.WriteUInt32Async(SSATCount, cancellationToken).ConfigureAwait(false);
             // SID of master sector allocation table
-            this.ewriter.WriteInt32(MSATStart);
+            await this.ewriter.WriteInt32Async(MSATStart, cancellationToken).ConfigureAwait(false);
             // Total number of sectors of master sector allocation table
-            this.ewriter.WriteUInt32(MSATCount);
+            await this.ewriter.WriteUInt32Async(MSATCount, cancellationToken).ConfigureAwait(false);
             // First part of the master sector allocation table (MSAT) - max 109
             for (int i = 0; i < Math.Min(this.MSAT.Count, 109); i++)
             {
-                this.ewriter.WriteInt32(this.MSAT[i]);
+                await this.ewriter.WriteInt32Async(this.MSAT[i], cancellationToken).ConfigureAwait(false);
             }
-			// Fill left space with 0xFF
-			if (this.MSAT.Count < 109)
-                this.ewriter.WriteBytes(0xFF, 436 - (this.MSAT.Count * 4));
+            // Fill left space with 0xFF
+            if (this.MSAT.Count < 109)
+                await this.ewriter.WriteBytesAsync(0xFF, 436 - (this.MSAT.Count * 4), cancellationToken).ConfigureAwait(false);
+        }
+
+        private void WriteHeader(Stream output, uint SATCount, int RootStart, int SSATStart, uint SSATCount, int MSATStart, uint MSATCount)
+        {
+            WriteHeaderAsync(output, SATCount, RootStart, SSATStart, SSATCount, MSATStart, MSATCount).GetAwaiter().GetResult();
         }
         #endregion
 
         #region Write additional MSAT, SAT and SSAT
-		private void WriteAdditionalMSAT(EndianStream writer, int MSATStart)
-		{
-			int start = MSATStart;
-			for (int i = 109; i < this.MSAT.Count; i++)
-			{
-				writer.WriteInt32(this.MSAT[i]);
-				if ((writer.Position % this.sectorSize) == (this.sectorSize - 4) || i == this.MSAT.Count - 1)
-				{
-					start = this.SAT.FindNextSpecialSector(start + 1, -4);
-					writer.WriteInt32(start);
-				}
-			}
-		}
+        private void WriteAdditionalMSAT(EndianStream writer, int MSATStart)
+        {
+            int start = MSATStart;
+            for (int i = 109; i < this.MSAT.Count; i++)
+            {
+                writer.WriteInt32(this.MSAT[i]);
+                if ((writer.Position % this.sectorSize) == (this.sectorSize - 4) || i == this.MSAT.Count - 1)
+                {
+                    start = this.SAT.FindNextSpecialSector(start + 1, -4);
+                    writer.WriteInt32(start);
+                }
+            }
+        }
 
-		private void WriteSAT(EndianStream writer)
+        private void WriteSAT(EndianStream writer)
         {
             foreach (int x in this.SAT.Allocations)
             {
@@ -146,7 +153,7 @@ namespace Nix.CompoundFile
 
         private void WriteDirectoryEntry(EndianStream writer, Ole2DirectoryEntry node)
         {
-        	int c = writer.WriteString(node.Name);
+            int c = writer.WriteString(node.Name);
             writer.WriteBytes(0x00, 64 - c);
             writer.WriteUInt16((ushort)(c + 2));
             writer.WriteByte((byte)node.Type);
@@ -173,17 +180,17 @@ namespace Nix.CompoundFile
         #endregion
 
         #region Save methods
-        public EndianStream CreateEndianStream ( Stream baseStream )
+        public EndianStream CreateEndianStream(Stream baseStream)
         {
             if (this.byteOrder == ByteOrder.LittleEndian)
                 return new LittleEndianStream(baseStream);
             else
-            	return new BigEndianStream(baseStream);
+                return new BigEndianStream(baseStream);
         }
 
-        public void Save(Stream output)
+        public async Task SaveAsync(Stream output, CancellationToken cancellationToken = default)
         {
-        	this.ewriter = this.CreateEndianStream(output);
+            this.ewriter = this.CreateEndianStream(output);
 
             #region Calculate sizes, allocate SAT, SSAT, MSAT, write header
             // Create sector allocation table (SAT)
@@ -218,8 +225,8 @@ namespace Nix.CompoundFile
             // First 109 SIDs of SAT are stored in header, check if we need more
             if (SATSectorCount > 109)
             {
-				// TODO: Debug!!! Could be wrong
-				// Count how much do we need
+                // TODO: Debug!!! Could be wrong
+                // Count how much do we need
                 uint sect = SATSectorCount - 109;
                 uint frsect = (sect % (ushort)(this.sectorSize / 4));
                 sect = Convert.ToUInt32(Math.Ceiling((double)sect / (this.sectorSize / 4)));
@@ -245,8 +252,8 @@ namespace Nix.CompoundFile
 
             // Allocate Short stream
             int ShortStreamStart = this.SAT.Allocate(ShortStreamSize);
-			if (ShortStreamStart == -1)
-				ShortStreamStart = -2;
+            if (ShortStreamStart == -1)
+                ShortStreamStart = -2;
 
             // Allocate long streams
             this.AllocateLongStreams();
@@ -261,15 +268,15 @@ namespace Nix.CompoundFile
             int SATStart = this.MSAT.Allocate(SATSize, -3);
 
             // At this point we have enaught information to write header
-            this.WriteHeader(output, SATSectorCount, RootStart, SSATStart, SSATSectorCount, MSATNextSector, MSATSectorCount);
+            await this.WriteHeaderAsync(output, SATSectorCount, RootStart, SSATStart, SSATSectorCount, MSATNextSector, MSATSectorCount, cancellationToken).ConfigureAwait(false);
             #endregion
 
             #region Create and allocate streams
-			// Create additional MSAT stream
-			MemoryStream mmem = new MemoryStream();
-			EndianStream mwriter = this.CreateEndianStream(mmem);
-			this.WriteAdditionalMSAT(mwriter, MSATNextSector);
-			this.SAT.AllocateStream(MSATNextSector, mmem, 0xFF);
+            // Create additional MSAT stream
+            MemoryStream mmem = new MemoryStream();
+            EndianStream mwriter = this.CreateEndianStream(mmem);
+            this.WriteAdditionalMSAT(mwriter, MSATNextSector);
+            this.SAT.AllocateStream(MSATNextSector, mmem, 0xFF);
 
             // Create SAT stream
             MemoryStream smem = new MemoryStream();
@@ -299,12 +306,17 @@ namespace Nix.CompoundFile
             #endregion
 
             // Write sectors to the stream
-            this.SAT.WriteData(output);
-			smem.Close();
-			mem.Close();
-			ssmem.Close();
-			shmem.Close();
-		}
+            await this.SAT.WriteDataAsync(output, cancellationToken).ConfigureAwait(false);
+            smem.Close();
+            mem.Close();
+            ssmem.Close();
+            shmem.Close();
+        }
+
+        public void Save(Stream output)
+        {
+            SaveAsync(output).GetAwaiter().GetResult();
+        }
 
         public void Save(string filename)
         {
@@ -317,9 +329,9 @@ namespace Nix.CompoundFile
         #region Load methods
         public void Load(Stream input)
         {
-        	this.ereader = this.CreateEndianStream(input);
-        	//this.ReadHeader();
-        	// TODO: Reading OLE 2 compound file
+            this.ereader = this.CreateEndianStream(input);
+            //this.ReadHeader();
+            // TODO: Reading OLE 2 compound file
         }
 
         public void Load(string filename)
@@ -343,8 +355,8 @@ namespace Nix.CompoundFile
                         int fsect = this.SSAT.Allocate(((Ole2Stream)e).Size);
                         ((Ole2Stream)e).Sector = fsect;
                         this.SSAT.AllocateStream(fsect, ((Ole2Stream)e).BaseStream);
-						sum += (uint)Math.Ceiling((double)((Ole2Stream)e).Size / this.shortSectorSize) * this.shortSectorSize;
-					}
+                        sum += (uint)Math.Ceiling((double)((Ole2Stream)e).Size / this.shortSectorSize) * this.shortSectorSize;
+                    }
                 }
             }
             return sum;
@@ -356,7 +368,7 @@ namespace Nix.CompoundFile
             {
                 if (e is Ole2Stream && ((Ole2Stream)e).Size >= this.minStreamSize && ((Ole2Stream)e).Sector == -2)
                 {
-                        ((Ole2Stream)e).Sector = this.SAT.Allocate(((Ole2Stream)e).Size);
+                    ((Ole2Stream)e).Sector = this.SAT.Allocate(((Ole2Stream)e).Size);
                 }
             }
         }

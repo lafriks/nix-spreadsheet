@@ -21,6 +21,8 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Nix.CompoundFile.Managers
 {
@@ -33,8 +35,8 @@ namespace Nix.CompoundFile.Managers
     {
         #region Private variables
         private int SectorSize = 0;
-		private List<int> Sectors = new List<int>();
-		private List<ISector> SectorsData = new List<ISector>();
+        private List<int> Sectors = new List<int>();
+        private List<ISector> SectorsData = new List<ISector>();
 
         private bool sync = false;
         private int[] allocations;
@@ -43,7 +45,7 @@ namespace Nix.CompoundFile.Managers
         #region Events
         public event SectorEventHandler Allocation;
 
-        public void OnAllocation (object sender, int index)
+        public void OnAllocation(object sender, int index)
         {
             if (this.Allocation != null)
             {
@@ -69,14 +71,14 @@ namespace Nix.CompoundFile.Managers
         {
             for (int i = from; i < this.Sectors.Count; i++)
             {
-            	if (this.Sectors[i] == -1)
+                if (this.Sectors[i] == -1)
                     return i;
             }
             // No free sectors found
-    		// Keep in sync arrays
-    		this.SectorsData.Add(null);
-			this.Sectors.Add(-1);
-			return this.Sectors.Count - 1;
+            // Keep in sync arrays
+            this.SectorsData.Add(null);
+            this.Sectors.Add(-1);
+            return this.Sectors.Count - 1;
         }
 
         public int Allocate(uint size)
@@ -86,45 +88,45 @@ namespace Nix.CompoundFile.Managers
 
         public int Allocate(uint size, int val)
         {
-			// If size is zero, do not allocate any sectors.
-			if (size == 0)
-				return -1;
-			this.sync = false;
+            // If size is zero, do not allocate any sectors.
+            if (size == 0)
+                return -1;
+            this.sync = false;
             // Allocate first record
             int first = this.FindFirstFree();
             int current = first;
             int count = Convert.ToInt32(Math.Ceiling((double)size / this.SectorSize)) - 1;
             // If we need more record alocate them
-            while ( count-- > 0 )
+            while (count-- > 0)
             {
-            	int next = this.FindFirstFree(current + 1);
-            	this.Sectors[current] = ( val == -1 ? next : val );
-            	this.OnAllocation(this, current);
-            	current = next;
+                int next = this.FindFirstFree(current + 1);
+                this.Sectors[current] = (val == -1 ? next : val);
+                this.OnAllocation(this, current);
+                current = next;
             }
             // Last sector
-            this.Sectors[current] = ( val == -1 ? -2 : val );
+            this.Sectors[current] = (val == -1 ? -2 : val);
             this.OnAllocation(this, current);
             return first;
         }
 
-		public int FindNextSpecialSector(int start, int val)
-		{
-			for (int i = start; i < this.Sectors.Count; i++)
-			{
-				if (this.Sectors[i] == val)
-					return i;
-			}
-			return -2;
-		}
-		#endregion
+        public int FindNextSpecialSector(int start, int val)
+        {
+            for (int i = start; i < this.Sectors.Count; i++)
+            {
+                if (this.Sectors[i] == val)
+                    return i;
+            }
+            return -2;
+        }
+        #endregion
 
-		#region Allocations
-		public int[] Allocations
+        #region Allocations
+        public int[] Allocations
         {
             get
             {
-                if ( ! this.sync)
+                if (!this.sync)
                 {
                     this.allocations = this.Sectors.ToArray();
                     this.sync = true;
@@ -135,12 +137,12 @@ namespace Nix.CompoundFile.Managers
         #endregion
 
         #region Allocate stream data
-		public void AllocateStream ( int start, Stream stream )
+        public void AllocateStream(int start, Stream stream)
         {
-			this.AllocateStream(start, stream, 0);
+            this.AllocateStream(start, stream, 0);
         }
 
-		public void AllocateStream ( int start, Stream stream, byte def )
+        public void AllocateStream(int start, Stream stream, byte def)
         {
             int offset = 0;
             int steamSize = (int)stream.Length;
@@ -149,17 +151,25 @@ namespace Nix.CompoundFile.Managers
                 this.SectorsData[start] = new SectorStream(stream, offset, this.SectorSize, def);
                 offset += this.SectorSize;
                 // Go to next sector
-				start = (this.Sectors[start] == -3 || this.Sectors[start] == -4 ? FindNextSpecialSector(start + 1, this.Sectors[start]) : this.Sectors[start]);
+                start = (this.Sectors[start] == -3 || this.Sectors[start] == -4 ? FindNextSpecialSector(start + 1, this.Sectors[start]) : this.Sectors[start]);
             }
         }
         #endregion
 
         #region Write sectors to stream
+        public async Task WriteDataAsync(Stream writer, CancellationToken cancellationToken = default)
+        {
+            foreach (ISector sector in this.SectorsData)
+            {
+                await sector.WriteAsync(writer, cancellationToken).ConfigureAwait(false);
+            }
+        }
+
         public void WriteData(Stream writer)
         {
-            foreach(ISector sector in this.SectorsData)
+            foreach (ISector sector in this.SectorsData)
             {
-				sector.Write(writer);
+                sector.Write(writer);
             }
         }
         #endregion

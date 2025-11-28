@@ -39,7 +39,7 @@ namespace Nix.SpreadSheet
         /// </summary>
         /// <param name="row">Row position</param>
         /// <param name="col">Column position</param>
-        internal Cell (Sheet sheet, int row, int col)
+        internal Cell(Sheet sheet, int row, int col)
         {
             this.sheet = sheet;
             this.column = col;
@@ -50,7 +50,7 @@ namespace Nix.SpreadSheet
         /// Initializes a new instance of the <see cref="Cell"/> class.
         /// </summary>
         /// <param name="name">Cell name.</param>
-        public Cell (string name)
+        public Cell(string name)
         {
             Utils.ParseCellName(name, out this.row, out this.column);
         }

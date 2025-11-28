@@ -2,36 +2,49 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Nix.CompoundFile.Managers
 {
-	public class SectorStream : ISector
-	{
-		private Stream baseStream;
-		
-		private int positionInStream = 0;
-		
-		private int sectorSize = 0;
+    public class SectorStream : ISector
+    {
+        private Stream baseStream;
 
-		private byte defaultValue = 0;
+        private int positionInStream = 0;
 
-		public SectorStream ( Stream baseStream, int positionInStream, int sectorSize, byte defaultValue )
-		{
-			this.baseStream = baseStream;
-			this.positionInStream = positionInStream;
-			this.sectorSize = sectorSize;
-			this.defaultValue = defaultValue;
-		}
+        private int sectorSize = 0;
 
-		public void Write ( Stream stream )
-		{
-			baseStream.Seek(positionInStream, SeekOrigin.Begin);
-			byte[] block = new byte[this.sectorSize];
-			int size = baseStream.Read(block, 0, this.sectorSize);
-			if ( size < this.sectorSize)
-				for(int i = size; i < this.sectorSize; i++)
-					block[i] = defaultValue;
-			stream.Write(block, 0, this.sectorSize);
-		}
-	}
+        private byte defaultValue = 0;
+
+        public SectorStream(Stream baseStream, int positionInStream, int sectorSize, byte defaultValue)
+        {
+            this.baseStream = baseStream;
+            this.positionInStream = positionInStream;
+            this.sectorSize = sectorSize;
+            this.defaultValue = defaultValue;
+        }
+
+        public async Task WriteAsync(Stream stream, CancellationToken cancellationToken = default)
+        {
+            baseStream.Seek(positionInStream, SeekOrigin.Begin);
+            byte[] block = new byte[this.sectorSize];
+            int size = await baseStream.ReadAsync(block, 0, this.sectorSize, cancellationToken).ConfigureAwait(false);
+            if (size < this.sectorSize)
+                for (int i = size; i < this.sectorSize; i++)
+                    block[i] = defaultValue;
+            await stream.WriteAsync(block, 0, this.sectorSize, cancellationToken).ConfigureAwait(false);
+        }
+
+        public void Write(Stream stream)
+        {
+            baseStream.Seek(positionInStream, SeekOrigin.Begin);
+            byte[] block = new byte[this.sectorSize];
+            int size = baseStream.Read(block, 0, this.sectorSize);
+            if (size < this.sectorSize)
+                for (int i = size; i < this.sectorSize; i++)
+                    block[i] = defaultValue;
+            stream.Write(block, 0, this.sectorSize);
+        }
+    }
 }

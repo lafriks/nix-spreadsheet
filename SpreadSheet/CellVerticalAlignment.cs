@@ -21,30 +21,30 @@ using System;
 
 namespace Nix.SpreadSheet
 {
-	/// <summary>
-	/// Cell vertical alignment.
-	/// </summary>
-	public enum CellVerticalAlignment
-	{
-		/// <summary>
-		/// Top.
-		/// </summary>
-		Top = 0,
-		/// <summary>
-		/// Centred.
-		/// </summary>
-		Centred,
-		/// <summary>
-		/// Bottom.
-		/// </summary>
-		Bottom,
-		/// <summary>
-		/// Justified.
-		/// </summary>
-		Justified,
-		/// <summary>
-		/// Distributed.
-		/// </summary>
-		Distributed,
-	}
+    /// <summary>
+    /// Cell vertical alignment.
+    /// </summary>
+    public enum CellVerticalAlignment
+    {
+        /// <summary>
+        /// Top.
+        /// </summary>
+        Top = 0,
+        /// <summary>
+        /// Centred.
+        /// </summary>
+        Centred,
+        /// <summary>
+        /// Bottom.
+        /// </summary>
+        Bottom,
+        /// <summary>
+        /// Justified.
+        /// </summary>
+        Justified,
+        /// <summary>
+        /// Distributed.
+        /// </summary>
+        Distributed,
+    }
 }

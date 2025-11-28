@@ -24,37 +24,37 @@ using System.Text;
 
 namespace Nix.SpreadSheet
 {
-	/// <summary>
-	/// Sheet.
-	/// </summary>
-	public class ColumnList : IEnumerable<Column>
-	{
-		private Sheet sheet;
-		
-		public ColumnList(Sheet sheet)
-		{
-			this.sheet = sheet;
-		}
+    /// <summary>
+    /// Sheet.
+    /// </summary>
+    public class ColumnList : IEnumerable<Column>
+    {
+        private Sheet sheet;
 
-		private SortedDictionary<int, Column> m_columns = new SortedDictionary<int, Column>();
-		
-		public Column this[int col]
-		{
-			get
-			{
+        public ColumnList(Sheet sheet)
+        {
+            this.sheet = sheet;
+        }
+
+        private SortedDictionary<int, Column> m_columns = new SortedDictionary<int, Column>();
+
+        public Column this[int col]
+        {
+            get
+            {
                 if (col >= Sheet.MaxColumns || col < 0)
-                	throw new ArgumentOutOfRangeException("column");
-                if ( this.m_columns.ContainsKey(col) )
-                	return this.m_columns[col];
+                    throw new ArgumentOutOfRangeException("column");
+                if (this.m_columns.ContainsKey(col))
+                    return this.m_columns[col];
                 else
                 {
-                	Column nr = new Column(sheet, col);
-                	this.m_columns.Add(col, nr);
-                	return nr;
+                    Column nr = new Column(sheet, col);
+                    this.m_columns.Add(col, nr);
+                    return nr;
                 }
-                
-			}
-		}
+
+            }
+        }
 
         public ColumnRange this[int start, int end]
         {
@@ -64,15 +64,15 @@ namespace Nix.SpreadSheet
             }
         }
 
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-		{
-			return this.m_columns.Values.GetEnumerator();
-		}
-		
-		IEnumerator<Column> IEnumerable<Column>.GetEnumerator()
-		{
-			return this.m_columns.Values.GetEnumerator();
-		}
-		
-	}
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.m_columns.Values.GetEnumerator();
+        }
+
+        IEnumerator<Column> IEnumerable<Column>.GetEnumerator()
+        {
+            return this.m_columns.Values.GetEnumerator();
+        }
+
+    }
 }

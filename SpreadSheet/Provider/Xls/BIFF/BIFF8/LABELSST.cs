@@ -22,11 +22,11 @@ using Nix.SpreadSheet.Provider.Xls.BIFF;
 
 namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
 {
-	/// <summary>
-	/// LABELSST BIFF record.
-	/// </summary>
-	internal class LABELSST : CellBIFFRecord
-	{
+    /// <summary>
+    /// LABELSST BIFF record.
+    /// </summary>
+    internal class LABELSST : CellBIFFRecord
+    {
         /// <summary>
         /// LABELSST record OPCODE.
         /// </summary>
@@ -51,7 +51,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
 
         public override void Read(EndianStream stream)
         {
-        	throw new NotImplementedException();
+            throw new NotImplementedException();
         }
-	}
+    }
 }

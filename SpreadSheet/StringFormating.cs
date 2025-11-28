@@ -21,13 +21,13 @@ using System;
 
 namespace Nix.SpreadSheet
 {
-	/// <summary>
-	/// Description of StringFormating.
-	/// </summary>
-	public class StringFormating
-	{
-		public StringFormating()
-		{
-		}
-	}
+    /// <summary>
+    /// Description of StringFormating.
+    /// </summary>
+    public class StringFormating
+    {
+        public StringFormating()
+        {
+        }
+    }
 }

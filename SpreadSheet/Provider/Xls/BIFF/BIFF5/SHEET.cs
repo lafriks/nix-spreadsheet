@@ -24,31 +24,33 @@ using Nix.CompoundFile;
 
 namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF5
 {
-	internal class SHEET : BIFFRecord
-	{
-		/// <summary>
-		/// BOF OPCODE
-		/// </summary>
-		protected override ushort OPCODE {
-			get {
-				return 0x0085;
-			}
-		}
+    internal class SHEET : BIFFRecord
+    {
+        /// <summary>
+        /// BOF OPCODE
+        /// </summary>
+        protected override ushort OPCODE
+        {
+            get
+            {
+                return 0x0085;
+            }
+        }
 
-		public enum SheetType
-		{
+        public enum SheetType
+        {
             Worksheet = 0x0,
-			Chart = 0x2,
-			VisualBasicModule = 0x6
-		}
+            Chart = 0x2,
+            VisualBasicModule = 0x6
+        }
 
-		[Flags]
-		public enum SheetState
-		{
-			Visible = 0x0,
-			Hidden = 0x1,
-			VeryHidden = 0x2
-		}
+        [Flags]
+        public enum SheetState
+        {
+            Visible = 0x0,
+            Hidden = 0x1,
+            VeryHidden = 0x2
+        }
 
         private SheetType type = SheetType.Worksheet;
         private SheetState state = SheetState.Visible;
@@ -73,13 +75,14 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF5
             set { name = value; }
         }
 
-		/// <summary>
-		/// Sheet type.
-		/// </summary>
-		public SheetType Type {
-			get { return type; }
-			set { type = value; }
-		}
+        /// <summary>
+        /// Sheet type.
+        /// </summary>
+        public SheetType Type
+        {
+            get { return type; }
+            set { type = value; }
+        }
 
         /// <summary>
         /// Sheet state.
@@ -90,31 +93,31 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF5
             set { state = value; }
         }
 
-		/// <summary>
-		/// Writes BIFF record to the specified stream.
-		/// </summary>
-		/// <param name="stream">The stream.</param>
-		public override void Write ( EndianStream stream )
-		{
-			this.WriteHeader(stream, Convert.ToUInt16(6 + BIFFStringHelper.GetStringByteCount(name, false)));
-			stream.WriteUInt32(position); // BIFF Version
+        /// <summary>
+        /// Writes BIFF record to the specified stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        public override void Write(EndianStream stream)
+        {
+            this.WriteHeader(stream, Convert.ToUInt16(6 + BIFFStringHelper.GetStringByteCount(name, false)));
+            stream.WriteUInt32(position); // BIFF Version
             stream.WriteByte((byte)this.State); // Sheet state
             stream.WriteByte((byte)this.Type); // Sheet type
             BIFFStringHelper.WriteString(stream, name, false); // Sheet name
-		}
+        }
 
-		/// <summary>
-		/// Reads BIFF record from the specified stream.
-		/// </summary>
-		/// <param name="stream">The stream.</param>
-		public override void Read ( EndianStream stream )
-		{
+        /// <summary>
+        /// Reads BIFF record from the specified stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        public override void Read(EndianStream stream)
+        {
             int lenght = this.ReadHeader(stream);
-			Position = stream.Read4(); // BIFF Version
+            Position = stream.Read4(); // BIFF Version
             this.State = (SheetState)stream.ReadByte(); // Sheet state
             this.Type = (SheetType)stream.ReadByte(); // Sheet type
-            // TODO: read sheet name
-		}
-	}
+                                                      // TODO: read sheet name
+        }
+    }
 }
 

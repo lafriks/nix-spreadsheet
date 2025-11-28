@@ -23,149 +23,151 @@ using Nix.SpreadSheet.Provider.Xls.BIFF;
 
 namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
 {
-	/// <summary>
-	/// SST BIFF record.
-	/// </summary>
-	internal class SST : BIFFRecord
-	{
-		private struct SplitItem
-		{
-			public string String;
-			public bool FullString;
-			public byte GRBit;
-			public ushort StringLength;
-			public StringFormating[] StringFormating;
-		}
+    /// <summary>
+    /// SST BIFF record.
+    /// </summary>
+    internal class SST : BIFFRecord
+    {
+        private struct SplitItem
+        {
+            public string String;
+            public bool FullString;
+            public byte GRBit;
+            public ushort StringLength;
+            public StringFormating[] StringFormating;
+        }
 
-		private class SplitItemCollection
-		{
-			public List<SplitItem> SplitItemList = new List<SplitItem>();
+        private class SplitItemCollection
+        {
+            public List<SplitItem> SplitItemList = new List<SplitItem>();
 
-			public ushort TotalByteCount
-			{
-				get
-				{
-					ushort size = 0;
-					foreach(SplitItem item in SplitItemList)
-						size += BIFFStringHelper.GetStringByteCount(item.String, item.StringFormating, true, item.GRBit, !item.FullString);
-					return size;
-				}
-			}
-		}
+            public ushort TotalByteCount
+            {
+                get
+                {
+                    ushort size = 0;
+                    foreach (SplitItem item in SplitItemList)
+                        size += BIFFStringHelper.GetStringByteCount(item.String, item.StringFormating, true, item.GRBit, !item.FullString);
+                    return size;
+                }
+            }
+        }
 
-		public uint TotalCount { get; set; }
-		public Dictionary<string, uint> StringTable { get; set; }
-		private List<SplitItemCollection> RecordBlocks { get; set; }
-		
-		/// <summary>
-		/// SST OPCODE
-		/// </summary>
-		protected override ushort OPCODE {
-			get {
-				return 0x00FC;
-			}
-		}
+        public uint TotalCount { get; set; }
+        public Dictionary<string, uint> StringTable { get; set; }
+        private List<SplitItemCollection> RecordBlocks { get; set; }
 
-		public void SplitStringTable ()
-		{
-			RecordBlocks = new List<SplitItemCollection>();
-			RecordBlocks.Add(new SplitItemCollection());
-			int left = MaximalRecordLength - 8;
-			foreach (string str in StringTable.Keys)
-			{
-				SplitItem item = new SplitItem() { FullString = true, String = str, StringLength = (ushort)str.Length, StringFormating = null, GRBit = BIFFStringHelper.GetGRBIT(str, null, true) };
-				ushort len = BIFFStringHelper.GetStringByteCount(item.String, item.StringFormating, true, item.GRBit, !item.FullString);
-				while (true)
-				{
-					// Check if there is space left for string header and at least one character.
-					if ((item.FullString && (left < 5 + (3 + ((item.GRBit & 0x08) == 0x08 ? 2 : 0) + ((item.GRBit & 0x01) == 0x01 ? 2 : 1))))
-						 || (!item.FullString && left < ((item.GRBit & 0x01) == 0x01 ? 2 : 1)))
-					{
-						// Start new record
-						RecordBlocks.Add(new SplitItemCollection());
-						left = MaximalRecordLength;
-					}
-					if (len <= left)
-					{
-						RecordBlocks[RecordBlocks.Count - 1].SplitItemList.Add(item);
-						left -= len;
-						break;
-					}
-					else
-					{
-						// Split string into parts
-						SplitItem part = new SplitItem() { FullString = false, StringLength = 0, StringFormating = null, GRBit = item.GRBit };
-						ushort has_len = 0;
-						if (!item.FullString)
-						{
-							has_len = (ushort)Math.Floor((decimal)(left - 1) / ((item.GRBit & 0x01) == 0x01 ? 2 : 1));
-						}
-						else
-						{
-							has_len = (ushort)Math.Floor((decimal)(left - (3 + ((item.GRBit & 0x08) == 0x08 ? 2 : 0))) / ((item.GRBit & 0x01) == 0x01 ? 2 : 1));
-						}
-						part.String = item.String.Substring(has_len);
-						// We can change GRBit in continued record
-						part.GRBit = BIFFStringHelper.GetGRBIT(part.String, null, true);
-						item.String = item.String.Substring(0, has_len);
-						RecordBlocks[RecordBlocks.Count - 1].SplitItemList.Add(item);
-						// Start new record
-						RecordBlocks.Add(new SplitItemCollection());
-						left = MaximalRecordLength;
-						item = part;
-						len = BIFFStringHelper.GetStringByteCount(item.String, item.StringFormating, true, item.GRBit, !item.FullString);
-					}
-				}
-			}
-		}
+        /// <summary>
+        /// SST OPCODE
+        /// </summary>
+        protected override ushort OPCODE
+        {
+            get
+            {
+                return 0x00FC;
+            }
+        }
 
-		public uint GetTotalByteCount()
-		{
-			if (RecordBlocks == null || RecordBlocks.Count == 0)
-				SplitStringTable();
-			uint size = 12;
-			foreach (SplitItemCollection record in RecordBlocks)
-			{
-				size += record.TotalByteCount;
-			}
-			return size + (uint)((RecordBlocks.Count - 1) * 4);
-		}
+        public void SplitStringTable()
+        {
+            RecordBlocks = new List<SplitItemCollection>();
+            RecordBlocks.Add(new SplitItemCollection());
+            int left = MaximalRecordLength - 8;
+            foreach (string str in StringTable.Keys)
+            {
+                SplitItem item = new SplitItem() { FullString = true, String = str, StringLength = (ushort)str.Length, StringFormating = null, GRBit = BIFFStringHelper.GetGRBIT(str, null, true) };
+                ushort len = BIFFStringHelper.GetStringByteCount(item.String, item.StringFormating, true, item.GRBit, !item.FullString);
+                while (true)
+                {
+                    // Check if there is space left for string header and at least one character.
+                    if ((item.FullString && (left < 5 + (3 + ((item.GRBit & 0x08) == 0x08 ? 2 : 0) + ((item.GRBit & 0x01) == 0x01 ? 2 : 1))))
+                         || (!item.FullString && left < ((item.GRBit & 0x01) == 0x01 ? 2 : 1)))
+                    {
+                        // Start new record
+                        RecordBlocks.Add(new SplitItemCollection());
+                        left = MaximalRecordLength;
+                    }
+                    if (len <= left)
+                    {
+                        RecordBlocks[RecordBlocks.Count - 1].SplitItemList.Add(item);
+                        left -= len;
+                        break;
+                    }
+                    else
+                    {
+                        // Split string into parts
+                        SplitItem part = new SplitItem() { FullString = false, StringLength = 0, StringFormating = null, GRBit = item.GRBit };
+                        ushort has_len = 0;
+                        if (!item.FullString)
+                        {
+                            has_len = (ushort)Math.Floor((decimal)(left - 1) / ((item.GRBit & 0x01) == 0x01 ? 2 : 1));
+                        }
+                        else
+                        {
+                            has_len = (ushort)Math.Floor((decimal)(left - (3 + ((item.GRBit & 0x08) == 0x08 ? 2 : 0))) / ((item.GRBit & 0x01) == 0x01 ? 2 : 1));
+                        }
+                        part.String = item.String.Substring(has_len);
+                        // We can change GRBit in continued record
+                        part.GRBit = BIFFStringHelper.GetGRBIT(part.String, null, true);
+                        item.String = item.String.Substring(0, has_len);
+                        RecordBlocks[RecordBlocks.Count - 1].SplitItemList.Add(item);
+                        // Start new record
+                        RecordBlocks.Add(new SplitItemCollection());
+                        left = MaximalRecordLength;
+                        item = part;
+                        len = BIFFStringHelper.GetStringByteCount(item.String, item.StringFormating, true, item.GRBit, !item.FullString);
+                    }
+                }
+            }
+        }
 
-		/// <summary>
-		/// Writes BIFF record to the specified stream.
-		/// </summary>
-		/// <param name="stream">The stream.</param>
-		public override void Write ( EndianStream stream )
-		{
-			if (RecordBlocks == null || RecordBlocks.Count == 0)
-				SplitStringTable();
+        public uint GetTotalByteCount()
+        {
+            if (RecordBlocks == null || RecordBlocks.Count == 0)
+                SplitStringTable();
+            uint size = 12;
+            foreach (SplitItemCollection record in RecordBlocks)
+            {
+                size += record.TotalByteCount;
+            }
+            return size + (uint)((RecordBlocks.Count - 1) * 4);
+        }
 
-			this.WriteHeader(stream, (ushort)(RecordBlocks[0].TotalByteCount + 8));
-			stream.WriteUInt32(TotalCount); // Total string count
-			stream.WriteUInt32((uint)StringTable.Count); // Unique string count
+        /// <summary>
+        /// Writes BIFF record to the specified stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        public override void Write(EndianStream stream)
+        {
+            if (RecordBlocks == null || RecordBlocks.Count == 0)
+                SplitStringTable();
 
-			bool first = true;
-			foreach (SplitItemCollection record in RecordBlocks)
-			{
-				if (!first)
-				{
-					new CONTINUE() { RecordLength = record.TotalByteCount }.Write(stream);
-				}
-				foreach (SplitItem item in record.SplitItemList)
-				{
-					BIFFStringHelper.WriteString(stream, item.String, item.StringFormating, true, item.GRBit, item.StringLength, !item.FullString);
-				}
-				first = false;
-			}
-		}
+            this.WriteHeader(stream, (ushort)(RecordBlocks[0].TotalByteCount + 8));
+            stream.WriteUInt32(TotalCount); // Total string count
+            stream.WriteUInt32((uint)StringTable.Count); // Unique string count
 
-		/// <summary>
-		/// Reads BIFF record from the specified stream.
-		/// </summary>
-		/// <param name="stream">The stream.</param>
-		public override void Read ( EndianStream stream )
-		{
-			throw new NotImplementedException();
-		}
-	}
+            bool first = true;
+            foreach (SplitItemCollection record in RecordBlocks)
+            {
+                if (!first)
+                {
+                    new CONTINUE() { RecordLength = record.TotalByteCount }.Write(stream);
+                }
+                foreach (SplitItem item in record.SplitItemList)
+                {
+                    BIFFStringHelper.WriteString(stream, item.String, item.StringFormating, true, item.GRBit, item.StringLength, !item.FullString);
+                }
+                first = false;
+            }
+        }
+
+        /// <summary>
+        /// Reads BIFF record from the specified stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        public override void Read(EndianStream stream)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

@@ -26,12 +26,14 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF8
     /// This record contains the addresses of merged cell ranges in the current sheet.
     /// </summary>
     internal class MERGEDCELLS : BIFFRecord
-	{
-		protected override ushort OPCODE {
-			get {
+    {
+        protected override ushort OPCODE
+        {
+            get
+            {
                 return 0x00E5;
-			}
-		}
+            }
+        }
 
         private List<CellRange> cellRangeList = null;
 

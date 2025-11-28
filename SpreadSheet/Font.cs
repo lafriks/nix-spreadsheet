@@ -22,14 +22,14 @@ using System.Drawing;
 
 namespace Nix.SpreadSheet
 {
-	/// <summary>
-	/// Font.
-	/// </summary>
-	public class Font : IEquatable<Font>, ICloneable
-	{
-		/// <summary>
-		/// Normal weight constant.
-		/// </summary>
+    /// <summary>
+    /// Font.
+    /// </summary>
+    public class Font : IEquatable<Font>, ICloneable
+    {
+        /// <summary>
+        /// Normal weight constant.
+        /// </summary>
         public const int NormalWeight = 400;
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Nix.SpreadSheet
             }
             set
             {
-            	def = value;
+                def = value;
             }
         }
 
@@ -71,28 +71,28 @@ namespace Nix.SpreadSheet
         /// <returns></returns>
         public bool Equals(Font other)
         {
-            return ! (this.color != other.color || this.italic != other.italic
+            return !(this.color != other.color || this.italic != other.italic
                       || this.weight != other.weight || this.strikeout != other.strikeout
                       || this.name != other.name || this.size != other.size
                       || this.underline != other.underline || this.scriptpos != other.scriptpos
                       || this.fontFace != other.fontFace || this.charSet != other.charSet);
         }
 
-		public object Clone()
-		{
-			Font font = new Font();
-			font.charSet = this.charSet;
-			font.color = this.color;
-			font.fontFace = this.fontFace;
-			font.italic = this.italic;
-			font.name = this.name;
-			font.scriptpos = this.scriptpos;
-			font.size = this.size;
-			font.strikeout = this.strikeout;
-			font.underline = this.underline;
-			font.weight = this.weight;
-			return font;
-		}
+        public object Clone()
+        {
+            Font font = new Font();
+            font.charSet = this.charSet;
+            font.color = this.color;
+            font.fontFace = this.fontFace;
+            font.italic = this.italic;
+            font.name = this.name;
+            font.scriptpos = this.scriptpos;
+            font.size = this.size;
+            font.strikeout = this.strikeout;
+            font.underline = this.underline;
+            font.weight = this.weight;
+            return font;
+        }
 
         public void CopyValuesFrom(Font other)
         {
@@ -107,7 +107,7 @@ namespace Nix.SpreadSheet
             this.underline = other.underline;
             this.weight = other.weight;
         }
-		#endregion
+        #endregion
 
         #region Color
         private Color color = Color.Black;
@@ -127,7 +127,7 @@ namespace Nix.SpreadSheet
             }
         }
         #endregion
-        
+
         #region Italic, strikeout etc
         private bool italic = false;
         public bool Italic
@@ -166,8 +166,8 @@ namespace Nix.SpreadSheet
             }
             set
             {
-            	if ( value < MinWeight || value > MaxWeight )
-            		throw new ArgumentOutOfRangeException("Weight");
+                if (value < MinWeight || value > MaxWeight)
+                    throw new ArgumentOutOfRangeException("Weight");
                 this.weight = value;
             }
         }
@@ -235,21 +235,23 @@ namespace Nix.SpreadSheet
 
         #region Font face
         private FontFace fontFace = FontFace.None;
-        
-		public FontFace FontFace {
-			get { return fontFace; }
-			set { fontFace = value; }
-		}
+
+        public FontFace FontFace
+        {
+            get { return fontFace; }
+            set { fontFace = value; }
+        }
         #endregion
 
-		#region Char set
+        #region Char set
         private CharSet charSet = CharSet.Default;
-        
-		public CharSet CharSet {
-			get { return charSet; }
-			set { charSet = value; }
-		}
-		#endregion
+
+        public CharSet CharSet
+        {
+            get { return charSet; }
+            set { charSet = value; }
+        }
+        #endregion
 
         #region C# native font object
         public System.Drawing.Font ToNativeFont()
@@ -329,49 +331,49 @@ namespace Nix.SpreadSheet
 
     public enum UnderlineStyle
     {
-          None,
-          Single,
-          Double,
-          SingleAccounting,
-          DoubleAccounting
+        None,
+        Single,
+        Double,
+        SingleAccounting,
+        DoubleAccounting
     }
 
     public enum ScriptPosition
     {
-          Normal,
-          Superscript,
-          Subscript
+        Normal,
+        Superscript,
+        Subscript
     }
 
     public enum FontFace
     {
-    	None,
-    	Modern,
-    	Roman,
-    	Swiss,
-    	Script,
-    	Decorative
+        None,
+        Modern,
+        Roman,
+        Swiss,
+        Script,
+        Decorative
     }
 
     public enum CharSet
     {
-		Ansi,
-		Arabic,
-		Baltic,
-		ChineseBig5,
-		Default,
-		EastEurope,
-		GB2312,
-		Greek,
-		Hangeul,
-		Hebrew,
-		Johab,
-		MAC,
-		OEM,
-		Russian,
-		Shiftjis,
-		Symbol,
-		Thai,
-		Turkish
+        Ansi,
+        Arabic,
+        Baltic,
+        ChineseBig5,
+        Default,
+        EastEurope,
+        GB2312,
+        Greek,
+        Hangeul,
+        Hebrew,
+        Johab,
+        MAC,
+        OEM,
+        Russian,
+        Shiftjis,
+        Symbol,
+        Thai,
+        Turkish
     }
 }

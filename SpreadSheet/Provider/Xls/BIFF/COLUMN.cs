@@ -44,7 +44,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
             get { return this.index; }
             set { this.index = value; }
         }
-        
+
         private ushort width = 0;
 
         public ushort Width
@@ -52,7 +52,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
             get { return this.width; }
             set { this.width = value; }
         }
-        
+
         private ushort xfIndex = 0;
 
         public ushort XfIndex

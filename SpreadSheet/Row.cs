@@ -23,12 +23,12 @@ using System.Collections.Generic;
 
 namespace Nix.SpreadSheet
 {
-	/// <summary>
-	/// Description of Row.
-	/// </summary>
-	public class Row : IEnumerable<Cell>
-	{
-		private int row;
+    /// <summary>
+    /// Description of Row.
+    /// </summary>
+    public class Row : IEnumerable<Cell>
+    {
+        private int row;
 
         private Sheet sheet;
 
@@ -40,14 +40,14 @@ namespace Nix.SpreadSheet
         /// <param name="sheet">Owner sheet.</param>
         /// <param name="row">Row index.</param>
 		internal Row(Sheet sheet, int row)
-		{
+        {
             this.sheet = sheet;
-			this.row = row;
-		}
+            this.row = row;
+        }
 
-		/// <summary>
-		/// Row index.
-		/// </summary>
+        /// <summary>
+        /// Row index.
+        /// </summary>
         public int RowIndex
         {
             get
@@ -65,7 +65,7 @@ namespace Nix.SpreadSheet
         {
             return m_cells.Remove(column);
         }
-        
+
         private ushort? height = null;
 
         /// <summary>
@@ -82,16 +82,16 @@ namespace Nix.SpreadSheet
         /// </summary>
         public int FirstCell
         {
-        	get
-        	{
-        		int result = int.MaxValue;
-        		foreach (int idx in m_cells.Keys)
-        		{
-        			if (idx < result)
-        			{
-        				result = idx;
-        			}
-        		}
+            get
+            {
+                int result = int.MaxValue;
+                foreach (int idx in m_cells.Keys)
+                {
+                    if (idx < result)
+                    {
+                        result = idx;
+                    }
+                }
                 foreach (CellRange cr in this.sheet.mergedCells)
                 {
                     if (cr.FirstRow <= this.RowIndex && cr.LastRow >= this.RowIndex && cr.FirstColumn < result)
@@ -100,7 +100,7 @@ namespace Nix.SpreadSheet
                     }
                 }
                 return (result == int.MaxValue ? -1 : result);
-        	}
+            }
         }
 
         /// <summary>
@@ -108,16 +108,16 @@ namespace Nix.SpreadSheet
         /// </summary>
         public uint LastCell
         {
-        	get
-        	{
-        		uint result = 0;
-        		foreach (int idx in m_cells.Keys)
-        		{
-        			if (idx > result)
-        			{
-        				result = (uint)idx;
-        			}
-        		}
+            get
+            {
+                uint result = 0;
+                foreach (int idx in m_cells.Keys)
+                {
+                    if (idx > result)
+                    {
+                        result = (uint)idx;
+                    }
+                }
                 foreach (CellRange cr in this.sheet.mergedCells)
                 {
                     if (cr.FirstRow <= this.RowIndex && cr.LastRow >= this.RowIndex && cr.LastColumn > result)
@@ -126,38 +126,38 @@ namespace Nix.SpreadSheet
                     }
                 }
                 return result;
-        	}
+            }
         }
 
         /// <summary>
         /// Get cell by column index in current row.
         /// </summary>
 		public Cell this[int column]
-		{
-			get
-			{
+        {
+            get
+            {
                 if (column >= Sheet.MaxColumns || column < 0)
                     throw new ArgumentOutOfRangeException("column");
-                if ( this.m_cells.ContainsKey(column) )
-                	return this.m_cells[column];
+                if (this.m_cells.ContainsKey(column))
+                    return this.m_cells[column];
                 else
                 {
                     Cell nc = new Cell(this.sheet, this.row, column);
                     this.m_cells.Add(column, nc);
                     return nc;
                 }
-			}
-		}
+            }
+        }
 
-		public IEnumerator<Cell> GetEnumerator()
-		{
-			return this.m_cells.Values.GetEnumerator();
-		}
-		
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return this.m_cells.Values.GetEnumerator();
-		}
+        public IEnumerator<Cell> GetEnumerator()
+        {
+            return this.m_cells.Values.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.m_cells.Values.GetEnumerator();
+        }
 
         /// <summary>
         /// Adjust row height to fit all cell content
@@ -179,7 +179,7 @@ namespace Nix.SpreadSheet
                 {
                     if (!(cr.LastRow == RowIndex && cr.FirstColumn == i))
                         continue;
-                    
+
                     cheight = 0;
                     for (int r = cr.FirstRow; r < cr.LastRow; ++r)
                         cheight += (this.sheet[cr.LastRow].Height ?? 17);
@@ -192,5 +192,5 @@ namespace Nix.SpreadSheet
 
             this.Height = height;
         }
-	}
+    }
 }

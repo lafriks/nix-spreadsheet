@@ -35,17 +35,17 @@ namespace Nix.SpreadSheet
         {
             get
             {
-				return this.text;
+                return this.text;
             }
             set
             {
-				this.text = value;
+                this.text = value;
             }
         }
 
-		private bool visible = false;
+        private bool visible = false;
 
-		/// <summary>
+        /// <summary>
         /// Gets or sets value indicating whether comment is visible.
         /// </summary>
         public bool Visible
