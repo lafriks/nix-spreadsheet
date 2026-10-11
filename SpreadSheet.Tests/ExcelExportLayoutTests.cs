@@ -39,6 +39,95 @@ namespace SpreadSheet.Tests
             Assert.Equal("SIA Bērziņš", Cell(result, 6, 1).StringCellValue);
         }
 
+        [Theory]
+        [InlineData(false, false)]
+        [InlineData(true, false)]
+        [InlineData(false, true)]
+        [InlineData(true, true)]
+        public void CalculateCellHeight_UsesFallbackFontAndPointSize(bool bold, bool italic)
+        {
+            var document = CreateDocument();
+            var sheet = document.AddSheet();
+            sheet.Columns[0].Width = 300;
+            sheet[0, 0].Value = "Latviešu teksts: āčēģīķļņšūž";
+            var font = sheet[0, 0].Formatting.Font;
+            font.Name = "Nix Regression Missing Font";
+            font.Weight = (ushort)(bold ? Nix.SpreadSheet.Font.BoldWeight : Nix.SpreadSheet.Font.NormalWeight);
+            font.Italic = italic;
+            font.Size = 200;
+            var nativeFont = font.ToNativeFont();
+            Assert.Equal("Liberation Sans", nativeFont.Family.Name);
+            Assert.Equal(10, nativeFont.Size);
+            Assert.Equal(bold, nativeFont.IsBold);
+            Assert.Equal(italic, nativeFont.IsItalic);
+            ushort smallHeight = sheet[0, 0].CalculateCellHeight();
+            font.Size = 400;
+            Assert.True(smallHeight > 0);
+            Assert.True(sheet[0, 0].CalculateCellHeight() > smallHeight);
+        }
+
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void CalculateCellHeight_WrapsAtColumnWidth(bool wrap)
+        {
+            var document = CreateDocument();
+            var sheet = document.AddSheet();
+            sheet[0, 0].Value = "Teksts vairākās rindās ar šauru kolonnas platumu un vairākiem vārdiem";
+            sheet[0, 0].Formatting.WrapTextAtRightBorder = wrap;
+            sheet.Columns[0].Width = 400;
+            ushort wideHeight = sheet[0, 0].CalculateCellHeight();
+            sheet.Columns[0].Width = 80;
+            Assert.True(sheet[0, 0].CalculateCellHeight() > wideHeight);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void ToNativeFont_UsesFallbackForUnspecifiedFamily(string? name)
+        {
+            var font = new Nix.SpreadSheet.Font { Name = name };
+            Assert.Equal("Liberation Sans", font.ToNativeFont().Family.Name);
+        }
+
+        [Theory]
+        [InlineData("\n")]
+        [InlineData("\r\n")]
+        public void CalculateCellHeight_FitsExplicitLineBreaks(string newline)
+        {
+            var document = CreateDocument();
+            var sheet = document.AddSheet();
+            sheet.Columns[0].Width = 300;
+            sheet[0, 0].Value = "Rinda";
+            ushort singleHeight = sheet[0, 0].CalculateCellHeight();
+            sheet[0, 0].Value = "Rinda" + newline + "Rinda" + newline + "Rinda";
+            Assert.True(sheet[0, 0].CalculateCellHeight() >= singleHeight * 2);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void AutoSizeRowHeight_PreservesMinimumForEmptyCells(string? value)
+        {
+            var document = CreateDocument();
+            var sheet = document.AddSheet();
+            sheet[0, 0].Value = value;
+            sheet.AutoSizeRowHeight();
+            Assert.Equal((ushort)17, sheet[0].Height);
+        }
+
+        [Fact]
+        public void AutoSizeRowHeight_OverridesExplicitHeightWhenRequested()
+        {
+            var document = CreateDocument();
+            var sheet = document.AddSheet();
+            sheet[0, 0].Value = "Rinda";
+            sheet[0].Height = 100;
+            sheet.AutoSizeRowHeight(true);
+            Assert.True(sheet[0].Height > 0);
+            Assert.True(sheet[0].Height < 100);
+        }
+
         [Fact]
         public void AutoSizeRowHeight_FitsMultilineReportAndPreservesExplicitHeight()
         {

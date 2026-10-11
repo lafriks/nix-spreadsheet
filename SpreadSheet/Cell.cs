@@ -18,7 +18,6 @@
  */
 
 using System;
-using System.Drawing;
 
 namespace Nix.SpreadSheet
 {
@@ -217,10 +216,8 @@ namespace Nix.SpreadSheet
             //if (wrap)
             //    tff |= TextFormatFlags.WordBreak;
 
-            System.Drawing.Font font = (this.HasFormatting ? this.Formatting.Font : Style.Default.Font).ToNativeFont();
-
-            var s = Graphics.FromImage(new Bitmap(1, 1)).MeasureString(val, font, width + 6);
-            return (ushort)Math.Round(s.Height);
+            Font font = (this.HasFormatting ? this.Formatting.Font : Style.Default.Font);
+            return (ushort)Math.Round(TextMeasurement.MeasureHeight(val, font, width + 6));
         }
         #endregion
     }
