@@ -1,0 +1,41 @@
+name: Tests
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    name: Windows (.NET 8)
+    runs-on: windows-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+        working-directory: SpreadSheet.Tests
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 8.0.x
+      - name: Run tests
+        run: dotnet test --configuration Release
+
+  linux:
+    name: Linux Alpine (.NET 8)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - name: Run tests in Alpine
+        shell: bash
+        run: |
+          docker run --rm \
+            --volume "$PWD:/src" \
+            --workdir /src/SpreadSheet.Tests \
+            mcr.microsoft.com/dotnet/sdk:8.0-alpine \
+            dotnet test --configuration Release

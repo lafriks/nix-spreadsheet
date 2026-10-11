@@ -34,3 +34,23 @@ s.AutoSizeRowHeight();
 
 doc.Save(@"test.xls", new Nix.SpreadSheet.Provider.XlsFileFormatProvider());
 ```
+
+## Tests
+
+The regression tests target .NET 8. Install a .NET 8 SDK and run them from the
+test directory:
+
+```bash
+cd SpreadSheet.Tests
+dotnet test
+```
+
+The tests generate `.xls` files with synthetic data and read them with NPOI to
+verify their contents and formatting. They require no database or Microsoft Excel.
+All tests run on every platform. The row height test currently fails on Linux
+because its System.Drawing.Common text measurement requires Windows.
+
+The [GitHub Actions workflow](.github/workflows/tests.yml) runs the tests on
+Windows and Linux (Alpine) for pushes to `master` and pull requests.
+
+See [the test coverage notes](SpreadSheet.Tests/README.md) for the covered scenarios.
