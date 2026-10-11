@@ -22,9 +22,7 @@ contents and layout rather than just checking whether saving throws.
 The tests use fixed dates and an explicit Latvian document locale. They require
 no database, production data, spreadsheet fixtures or Excel installation.
 
-The project targets `net8.0`. Its local `global.json` selects the latest installed
-.NET 8 SDK feature band, starting from `8.0.100`, without rolling forward to a
-newer major version. Install a .NET 8 SDK to build and run the tests.
+The project targets `net8.0`. Install a .NET 8 SDK to build and run the tests.
 The library projects retain their `netstandard2.0` targets.
 
 Run from the repository root:
