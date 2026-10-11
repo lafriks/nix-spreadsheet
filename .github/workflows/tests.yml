@@ -18,7 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest]
-        dotnet: ['8.0', '9.0', '10.0']
+        dotnet: ['6.0', '8.0', '10.0']
     defaults:
       run:
         shell: bash
@@ -43,7 +43,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        dotnet: ['8.0', '9.0', '10.0']
+        dotnet: ['6.0', '8.0', '10.0']
     steps:
       - uses: actions/checkout@v7
       - name: Run tests in Alpine
@@ -59,4 +59,27 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests-alpine-net${{ matrix.dotnet }}
+          path: SpreadSheet.Tests/TestResults/*.trx
+
+  framework:
+    name: Windows (.NET Framework 4.8)
+    runs-on: windows-2022
+    timeout-minutes: 5
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Show installed .NET Framework runtime
+        run: MSYS_NO_PATHCONV=1 reg.exe query 'HKLM\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full' /v Release
+      - name: Run tests
+        run: bash .github/scripts/test.sh net48
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-windows-net48
           path: SpreadSheet.Tests/TestResults/*.trx

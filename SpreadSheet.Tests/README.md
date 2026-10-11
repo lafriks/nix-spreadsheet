@@ -36,16 +36,22 @@ dotnet test
 
 The [GitHub Actions workflow](../.github/workflows/tests.yml) runs on pushes to
 `master` and on pull requests, and supports manual runs. Its matrix runs all tests
-on Windows, Ubuntu, and Alpine with .NET 8, 9, and 10. Alpine uses the official
+on Windows, Ubuntu, and Alpine with .NET 6, 8, and 10, plus .NET Framework 4.8 on
+Windows Server 2022. The Framework job logs the installed runtime release.
+Alpine uses the official
 SDK container, which includes ICU and enables globalization so the tests can use
 their Latvian document locale. No font or graphics packages are installed.
 
-To test a newer framework without editing the test project, install its SDK and
+To select a framework without editing the test project, install its SDK and
 run the same script used in CI from the repository root:
 
 ```bash
 bash .github/scripts/test.sh 10.0
 ```
+
+Use `6.0` or `8.0` for those .NET versions, or `net48` on Windows with the .NET
+Framework 4.8 targeting pack installed. Framework builds select C# 8.0 so the
+existing nullable annotations and using declarations compile.
 
 The script overrides the test frameworks during restore, restores the library
 references separately with their .NET Standard 2.0 targets, and builds and runs

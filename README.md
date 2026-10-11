@@ -38,9 +38,9 @@ doc.Save(@"test.xls", new Nix.SpreadSheet.Provider.XlsFileFormatProvider());
 ## Tests
 
 The library retains its .NET Standard 2.0 target and supports spreadsheet export
-and automatic row heights on Windows and Linux, including Alpine, on .NET 8, 9,
-and 10. Both platforms measure text with the managed SixLabors.Fonts library,
-using the requested installed font or an
+and automatic row heights on Windows and Linux, including Alpine, on .NET 6, 8,
+and 10, and on Windows with .NET Framework 4.8. Both platforms measure text with
+the managed SixLabors.Fonts library, using the requested installed font or an
 embedded Liberation Sans fallback when that font is unavailable. No native
 graphics packages or system fonts need to be installed in Linux containers.
 Font availability can produce different measured heights across platforms.
@@ -67,13 +67,18 @@ verify their contents and formatting. They require no database or Microsoft Exce
 All tests run on every platform, including automatic row height measurements.
 
 The [GitHub Actions workflow](.github/workflows/tests.yml) runs the complete suite
-on Windows, Ubuntu, and Linux Alpine with .NET 8, 9, and 10 for pushes to `master`
-and pull requests. It can also be started manually. Its shared script selects
-the test framework through command-line properties, leaving the test project
+on Windows, Ubuntu, and Linux Alpine with .NET 6, 8, and 10, plus .NET Framework
+4.8 on Windows, for pushes to `master` and pull requests. It can also be started
+manually. Its shared script selects the test framework through command-line
+properties, leaving the test project
 file unchanged and keeping the library references on .NET Standard 2.0:
 
 ```bash
 bash .github/scripts/test.sh 10.0
 ```
+
+For legacy validation, run `bash .github/scripts/test.sh 6.0`, or on Windows with
+the .NET Framework 4.8 targeting pack, `bash .github/scripts/test.sh net48`.
+The Framework job uses Windows Server 2022 and logs its installed runtime release.
 
 See [the test coverage notes](SpreadSheet.Tests/README.md) for the covered scenarios.
