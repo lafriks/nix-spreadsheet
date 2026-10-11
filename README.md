@@ -38,7 +38,7 @@ doc.Save(@"test.xls", new Nix.SpreadSheet.Provider.XlsFileFormatProvider());
 ## Tests
 
 The regression tests target .NET 8. Install a .NET 8 SDK and run them from the
-test directory to select it through the local `global.json`:
+test directory:
 
 ```bash
 cd SpreadSheet.Tests
