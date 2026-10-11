@@ -39,14 +39,18 @@ doc.Save(@"test.xls", new Nix.SpreadSheet.Provider.XlsFileFormatProvider());
 
 The library retains its .NET Standard 2.0 target and supports spreadsheet export
 and automatic row heights on Windows and Linux, including Alpine, on .NET 8, 9,
-and 10. Windows keeps its existing GDI+ measurements. Linux measures text with
-the managed SixLabors.Fonts library, using the requested installed font or an
+and 10. Both platforms measure text with the managed SixLabors.Fonts library,
+using the requested installed font or an
 embedded Liberation Sans fallback when that font is unavailable. No native
 graphics packages or system fonts need to be installed in Linux containers.
 Font availability can produce different measured heights across platforms.
 
-The public `Font.ToNativeFont()` helper remains a Windows-only System.Drawing
-interop API for existing callers; spreadsheet export does not call it on Linux.
+Version 0.4.0 changes `Font.ToNativeFont()` to return `SixLabors.Fonts.Font`
+instead of `System.Drawing.Font`. Existing callers must rebuild and migrate any
+GDI+ rendering code. The portable font carries the family, point size, bold and
+italic style; underline, strikeout and charset remain spreadsheet formatting
+properties and are still written to the workbook. Windows autosized heights can
+differ from earlier versions because GDI+ measurement has been replaced.
 The fallback fonts and their redistribution license come from
 [Liberation Fonts 2.1.5](https://github.com/liberationfonts/liberation-fonts/releases/tag/2.1.5).
 

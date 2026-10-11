@@ -55,6 +55,11 @@ namespace SpreadSheet.Tests
             font.Weight = (ushort)(bold ? Nix.SpreadSheet.Font.BoldWeight : Nix.SpreadSheet.Font.NormalWeight);
             font.Italic = italic;
             font.Size = 200;
+            var nativeFont = font.ToNativeFont();
+            Assert.Equal("Liberation Sans", nativeFont.Family.Name);
+            Assert.Equal(10, nativeFont.Size);
+            Assert.Equal(bold, nativeFont.IsBold);
+            Assert.Equal(italic, nativeFont.IsItalic);
             ushort smallHeight = sheet[0, 0].CalculateCellHeight();
             font.Size = 400;
             Assert.True(smallHeight > 0);
@@ -74,6 +79,15 @@ namespace SpreadSheet.Tests
             ushort wideHeight = sheet[0, 0].CalculateCellHeight();
             sheet.Columns[0].Width = 80;
             Assert.True(sheet[0, 0].CalculateCellHeight() > wideHeight);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void ToNativeFont_UsesFallbackForUnspecifiedFamily(string? name)
+        {
+            var font = new Nix.SpreadSheet.Font { Name = name };
+            Assert.Equal("Liberation Sans", font.ToNativeFont().Family.Name);
         }
 
         [Theory]

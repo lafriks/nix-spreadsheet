@@ -23,6 +23,10 @@ namespace SpreadSheet.Tests
             };
             headerStyle.Font.Size = 200;
             headerStyle.Font.Weight = SpreadsheetFont.BoldWeight;
+            headerStyle.Font.Italic = true;
+            headerStyle.Font.Strikeout = true;
+            headerStyle.Font.UnderlineStyle = Nix.SpreadSheet.UnderlineStyle.Double;
+            headerStyle.Font.CharSet = CharSet.Baltic;
             sheet[4, 0].Value = "Jautājums";
             sheet[4, 1].Value = 2025;
             sheet[4, 2].Value = 2026;
@@ -54,6 +58,10 @@ namespace SpreadSheet.Tests
             Assert.Equal("Times New Roman", font.FontName);
             Assert.Equal(10, font.FontHeightInPoints);
             Assert.True(font.IsBold);
+            Assert.True(font.IsItalic);
+            Assert.True(font.IsStrikeout);
+            Assert.Equal(FontUnderlineType.Double, font.Underline);
+            Assert.Equal(186, System.Convert.ToInt32(font.Charset));
             Assert.False(workbook.GetFontAt(Cell(result, 5, 0).CellStyle.FontIndex).IsBold);
             Assert.Equal(BorderStyle.Medium, header.BorderTop);
             Assert.Equal(BorderStyle.Medium, header.BorderBottom);

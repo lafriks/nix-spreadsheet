@@ -51,8 +51,9 @@ The script overrides the test frameworks during restore, restores the library
 references separately with their .NET Standard 2.0 targets, and builds and runs
 the tests on the selected framework. The resulting TRX reports are uploaded by CI.
 
-All tests run on every platform. Windows retains GDI+ text measurement; Linux
-uses SixLabors.Fonts and an embedded Liberation Sans fallback for missing fonts.
+All tests run on every platform. Both Windows and Linux use SixLabors.Fonts and
+an embedded Liberation Sans fallback for missing fonts. The public font
+conversion helper returns a portable SixLabors.Fonts font.
 The layout regressions also exercise missing fonts in regular, bold, italic,
 and bold italic styles, font sizes, width-based wrapping, LF and CRLF line
 breaks, empty cell minimum heights, and explicit-height override behavior.

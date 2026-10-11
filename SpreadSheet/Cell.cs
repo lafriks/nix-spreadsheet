@@ -18,7 +18,6 @@
  */
 
 using System;
-using System.Drawing;
 
 namespace Nix.SpreadSheet
 {

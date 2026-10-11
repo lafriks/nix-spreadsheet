@@ -53,7 +53,7 @@ jobs:
             --volume "$PWD:/src" \
             --workdir /src \
             mcr.microsoft.com/dotnet/sdk:${{ matrix.dotnet }}-alpine \
-            bash .github/scripts/test.sh ${{ matrix.dotnet }}
+            sh .github/scripts/test.sh ${{ matrix.dotnet }}
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
