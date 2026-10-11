@@ -37,8 +37,8 @@ doc.Save(@"test.xls", new Nix.SpreadSheet.Provider.XlsFileFormatProvider());
 
 ## Tests
 
-The regression tests target .NET Core 3.1. Run them from the test directory to
-select SDK 3.1.426 through its local `global.json`:
+The regression tests target .NET 8. Install a .NET 8 SDK and run them from the
+test directory to select it through the local `global.json`:
 
 ```bash
 cd SpreadSheet.Tests
@@ -47,8 +47,10 @@ dotnet test
 
 The tests generate `.xls` files with synthetic data and read them with NPOI to
 verify their contents and formatting. They require no database or Microsoft Excel.
-The row height test uses System.Drawing.Common to measure text and requires
-Windows; it is skipped on other operating systems. A .NET Core 3.1 runtime must be
-installed to run the tests, including when building with a newer SDK.
+All tests run on every platform. The row height test currently fails on Linux
+because its System.Drawing.Common text measurement requires Windows.
+
+The [GitHub Actions workflow](.github/workflows/tests.yml) runs the tests on
+Windows and Linux (Alpine) for pushes to `master` and pull requests.
 
 See [the test coverage notes](SpreadSheet.Tests/README.md) for the covered scenarios.

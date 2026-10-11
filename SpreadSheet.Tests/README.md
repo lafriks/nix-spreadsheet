@@ -22,9 +22,9 @@ contents and layout rather than just checking whether saving throws.
 The tests use fixed dates and an explicit Latvian document locale. They require
 no database, production data, spreadsheet fixtures or Excel installation.
 
-The project targets `netcoreapp3.1` and uses C# 8 syntax. Its local `global.json`
-selects SDK `3.1.426`, the oldest SDK installed on the development device, and
-allows later 3.1 feature bands without rolling forward to a newer major version.
+The project targets `net8.0`. Its local `global.json` selects the latest installed
+.NET 8 SDK feature band, starting from `8.0.100`, without rolling forward to a
+newer major version. Install a .NET 8 SDK to build and run the tests.
 The library projects retain their `netstandard2.0` targets.
 
 Run from the repository root:
@@ -35,9 +35,13 @@ dotnet --version
 dotnet test
 ```
 
+The [GitHub Actions workflow](../.github/workflows/tests.yml) runs on pushes to
+`master` and on pull requests. It tests Windows directly and Linux inside the
+official .NET 8 Alpine SDK container, which includes ICU and enables globalization
+so the tests can use their Latvian document locale.
 
-Only the row height test needs Windows, due to the library's existing
-System.Drawing.Common dependency. It is explicitly skipped on other platforms.
+All tests run on every platform. The row height test currently fails on Linux
+because the library's System.Drawing.Common text measurement requires Windows.
 No exact font measurement is asserted: the test compares multiline heights with
 single line heights to allow for differences in installed fonts and DPI.
 

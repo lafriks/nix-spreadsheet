@@ -39,7 +39,7 @@ namespace SpreadSheet.Tests
             Assert.Equal("SIA Bērziņš", Cell(result, 6, 1).StringCellValue);
         }
 
-        [WindowsFact]
+        [Fact]
         public void AutoSizeRowHeight_FitsMultilineReportAndPreservesExplicitHeight()
         {
             var document = CreateDocument();
