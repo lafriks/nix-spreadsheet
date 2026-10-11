@@ -254,6 +254,9 @@ namespace Nix.SpreadSheet
         #endregion
 
         #region C# native font object
+        /// <summary>
+        /// Creates a Windows GDI+ font for callers that use System.Drawing.
+        /// </summary>
         public System.Drawing.Font ToNativeFont()
         {
             FontStyle fs = FontStyle.Regular;

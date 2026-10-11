@@ -37,8 +37,21 @@ doc.Save(@"test.xls", new Nix.SpreadSheet.Provider.XlsFileFormatProvider());
 
 ## Tests
 
-The regression tests target .NET 8. Install a .NET 8 SDK and run them from the
-test directory:
+The library retains its .NET Standard 2.0 target and supports spreadsheet export
+and automatic row heights on Windows and Linux, including Alpine, on .NET 8, 9,
+and 10. Windows keeps its existing GDI+ measurements. Linux measures text with
+the managed SixLabors.Fonts library, using the requested installed font or an
+embedded Liberation Sans fallback when that font is unavailable. No native
+graphics packages or system fonts need to be installed in Linux containers.
+Font availability can produce different measured heights across platforms.
+
+The public `Font.ToNativeFont()` helper remains a Windows-only System.Drawing
+interop API for existing callers; spreadsheet export does not call it on Linux.
+The fallback fonts and their redistribution license come from
+[Liberation Fonts 2.1.5](https://github.com/liberationfonts/liberation-fonts/releases/tag/2.1.5).
+
+The regression test project targets .NET 8 by default. Install a .NET 8 SDK or
+newer and a .NET 8 runtime, then run:
 
 ```bash
 cd SpreadSheet.Tests
@@ -47,10 +60,16 @@ dotnet test
 
 The tests generate `.xls` files with synthetic data and read them with NPOI to
 verify their contents and formatting. They require no database or Microsoft Excel.
-All tests run on every platform. The row height test currently fails on Linux
-because its System.Drawing.Common text measurement requires Windows.
+All tests run on every platform, including automatic row height measurements.
 
-The [GitHub Actions workflow](.github/workflows/tests.yml) runs the tests on
-Windows and Linux (Alpine) for pushes to `master` and pull requests.
+The [GitHub Actions workflow](.github/workflows/tests.yml) runs the complete suite
+on Windows, Ubuntu, and Linux Alpine with .NET 8, 9, and 10 for pushes to `master`
+and pull requests. It can also be started manually. Its shared script selects
+the test framework through command-line properties, leaving the test project
+file unchanged and keeping the library references on .NET Standard 2.0:
+
+```bash
+bash .github/scripts/test.sh 10.0
+```
 
 See [the test coverage notes](SpreadSheet.Tests/README.md) for the covered scenarios.

@@ -22,7 +22,8 @@ contents and layout rather than just checking whether saving throws.
 The tests use fixed dates and an explicit Latvian document locale. They require
 no database, production data, spreadsheet fixtures or Excel installation.
 
-The project targets `net8.0`. Install a .NET 8 SDK to build and run the tests.
+The project targets `net8.0` by default. Install a .NET 8 SDK or newer and a
+.NET 8 runtime to build and run the tests.
 The library projects retain their `netstandard2.0` targets.
 
 Run from the repository root:
@@ -34,12 +35,27 @@ dotnet test
 ```
 
 The [GitHub Actions workflow](../.github/workflows/tests.yml) runs on pushes to
-`master` and on pull requests. It tests Windows directly and Linux inside the
-official .NET 8 Alpine SDK container, which includes ICU and enables globalization
-so the tests can use their Latvian document locale.
+`master` and on pull requests, and supports manual runs. Its matrix runs all tests
+on Windows, Ubuntu, and Alpine with .NET 8, 9, and 10. Alpine uses the official
+SDK container, which includes ICU and enables globalization so the tests can use
+their Latvian document locale. No font or graphics packages are installed.
 
-All tests run on every platform. The row height test currently fails on Linux
-because the library's System.Drawing.Common text measurement requires Windows.
+To test a newer framework without editing the test project, install its SDK and
+run the same script used in CI from the repository root:
+
+```bash
+bash .github/scripts/test.sh 10.0
+```
+
+The script overrides the test frameworks during restore, restores the library
+references separately with their .NET Standard 2.0 targets, and builds and runs
+the tests on the selected framework. The resulting TRX reports are uploaded by CI.
+
+All tests run on every platform. Windows retains GDI+ text measurement; Linux
+uses SixLabors.Fonts and an embedded Liberation Sans fallback for missing fonts.
+The layout regressions also exercise missing fonts in regular, bold, italic,
+and bold italic styles, font sizes, width-based wrapping, LF and CRLF line
+breaks, empty cell minimum heights, and explicit-height override behavior.
 No exact font measurement is asserted: the test compares multiline heights with
 single line heights to allow for differences in installed fonts and DPI.
 

@@ -23,6 +23,13 @@
 
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+    <PackageReference Include="SixLabors.Fonts" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Fonts\*.ttf" />
+    <EmbeddedResource Include="Fonts\LICENSE.txt" />
+    <None Update="Fonts\LICENSE.txt" Pack="true" PackagePath="licenses\LiberationFonts.txt" />
   </ItemGroup>
 
 </Project>
