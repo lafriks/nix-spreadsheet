@@ -54,7 +54,7 @@ namespace SpreadSheet.Tests
                 sheet.GetCellRange(3, 0, 3, 1).DrawTable(Color.Black, BorderLineStyle.Thin, BorderLineStyle.Medium);
             }
 
-            using var workbook = SaveAndRead(document);
+            using var workbook = SaveAndRead(document, $"includeHeaders-{includeHeaders}");
             Assert.Equal(1, workbook.NumberOfSheets);
             Assert.Equal("Sheet1", workbook.GetSheetName(0));
             if (includeHeaders)
