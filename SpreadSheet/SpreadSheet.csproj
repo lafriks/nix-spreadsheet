@@ -24,7 +24,6 @@
   <ItemGroup>
     <!-- Fonts 2.0 and later use the Six Labors Split License. -->
     <PackageReference Include="SixLabors.Fonts" Version="[1.0.0,2.0.0)" />
-    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
