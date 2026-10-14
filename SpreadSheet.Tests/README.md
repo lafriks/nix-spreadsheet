@@ -17,7 +17,7 @@ contents and layout rather than just checking whether saving throws.
 | Empty groups | Readable fallback worksheet, both empty and with report headers |
 | Large document list | All 2,048 rows, unique and repeated Unicode strings, shared string continuation records, multiple OLE sectors, row blocks and a footer after a gap |
 | Long document content | A single multiline Unicode string spanning multiple continuation records and the following cell |
-| Row heights | Multiline and merged titles fit, explicitly assigned heights survive the default autosize call, heights survive serialization |
+| Row heights | Multiline and merged titles fit, explicitly assigned heights survive the default autosize call, heights survive serialization, the multiline report is repeated for several font sizes and weights, row height scales linearly with line count across 10-18 pt regular and bold text for the fallback font on every platform and for Arial, Times New Roman and Calibri on Windows only (skipped elsewhere because the fonts are not installed), and Arial, Times New Roman and Calibri rows match Excel's line pitch |
 
 The tests use fixed dates and an explicit Latvian document locale. They require
 no database, production data, spreadsheet fixtures or Excel installation.

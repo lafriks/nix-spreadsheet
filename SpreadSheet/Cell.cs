@@ -219,17 +219,10 @@ namespace Nix.SpreadSheet
             //    tff |= TextFormatFlags.WordBreak;
 
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                System.Drawing.Font font = (this.HasFormatting ? this.Formatting.Font : Style.Default.Font).ToNativeWinFont();
-                var s = Graphics.FromImage(new Bitmap(1, 1)).MeasureString(val, font, width + 6);
-                return (ushort)Math.Round(s.Height);
-            }
-            else
-            {
-                Font font = (this.HasFormatting ? this.Formatting.Font : Style.Default.Font);
-                return (ushort)Math.Round(TextMeasurement.MeasureHeight(val, font, width + 6));
-            }
+
+            Font font = (this.HasFormatting ? this.Formatting.Font : Style.Default.Font);
+            return (ushort)Math.Round(TextMeasurement.MeasureHeight(val, font, width + 6));
+
         }
         #endregion
     }

@@ -1,5 +1,6 @@
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Nix.SpreadSheet;
 using Xunit;
 using static SpreadSheet.Tests.ExcelExportTestHelper;
@@ -64,6 +65,9 @@ namespace SpreadSheet.Tests
             font.Size = 400;
             Assert.True(smallHeight > 0);
             Assert.True(sheet[0, 0].CalculateCellHeight() > smallHeight);
+
+            using var workbook = SaveAndRead(document, $"bold-{bold}_italic-{italic}");
+            Assert.Equal("Latviešu teksts: āčēģīķļņšūž", Cell(workbook.GetSheetAt(0), 0, 0).StringCellValue);
         }
 
         [Theory]
@@ -79,15 +83,9 @@ namespace SpreadSheet.Tests
             ushort wideHeight = sheet[0, 0].CalculateCellHeight();
             sheet.Columns[0].Width = 80;
             Assert.True(sheet[0, 0].CalculateCellHeight() > wideHeight);
-        }
 
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        public void ToNativeFont_UsesFallbackForUnspecifiedFamily(string? name)
-        {
-            var font = new Nix.SpreadSheet.Font { Name = name };
-            Assert.Equal("Liberation Sans", font.ToNativeFont().Family.Name);
+            using var workbook = SaveAndRead(document, $"wrap-{wrap}");
+            Assert.Equal("Teksts vairākās rindās ar šauru kolonnas platumu un vairākiem vārdiem", Cell(workbook.GetSheetAt(0), 0, 0).StringCellValue);
         }
 
         [Theory]
@@ -102,6 +100,9 @@ namespace SpreadSheet.Tests
             ushort singleHeight = sheet[0, 0].CalculateCellHeight();
             sheet[0, 0].Value = "Rinda" + newline + "Rinda" + newline + "Rinda";
             Assert.True(sheet[0, 0].CalculateCellHeight() >= singleHeight * 2);
+
+            using var workbook = SaveAndRead(document, newline == "\n" ? "lf" : "crlf");
+            Assert.Equal("Rinda", Cell(workbook.GetSheetAt(0), 0, 0).StringCellValue.Split('\n')[0].TrimEnd('\r'));
         }
 
         [Theory]
@@ -114,6 +115,9 @@ namespace SpreadSheet.Tests
             sheet[0, 0].Value = value;
             sheet.AutoSizeRowHeight();
             Assert.Equal((ushort)17, sheet[0].Height);
+
+            using var workbook = SaveAndRead(document, value == null ? "null" : "empty");
+            Assert.Equal(17 * 0.75f, workbook.GetSheetAt(0).GetRow(0).HeightInPoints);
         }
 
         [Fact]
@@ -126,10 +130,64 @@ namespace SpreadSheet.Tests
             sheet.AutoSizeRowHeight(true);
             Assert.True(sheet[0].Height > 0);
             Assert.True(sheet[0].Height < 100);
+
+            using var workbook = SaveAndRead(document);
+            Assert.Equal(sheet[0].Height!.Value * 0.75f, workbook.GetSheetAt(0).GetRow(0).HeightInPoints);
         }
 
-        [Fact]
-        public void AutoSizeRowHeight_FitsMultilineReportAndPreservesExplicitHeight()
+        [WindowsInstalledFontTheory]
+        [InlineData("Arial", 200, 17)]
+        [InlineData("Times New Roman", 200, 17)]
+        [InlineData("Calibri", 640 , 54)]
+        public void AutoSizeRowHeight_UsesExcelLinePitchForInstalledFonts(string name, int size, int linePitch)
+        {
+            var document = CreateDocument();
+            var sheet = document.AddSheet();
+            sheet.Columns[0].Width = 300;
+            for (int lines = 1; lines <= 4; lines++)
+            {
+                var cell = sheet[lines - 1, 0];
+                cell.Value = string.Join("\n", Enumerable.Repeat("Rinda", lines));
+                cell.Formatting.WrapTextAtRightBorder = true;
+                var font = cell.Formatting.Font;
+                font.Name = name;
+                font.Size = (ushort)size;
+                Assert.Equal(name, font.ToNativeFont().Family.Name);
+            }
+
+            sheet.AutoSizeRowHeight();
+
+            for (int lines = 1; lines <= 4; lines++)
+                Assert.Equal((ushort)(lines * linePitch), sheet[lines - 1].Height);
+
+            using var workbook = SaveAndRead(document, $"{name}_{size}");
+            for (int lines = 1; lines <= 4; lines++)
+                Assert.Equal(lines * linePitch * 0.75f, workbook.GetSheetAt(0).GetRow(lines - 1).HeightInPoints);
+        }
+
+        [Theory]
+        [InlineData("Nix Regression Missing Font", "Liberation Sans")]
+        public void AutoSizeRowHeight_ScalesLinearlyWithSizeAndWeightForFallbackFont(string name, string family)
+        {
+            AssertLinePitchScalesWithSizeAndWeight(name, family);
+        }
+
+        [WindowsInstalledFontTheory]
+        [InlineData("Arial")]
+        [InlineData("Times New Roman")]
+        [InlineData("Calibri")]
+        public void AutoSizeRowHeight_ScalesLinearlyWithSizeAndWeightForInstalledFonts(string name)
+        {
+            AssertLinePitchScalesWithSizeAndWeight(name, name);
+        }
+
+        [Theory]
+        [InlineData(200, false)]
+        [InlineData(200, true)]
+        [InlineData(240, false)]
+        [InlineData(280, false)]
+        [InlineData(280, true)]
+        public void AutoSizeRowHeight_FitsMultilineReportAndPreservesExplicitHeight(int fontSize, bool bold)
         {
             var document = CreateDocument();
             var sheet = document.AddSheet("Pārskats");
@@ -142,16 +200,69 @@ namespace SpreadSheet.Tests
             sheet[3, 0].Value = "Apvienots virsraksts\nOtrā rinda\nTrešā rinda";
             sheet.GetCellRange(3, 0, 3, 2).Merge();
             sheet[3, 0].Formatting.WrapTextAtRightBorder = true;
+            for (int row = 0; row < 4; row++)
+            {
+                var font = sheet[row, 0].Formatting.Font;
+                font.Size = (ushort)fontSize;
+                font.Weight = (ushort)(bold ? Nix.SpreadSheet.Font.BoldWeight : Nix.SpreadSheet.Font.NormalWeight);
+            }
             sheet.AutoSizeRowHeight();
 
+            ushort linePitch = sheet[1].Height!.Value;
             Assert.Equal((ushort)60, sheet[0].Height);
-            Assert.True(sheet[2].Height > sheet[1].Height);
-            Assert.True(sheet[3].Height > sheet[1].Height);
-            using var workbook = SaveAndRead(document);
+            Assert.Equal((ushort)(4 * linePitch), sheet[2].Height);
+            Assert.Equal((ushort)(3 * linePitch), sheet[3].Height);
+            using var workbook = SaveAndRead(document, $"{fontSize}_{(bold ? "bold" : "regular")}");
             var result = workbook.GetSheetAt(0);
             Assert.Equal(45, result.GetRow(0).HeightInPoints);
             Assert.True(result.GetRow(2).HeightInPoints > result.GetRow(1).HeightInPoints);
             Assert.True(result.GetRow(3).HeightInPoints > result.GetRow(1).HeightInPoints);
+            Assert.Equal(sheet[2].Height!.Value * 0.75f, result.GetRow(2).HeightInPoints);
+            Assert.Equal(sheet[3].Height!.Value * 0.75f, result.GetRow(3).HeightInPoints);
+        }
+
+        private static void AssertLinePitchScalesWithSizeAndWeight(string name, string expectedFamily, [CallerMemberName] string testName = "")
+        {
+            int previousPitch = 0;
+            foreach (int size in new[] { 200, 240, 280, 360 })
+            {
+                ushort regularPitch = 0;
+                foreach (bool bold in new[] { false, true })
+                {
+                    var document = CreateDocument();
+                    var sheet = document.AddSheet();
+                    sheet.Columns[0].Width = 300;
+                    for (int lines = 1; lines <= 4; lines++)
+                    {
+                        var cell = sheet[lines - 1, 0];
+                        cell.Value = string.Join("\n", Enumerable.Repeat("Rinda", lines));
+                        cell.Formatting.WrapTextAtRightBorder = true;
+                        var font = cell.Formatting.Font;
+                        font.Name = name;
+                        font.Size = (ushort)size;
+                        font.Weight = (ushort)(bold ? Nix.SpreadSheet.Font.BoldWeight : Nix.SpreadSheet.Font.NormalWeight);
+                        Assert.Equal(expectedFamily, font.ToNativeFont().Family.Name);
+                    }
+                    sheet.AutoSizeRowHeight();
+
+                    ushort pitch = sheet[0].Height!.Value;
+                    for (int lines = 2; lines <= 4; lines++)
+                        Assert.Equal((ushort)(lines * pitch), sheet[lines - 1].Height);
+
+                    using var workbook = SaveAndRead(document, $"{name}_{size}_{(bold ? "bold" : "regular")}", testName);
+                    for (int lines = 1; lines <= 4; lines++)
+                        Assert.Equal(lines * pitch * 0.75f, workbook.GetSheetAt(0).GetRow(lines - 1).HeightInPoints);
+
+                    if (bold)
+                        Assert.True(pitch >= regularPitch);
+                    else
+                        regularPitch = pitch;
+                }
+
+                Assert.True(regularPitch > previousPitch);
+                Assert.True(regularPitch >= size / 20.0 * 96 / 72);
+                previousPitch = regularPitch;
+            }
         }
     }
 }

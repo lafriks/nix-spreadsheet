@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Nix.SpreadSheet;
 using Nix.SpreadSheet.Provider;
 using NPOI.HSSF.UserModel;
@@ -10,6 +11,16 @@ using Xunit;
 
 namespace SpreadSheet.Tests
 {
+    // Calibri and Times New Roman ship with Windows only; other platforms would silently use the Liberation Sans fallback.
+    public sealed class WindowsInstalledFontTheoryAttribute : TheoryAttribute
+    {
+        public WindowsInstalledFontTheoryAttribute()
+        {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Skip = "Requires fonts installed with Windows.";
+        }
+    }
+
     internal static class ExcelExportTestHelper
     {
         // When set, every saved workbook is also written there as <test name>.xls for manual review.
