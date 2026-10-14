@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <PackageReference Include="SixLabors.Fonts" Version="1.0.1" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>

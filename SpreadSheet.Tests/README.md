@@ -57,14 +57,16 @@ The script overrides the test frameworks during restore, restores the library
 references separately with their .NET Standard 2.0 targets, and builds and runs
 the tests on the selected framework. The resulting TRX reports are uploaded by CI.
 
-All tests run on every platform. Both Windows and Linux use SixLabors.Fonts and
-an embedded Liberation Sans fallback for missing fonts. The public font
-conversion helper returns a portable SixLabors.Fonts font.
+All tests run on every platform. Windows height calculation uses native GDI+;
+other platforms use SixLabors.Fonts and an embedded Liberation Sans fallback
+for missing fonts. The public font conversion helper returns a portable
+SixLabors.Fonts font on every platform. A platform-specific regression compares
+cell heights with the corresponding backend for wrapping, sizes and styles.
 The layout regressions also exercise missing fonts in regular, bold, italic,
 and bold italic styles, font sizes, width-based wrapping, LF and CRLF line
 breaks, empty cell minimum heights, and explicit-height override behavior.
-No exact font measurement is asserted: the test compares multiline heights with
-single line heights to allow for differences in installed fonts and DPI.
+Relative layout checks compare multiline heights with single line heights to
+allow for differences in installed fonts and DPI.
 
 When extending coverage, construct workbooks with synthetic data and add
 assertions on the contents and formatting read by NPOI.
