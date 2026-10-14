@@ -19,6 +19,9 @@ jobs:
       matrix:
         os: [windows-latest, ubuntu-slim]
         dotnet: ['net48','6.0', '8.0', '10.0']
+        exclude:
+          - os: ubuntu-slim
+            dotnet: net48
     defaults:
       run:
         shell: bash
@@ -38,12 +41,12 @@ jobs:
 
   linux-alpine:
     name: Linux Alpine (.NET ${{ matrix.dotnet }})
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     strategy:
       fail-fast: false
       matrix:
-        dotnet: ['net48','6.0', '8.0', '10.0']
+        dotnet: ['6.0', '8.0', '10.0']
     steps:
       - uses: actions/checkout@v7
       - name: Run tests in Alpine
