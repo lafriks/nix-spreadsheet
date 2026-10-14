@@ -50,11 +50,8 @@ The SixLabors.Fonts dependency is restricted to `[1.0.0,2.0.0)` to exclude
 releases under the Six Labors Split License. Version 1.0.0 uses the
 [Apache 2.0 license](https://github.com/SixLabors/Fonts/blob/v1.0.0/LICENSE).
 
-Version 0.4.0 changes `Font.ToNativeFont()` to return `SixLabors.Fonts.Font`
-instead of `System.Drawing.Font`. Existing callers must rebuild and migrate any
-GDI+ rendering code. The unused `Font.ToNativeWinFont()` conversion helper and
-the System.Drawing.Common dependency have been removed. The portable font carries
-the family, point size, bold and italic style; underline, strikeout and charset remain spreadsheet formatting
+The portable font carries the family, point size, bold and italic style;
+underline, strikeout and charset remain spreadsheet formatting
 properties and are still written to the workbook. Automatic row heights use
 this portable conversion helper on every platform.
 The fallback fonts and their redistribution license come from
@@ -85,6 +82,6 @@ bash .github/scripts/test.sh 10.0
 
 For legacy validation, run `bash .github/scripts/test.sh 6.0`, or on Windows with
 the .NET Framework 4.8 targeting pack, `bash .github/scripts/test.sh net48`.
-The Framework job uses Windows Server 2022 and logs its installed runtime release.
+The Framework job.
 
 See [the test coverage notes](SpreadSheet.Tests/README.md) for the covered scenarios.
