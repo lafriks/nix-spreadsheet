@@ -47,6 +47,10 @@ that font is unavailable. No native graphics packages or system fonts need to be
 installed in Linux containers.
 Font availability can produce different measured heights across platforms.
 
+The SixLabors.Fonts dependency is restricted to `[1.0.0,2.0.0)` to exclude
+releases under the Six Labors Split License. Version 1.0.0 uses the
+[Apache 2.0 license](https://github.com/SixLabors/Fonts/blob/v1.0.0/LICENSE).
+
 Version 0.4.0 changes `Font.ToNativeFont()` to return `SixLabors.Fonts.Font`
 instead of `System.Drawing.Font`. Existing callers must rebuild and migrate any
 GDI+ rendering code. The portable font carries the family, point size, bold and
