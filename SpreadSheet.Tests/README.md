@@ -35,12 +35,12 @@ dotnet test
 ```
 
 The [GitHub Actions workflow](../.github/workflows/tests.yml) runs on pushes to
-`master` and on pull requests, and supports manual runs. Its matrix runs all tests
-on Windows, Ubuntu, and Alpine with .NET 6, 8, and 10, plus .NET Framework 4.8 on
-Windows Server 2022. The Framework job logs the installed runtime release.
-Alpine uses the official
-SDK container, which includes ICU and enables globalization so the tests can use
-their Latvian document locale. No font or graphics packages are installed.
+`master` and on pull requests, and supports manual runs. Its matrix runs the
+cross-platform tests on Windows, Ubuntu, and Alpine with .NET 6, 8, and 10, plus
+.NET Framework 4.8 on Windows Server only. Tests requiring Windows-installed
+fonts run only on Windows. Alpine uses the official SDK container, which includes
+ICU and enables globalization so the tests can use their Latvian document locale.
+No font or graphics packages are installed.
 
 To select a framework without editing the test project, install its SDK and
 run the same script used in CI from the repository root:
@@ -57,11 +57,10 @@ The script overrides the test frameworks during restore, restores the library
 references separately with their .NET Standard 2.0 targets, and builds and runs
 the tests on the selected framework. The resulting TRX reports are uploaded by CI.
 
-All tests run on every platform. Height calculation uses SixLabors.Fonts
-and an embedded Liberation Sans fallback
-for missing fonts. The public font conversion helper returns a portable
-SixLabors.Fonts font on every platform. Layout regressions check
-cell heights for wrapping, sizes and styles.
+Cross-platform height tests run on every platform. Height calculation uses
+SixLabors.Fonts and an embedded Liberation Sans fallback for missing fonts. The
+public font conversion helper returns a portable SixLabors.Fonts font on every
+platform. Layout regressions check cell heights for wrapping, sizes and styles.
 The layout regressions also exercise missing fonts in regular, bold, italic,
 and bold italic styles, font sizes, width-based wrapping, LF and CRLF line
 breaks, empty cell minimum heights, and explicit-height override behavior.
