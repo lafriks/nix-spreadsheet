@@ -19,6 +19,8 @@
 
 using System;
 using System.Drawing;
+using SixLabors.Fonts;
+using FontStyle = SixLabors.Fonts.FontStyle;
 
 namespace Nix.SpreadSheet
 {
@@ -27,6 +29,8 @@ namespace Nix.SpreadSheet
     /// </summary>
     public class Font : IEquatable<Font>, ICloneable
     {
+        private static readonly Lazy<FontFamily> fallbackFont = new Lazy<FontFamily>(LoadFallbackFont);
+
         /// <summary>
         /// Normal weight constant.
         /// </summary>
@@ -259,7 +263,29 @@ namespace Nix.SpreadSheet
         /// </summary>
         public SixLabors.Fonts.Font ToNativeFont()
         {
-            return TextMeasurement.CreateFont(this);
+            FontFamily family;
+            if (string.IsNullOrEmpty(this.Name) || !SystemFonts.TryGet(this.Name, out family))
+                family = fallbackFont.Value;
+
+            FontStyle style = FontStyle.Regular;
+            if (this.Italic)
+                style |= FontStyle.Italic;
+            if (this.Weight >= BoldWeight)
+                style |= FontStyle.Bold;
+
+            return family.CreateFont((float)this.Size / 20, style);
+        }
+
+        private static FontFamily LoadFallbackFont()
+        {
+            var collection = new FontCollection();
+            var assembly = typeof(Font).Assembly;
+            foreach (string style in new[] { "Regular", "Bold", "Italic", "BoldItalic" })
+            {
+                using (var stream = assembly.GetManifestResourceStream("Nix.SpreadSheet.Fonts.LiberationSans-" + style + ".ttf"))
+                    collection.Add(stream);
+            }
+            return collection.Get("Liberation Sans");
         }
 
         #endregion
