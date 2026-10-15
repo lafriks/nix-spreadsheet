@@ -89,6 +89,40 @@ namespace SpreadSheet.Tests
         }
 
         [Theory]
+        [InlineData("\n", true, false, 204)]
+        [InlineData("\r\n", true, false, 204)]
+        [InlineData("\n", true, true, 204)]
+        [InlineData("\r\n", true, true, 204)]
+        [InlineData("\n", false, false, 153)]
+        [InlineData("\r\n", false, false, 153)]
+        [InlineData("\n", false, true, 153)]
+        [InlineData("\r\n", false, true, 153)]
+        public void AutoSizeRowHeight_MeasuresExampleTextWithAndWithoutWrapping(string newline, bool wrap, bool merged, int expectedHeight)
+        {
+            var document = CreateDocument();
+            var sheet = document.AddSheet();
+            if (merged)
+            {
+                sheet.Columns[1].Width = 35;
+                sheet.Columns[2].Width = 35;
+                sheet.GetCellRange("B4:C4").Merge();
+            }
+            var cell = sheet["B4"];
+            cell.Value = "TestXX sdsd sd sd sd sdsd sdsd sdsddd" + newline
+                + "sdfsdf sddf gdffdgdfgfdgdfgdfgfdgfdgg dfgdfg gdfgdfgf sdfsdfdsf sdf";
+            cell.Formatting.WrapTextAtRightBorder = wrap;
+
+            sheet.AutoSizeRowHeight();
+
+            Assert.Equal((ushort)expectedHeight, sheet[3].Height);
+            using var workbook = SaveAndRead(document, $"{(newline == "\n" ? "lf" : "crlf")}_wrap-{wrap}_merged-{merged}");
+            var result = workbook.GetSheetAt(0);
+            Assert.Equal(expectedHeight * 0.75f, result.GetRow(3).HeightInPoints);
+            Assert.Equal(cell.Value, Cell(result, 3, 1).StringCellValue);
+            Assert.Equal(wrap, Cell(result, 3, 1).CellStyle.WrapText);
+        }
+
+        [Theory]
         [InlineData("\n")]
         [InlineData("\r\n")]
         public void CalculateCellHeight_FitsExplicitLineBreaks(string newline)

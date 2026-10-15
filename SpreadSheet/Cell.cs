@@ -208,20 +208,8 @@ namespace Nix.SpreadSheet
                 wrap = (this.formatting != null ? this.formatting.WrapTextAtRightBorder : false);
             }
 
-            // TODO: Bring back word wrap measurment
-            //TextFormatFlags tff = TextFormatFlags.Default
-            //                      | TextFormatFlags.ExpandTabs
-            //                      | TextFormatFlags.NoPrefix
-            //                      | TextFormatFlags.TextBoxControl
-            //                      | TextFormatFlags.NoPadding
-            //                      | TextFormatFlags.NoFullWidthCharacterBreak;
-            //if (wrap)
-            //    tff |= TextFormatFlags.WordBreak;
-
-
-
             Font font = (this.HasFormatting ? this.Formatting.Font : Style.Default.Font);
-            return (ushort)Math.Round(TextMeasurement.MeasureHeight(val, font, width + 6));
+            return (ushort)Math.Round(TextMeasurement.MeasureHeight(val, font, wrap ? width : width + 6, breakWords: wrap));
 
         }
         #endregion

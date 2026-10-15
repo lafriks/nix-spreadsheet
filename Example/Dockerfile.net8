@@ -1,0 +1,38 @@
+# syntax=docker/dockerfile:1.20
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
+
+WORKDIR /src
+
+COPY --parents Example/ SpreadSheet/ CompoundFile/ ./
+
+RUN dotnet restore Example/Example.csproj -r linux-musl-x64 -p:TargetFramework=net8.0 \
+    && dotnet restore SpreadSheet/SpreadSheet.csproj -r linux-musl-x64
+
+RUN dotnet publish Example/Example.csproj -c Release -o /app -r linux-musl-x64 \
+    -p:TargetFramework=net8.0 --self-contained false --no-restore
+
+FROM mcr.microsoft.com/dotnet/runtime:8.0-alpine AS final
+
+ARG TZ='Europe/Riga'
+
+ENV DEFAULT_TZ=${TZ} \
+    DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
+    LOGGING__CONSOLE__DISABLECOLORS=true \
+    LC_ALL=lv_LV.UTF-8 \
+    LANG=lv_LV.UTF-8
+
+RUN apk add --no-cache --virtual .build-deps tzdata \
+  && apk add --no-cache ca-certificates icu-libs icu-data-full \
+  && cp /usr/share/zoneinfo/${DEFAULT_TZ} /etc/localtime \
+  && apk del .build-deps
+
+RUN apk upgrade libssl3 libcrypto3
+
+WORKDIR /app
+RUN chown app:app /app
+COPY --from=build --chown=app:app /app ./
+
+USER app
+
+ENTRYPOINT ["dotnet", "Example.dll"]

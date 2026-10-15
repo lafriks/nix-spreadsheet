@@ -12,13 +12,14 @@ namespace Nix.SpreadSheet
         private const int PixelsPerInch = 96;
         private const int PointsPerInch = 72;
 
-        internal static float MeasureHeight(string text, Font font, int width)
+        internal static float MeasureHeight(string text, Font font, int width, bool breakWords = false)
         {
             var nativeFont = font.ToNativeFont();
             var options = new TextOptions(nativeFont)
             {
                 Dpi = PixelsPerInch,
-                WrappingLength = width
+                WrappingLength = width,
+                WordBreaking = breakWords ? WordBreaking.BreakWord : WordBreaking.Standard
             };
 
             // MeasureAdvance heights are about 2 px per line shorter than Excel's line pitch, so derive them from the line count.
