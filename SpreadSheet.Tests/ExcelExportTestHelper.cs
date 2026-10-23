@@ -1,23 +1,39 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using Nix.SpreadSheet;
 using Nix.SpreadSheet.Provider;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
+using SkiaSharp;
 using Xunit;
+using Xunit.Sdk;
 
 namespace SpreadSheet.Tests
 {
-    // Calibri and Times New Roman ship with Windows only; other platforms would silently use the Liberation Sans fallback.
-    public sealed class WindowsInstalledFontTheoryAttribute : TheoryAttribute
+    public sealed class InstalledFontDataAttribute : DataAttribute
     {
-        public WindowsInstalledFontTheoryAttribute()
+        private readonly object[] data;
+
+        public InstalledFontDataAttribute(string name, params object[] values)
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Skip = "Requires fonts installed with Windows.";
+            using var style = new SKFontStyle(SKFontStyleWeight.Normal, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright);
+            using var typeface = SKFontManager.Default.MatchFamily(name, style);
+            if (typeface == null)
+                Skip = $"SkiaSharp could not find '{name}' or a system substitute.";
+
+            data = new object[values.Length + 2];
+            data[0] = name;
+            data[1] = typeface?.FamilyName!;
+            Array.Copy(values, 0, data, 2, values.Length);
+        }
+
+        public override IEnumerable<object[]> GetData(MethodInfo testMethod)
+        {
+            yield return data;
         }
     }
 

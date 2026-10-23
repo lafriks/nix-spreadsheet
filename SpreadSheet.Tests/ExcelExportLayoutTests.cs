@@ -169,11 +169,11 @@ namespace SpreadSheet.Tests
             Assert.Equal(sheet[0].Height!.Value * 0.75f, workbook.GetSheetAt(0).GetRow(0).HeightInPoints);
         }
 
-        [WindowsInstalledFontTheory]
-        [InlineData("Arial", 200, 17)]
-        [InlineData("Times New Roman", 200, 17)]
-        [InlineData("Calibri", 640 , 54)]
-        public void AutoSizeRowHeight_UsesExcelLinePitchForInstalledFonts(string name, int size, int linePitch)
+        [Theory]
+        [InstalledFontData("Arial", 200, 17)]
+        [InstalledFontData("Times New Roman", 200, 17)]
+        [InstalledFontData("Calibri", 640, 54)]
+        public void AutoSizeRowHeight_UsesExcelLinePitchForInstalledFonts(string name, string family, int size, int linePitch)
         {
             var document = CreateDocument();
             var sheet = document.AddSheet();
@@ -187,7 +187,7 @@ namespace SpreadSheet.Tests
                 font.Name = name;
                 font.Size = (ushort)size;
                 using var nativeFont = font.ToNativeFont();
-                Assert.Equal(name, nativeFont.Typeface.FamilyName);
+                Assert.Equal(family, nativeFont.Typeface.FamilyName);
             }
 
             sheet.AutoSizeRowHeight();
@@ -207,13 +207,13 @@ namespace SpreadSheet.Tests
             AssertLinePitchScalesWithSizeAndWeight(name, family);
         }
 
-        [WindowsInstalledFontTheory]
-        [InlineData("Arial")]
-        [InlineData("Times New Roman")]
-        [InlineData("Calibri")]
-        public void AutoSizeRowHeight_ScalesLinearlyWithSizeAndWeightForInstalledFonts(string name)
+        [Theory]
+        [InstalledFontData("Arial")]
+        [InstalledFontData("Times New Roman")]
+        [InstalledFontData("Calibri")]
+        public void AutoSizeRowHeight_ScalesLinearlyWithSizeAndWeightForInstalledFonts(string name, string family)
         {
-            AssertLinePitchScalesWithSizeAndWeight(name, name);
+            AssertLinePitchScalesWithSizeAndWeight(name, family);
         }
 
         [Theory]
