@@ -1,5 +1,9 @@
 # syntax=docker/dockerfile:1.20
 
+FROM alpine:3.22 AS fonts
+
+RUN apk add --no-cache font-liberation font-carlito
+
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2-alpine AS build
 
 WORKDIR /src
@@ -22,7 +26,10 @@ ENV DEFAULT_TZ=${TZ} \
     LC_ALL=lv_LV.UTF-8 \
     LANG=lv_LV.UTF-8
 
-RUN apk add --no-cache tzdata ca-certificates icu-libs \
+COPY --from=fonts /usr/share/fonts/ /usr/share/fonts/
+
+RUN apk add --no-cache tzdata ca-certificates icu-libs fontconfig \
+    && fc-cache -f \
     && cp /usr/share/zoneinfo/${DEFAULT_TZ} /etc/localtime \
     && addgroup -S app \
     && adduser -S -G app app \

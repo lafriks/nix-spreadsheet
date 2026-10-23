@@ -23,7 +23,8 @@ ENV DEFAULT_TZ=${TZ} \
     LANG=lv_LV.UTF-8
 
 RUN apk add --no-cache --virtual .build-deps tzdata \
-  && apk add --no-cache ca-certificates icu-libs icu-data-full \
+  && apk add --no-cache ca-certificates icu-libs icu-data-full fontconfig font-liberation font-carlito \
+  && fc-cache -f \
   && cp /usr/share/zoneinfo/${DEFAULT_TZ} /etc/localtime \
   && apk del .build-deps
 

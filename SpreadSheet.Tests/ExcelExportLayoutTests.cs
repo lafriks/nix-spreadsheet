@@ -56,11 +56,11 @@ namespace SpreadSheet.Tests
             font.Weight = (ushort)(bold ? Nix.SpreadSheet.Font.BoldWeight : Nix.SpreadSheet.Font.NormalWeight);
             font.Italic = italic;
             font.Size = 200;
-            var nativeFont = font.ToNativeFont();
-            Assert.Equal("Liberation Sans", nativeFont.Family.Name);
+            using var nativeFont = font.ToNativeFont();
+            Assert.Equal("Liberation Sans", nativeFont.Typeface.FamilyName);
             Assert.Equal(10, nativeFont.Size);
-            Assert.Equal(bold, nativeFont.IsBold);
-            Assert.Equal(italic, nativeFont.IsItalic);
+            Assert.Equal(bold, nativeFont.Typeface.IsBold);
+            Assert.Equal(italic, nativeFont.Typeface.IsItalic);
             ushort smallHeight = sheet[0, 0].CalculateCellHeight();
             font.Size = 400;
             Assert.True(smallHeight > 0);
@@ -186,7 +186,8 @@ namespace SpreadSheet.Tests
                 var font = cell.Formatting.Font;
                 font.Name = name;
                 font.Size = (ushort)size;
-                Assert.Equal(name, font.ToNativeFont().Family.Name);
+                using var nativeFont = font.ToNativeFont();
+                Assert.Equal(name, nativeFont.Typeface.FamilyName);
             }
 
             sheet.AutoSizeRowHeight();
@@ -275,7 +276,8 @@ namespace SpreadSheet.Tests
                         font.Name = name;
                         font.Size = (ushort)size;
                         font.Weight = (ushort)(bold ? Nix.SpreadSheet.Font.BoldWeight : Nix.SpreadSheet.Font.NormalWeight);
-                        Assert.Equal(expectedFamily, font.ToNativeFont().Family.Name);
+                        using var nativeFont = font.ToNativeFont();
+                        Assert.Equal(expectedFamily, nativeFont.Typeface.FamilyName);
                     }
                     sheet.AutoSizeRowHeight();
 

@@ -58,9 +58,11 @@ references separately with their .NET Standard 2.0 targets, and builds and runs
 the tests on the selected framework. The resulting TRX reports are uploaded by CI.
 
 Cross-platform height tests run on every platform. Height calculation uses
-SixLabors.Fonts and an embedded Liberation Sans fallback for missing fonts. The
-public font conversion helper returns a portable SixLabors.Fonts font on every
-platform. Layout regressions check cell heights for wrapping, sizes and styles.
+SkiaSharp with HarfBuzz and an embedded Liberation Sans fallback for missing
+fonts. Linux runs require Fontconfig and the Linux native asset packages;
+the CI images install Liberation and Carlito font substitutes. The public font
+conversion helper returns an `SKFont` in points, which callers must dispose.
+Layout regressions check cell heights for wrapping, sizes and styles.
 The layout regressions also exercise missing fonts in regular, bold, italic,
 and bold italic styles, font sizes, width-based wrapping, LF and CRLF line
 breaks, empty cell minimum heights, and explicit-height override behavior.

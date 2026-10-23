@@ -19,8 +19,7 @@
 
 using System;
 using System.Drawing;
-using SixLabors.Fonts;
-using FontStyle = SixLabors.Fonts.FontStyle;
+using SkiaSharp;
 
 namespace Nix.SpreadSheet
 {
@@ -29,7 +28,7 @@ namespace Nix.SpreadSheet
     /// </summary>
     public class Font : IEquatable<Font>, ICloneable
     {
-        private static readonly Lazy<FontFamily> fallbackFont = new Lazy<FontFamily>(LoadFallbackFont);
+        private static readonly Lazy<SKTypeface[]> fallbackFonts = new Lazy<SKTypeface[]>(LoadFallbackFonts);
 
         /// <summary>
         /// Normal weight constant.
@@ -259,33 +258,28 @@ namespace Nix.SpreadSheet
 
         #region C# native font object
         /// <summary>
-        /// Creates a portable font using an installed or fallback font family.
+        /// Creates a font in points using the system font manager or an embedded fallback. The caller must dispose it.
         /// </summary>
-        public SixLabors.Fonts.Font ToNativeFont()
+        public SKFont ToNativeFont()
         {
-            FontFamily family;
-            if (string.IsNullOrEmpty(this.Name) || !SystemFonts.TryGet(this.Name, out family))
-                family = fallbackFont.Value;
-
-            FontStyle style = FontStyle.Regular;
-            if (this.Italic)
-                style |= FontStyle.Italic;
-            if (this.Weight >= BoldWeight)
-                style |= FontStyle.Bold;
-
-            return family.CreateFont((float)this.Size / 20, style);
+            bool bold = this.Weight >= BoldWeight;
+            using (var style = new SKFontStyle(bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal,
+                SKFontStyleWidth.Normal, this.Italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright))
+            using (var typeface = string.IsNullOrEmpty(this.Name) ? null : SKFontManager.Default.MatchFamily(this.Name, style))
+                return new SKFont(typeface ?? fallbackFonts.Value[(bold ? 1 : 0) + (this.Italic ? 2 : 0)], (float)this.Size / 20);
         }
 
-        private static FontFamily LoadFallbackFont()
+        private static SKTypeface[] LoadFallbackFonts()
         {
-            var collection = new FontCollection();
+            var typefaces = new SKTypeface[4];
             var assembly = typeof(Font).Assembly;
-            foreach (string style in new[] { "Regular", "Bold", "Italic", "BoldItalic" })
+            var styles = new[] { "Regular", "Bold", "Italic", "BoldItalic" };
+            for (int i = 0; i < styles.Length; i++)
             {
-                using (var stream = assembly.GetManifestResourceStream("Nix.SpreadSheet.Fonts.LiberationSans-" + style + ".ttf"))
-                    collection.Add(stream);
+                using (var stream = assembly.GetManifestResourceStream("Nix.SpreadSheet.Fonts.LiberationSans-" + styles[i] + ".ttf"))
+                    typefaces[i] = SKTypeface.FromStream(stream);
             }
-            return collection.Get("Liberation Sans");
+            return typefaces;
         }
 
         #endregion

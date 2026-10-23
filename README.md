@@ -35,21 +35,36 @@ s.AutoSizeRowHeight();
 doc.Save(@"test.xls", new Nix.SpreadSheet.Provider.XlsFileFormatProvider());
 ```
 
-All platforms measure text with
-the managed SixLabors.Fonts library, using the requested installed font or an
-embedded Liberation Sans fallback when
-that font is unavailable. No native graphics packages or system fonts need to be
-installed in Linux containers.
-Font availability can produce different measured heights across platforms.
+## Deployment on Linux
 
-The SixLabors.Fonts dependency is restricted to `[1.0.0,2.0.0)` to exclude
-releases under the Six Labors Split License. Version 1.0.0 uses the
-[Apache 2.0 license](https://github.com/SixLabors/Fonts/blob/v1.0.0/LICENSE).
+All platforms measure text with SkiaSharp and HarfBuzz. Font lookup uses the
+system font manager, including Fontconfig aliases on Linux. An embedded
+Liberation Sans font supplies regular, bold, italic and bold italic styles when
+the requested family cannot be resolved. Font availability can produce different
+measured heights across platforms. SkiaSharp uses the
+[MIT license](https://github.com/mono/SkiaSharp/blob/main/LICENSE.md).
 
-The portable font carries the family, point size, bold and italic style;
-underline, strikeout and charset remain spreadsheet formatting
-properties and are still written to the workbook. Automatic row heights use
-this portable conversion helper on every platform.
+Linux applications must reference `SkiaSharp.NativeAssets.Linux` 4.153.1 and
+`HarfBuzzSharp.NativeAssets.Linux` 14.2.1.301 in the executable project, and install
+Fontconfig in the runtime image. Use `linux-musl-x64` or `linux-musl-arm64` when
+publishing for Alpine. The `SkiaSharp.NativeAssets.Linux.NoDependencies` package
+does not support Fontconfig substitution.
+
+For Alpine, install the font dependencies with:
+
+```bash
+apk add --no-cache fontconfig ttf-liberation font-carlito
+fc-cache -f
+```
+
+These packages provide Liberation Sans for Arial, Liberation Serif for Times New
+Roman, and Carlito for Calibri. The example Dockerfiles install these substitutes.
+The workbook retains the originally requested font names.
+
+`Font.ToNativeFont()` returns an `SKFont` with its size in points; callers must
+dispose it. Automatic row heights convert this size to pixels at 96 DPI.
+Underline, strikeout and charset remain spreadsheet formatting properties and
+are written to the workbook.
 The fallback fonts and their redistribution license come from
 [Liberation Fonts 2.1.5](https://github.com/liberationfonts/liberation-fonts/releases/tag/2.1.5).
 
