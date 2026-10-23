@@ -66,6 +66,104 @@ namespace Example
             big.GetCellRange(0, 0, 1, 3).Merge();*/
             doc.Save(@"test.xls", new Nix.SpreadSheet.Provider.XlsFileFormatProvider());
             //doc.Save(@"test.ods", new Nix.SpreadSheet.Provider.OpenDocumentFileFormatProvider());
+
+            CreateFontSizeExample();
+            CreateAutoSizeRowHeightExample();
+        }
+
+        private static void CreateFontSizeExample()
+        {
+            SpreadSheetDocument doc = new SpreadSheetDocument();
+            Sheet sheet = doc.AddSheet("Font sizes");
+            sheet.Columns[0].Width = 150;
+            sheet.Columns[1].Width = 100;
+            sheet.Columns[2].Width = 300;
+            sheet[0, 0].Value = "Font";
+            sheet[0, 1].Value = "Size (pt)";
+            sheet[0, 2].Value = "Sample text";
+
+            Sheet longTextSheet = doc.AddSheet("Long wrapped text");
+            longTextSheet.Columns[0].Width = 150;
+            longTextSheet.Columns[1].Width = 100;
+            longTextSheet.Columns[2].Width = 300;
+            longTextSheet[0, 0].Value = "Font";
+            longTextSheet[0, 1].Value = "Size (pt)";
+            longTextSheet[0, 2].Value = "Very long wrapped text";
+            string longText = "Šis ir ļoti garš teksta piemērs automātiskas rindu augstuma aprēķināšanas pārbaudei. "
+                + "Vienā šūnā ir vairāki teikumi ar latviešu burtiem: āčēģīķļņšūž. "
+                + "Tekstam jāaplaužas pie kolonnas labās malas un pilnībā jāietilpst rindā neatkarīgi no fonta un tā izmēra. "
+                + "Šeit ir arī ļoti garš vārds bez atstarpēm: ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789. "
+                + "Pēdējam teikumam jābūt redzamam bez manuālas rindas augstuma pielāgošanas.";
+
+            string[] fontNames = { "Times New Roman", "Calibri" };
+            ushort[] fontSizes = { 100, 200, 280, 360 };
+            int row = 1;
+            foreach (string fontName in fontNames)
+            {
+                foreach (ushort fontSize in fontSizes)
+                {
+                    sheet[row, 0].Value = fontName;
+                    sheet[row, 1].Value = fontSize / 20;
+                    sheet[row, 2].Value = "Latviešu teksts: āčēģīķļņšūž\nOtrā rinda ar lielāku fontu";
+                    Nix.SpreadSheet.Font font = new Nix.SpreadSheet.Font
+                    {
+                        Name = fontName,
+                        Size = fontSize
+                    };
+                    sheet.GetCellRange(row, 0, row, 2).SetFont(font);
+                    sheet.GetCellRange(row, 0, row, 2).DrawBorder(Color.Gray, BorderLineStyle.Thin);
+                    sheet[row, 2].Formatting.WrapTextAtRightBorder = true;
+
+                    longTextSheet[row, 0].Value = fontName;
+                    longTextSheet[row, 1].Value = fontSize / 20;
+                    longTextSheet[row, 2].Value = longText;
+                    longTextSheet.GetCellRange(row, 0, row, 2).SetFont(font);
+                    longTextSheet.GetCellRange(row, 0, row, 2).DrawBorder(Color.Gray, BorderLineStyle.Thin);
+                    longTextSheet[row, 2].Formatting.WrapTextAtRightBorder = true;
+                    row++;
+                }
+            }
+
+            sheet[1].Height = 48;
+            sheet.AutoSizeRowHeight();
+            longTextSheet.AutoSizeRowHeight();
+            doc.Save(@"test-font-sizes.xls", new Nix.SpreadSheet.Provider.XlsFileFormatProvider());
+        }
+
+        private static void CreateAutoSizeRowHeightExample()
+        {
+            SpreadSheetDocument doc = new SpreadSheetDocument();
+            Sheet sheet = doc.AddSheet("Row heights");
+            sheet.Columns[0].Width = 180;
+            sheet.Columns[1].Width = 300;
+
+            sheet[0, 0].Value = "Times New Roman, 10 pt";
+            sheet[0, 1].Value = "This row keeps its explicitly assigned height.\nIt has more text than the default row height needs.";
+            sheet.GetCellRange("A1:B1").SetFont(new Nix.SpreadSheet.Font { Name = "Times New Roman", Size = 200 });
+            sheet.GetCellRange("A1:B1").DrawBorder(Color.Gray, BorderLineStyle.Thin);
+            sheet[0, 1].Formatting.WrapTextAtRightBorder = true;
+            sheet[0].Height = 60;
+
+            sheet[1, 0].Value = "Calibri, 14 pt";
+            sheet[1, 1].Value = "Automatic height fits this multiline text.\nThe font is applied to the whole cell range.";
+            sheet.GetCellRange("A2:B2").SetFont(new Nix.SpreadSheet.Font { Name = "Calibri", Size = 280 });
+            sheet.GetCellRange("A2:B2").DrawBorder(Color.Gray, BorderLineStyle.Thin);
+            sheet[1, 1].Formatting.WrapTextAtRightBorder = true;
+
+            sheet[2, 0].Value = "Times New Roman, 18 pt";
+            sheet[2, 1].Value = "A larger font increases the automatic row height.\nExplicit heights on other rows are preserved.";
+            sheet.GetCellRange("A3:B3").SetFont(new Nix.SpreadSheet.Font { Name = "Times New Roman", Size = 360 });
+            sheet.GetCellRange("A3:B3").DrawBorder(Color.Gray, BorderLineStyle.Thin);
+            sheet[2, 1].Formatting.WrapTextAtRightBorder = true;
+
+            sheet[3, 0].Value = "Explicit height";
+            sheet[3, 1].Value = "This row is also left at its specified height.";
+            sheet.GetCellRange("A4:B4").SetFont(new Nix.SpreadSheet.Font { Name = "Calibri", Size = 240 });
+            sheet.GetCellRange("A4:B4").DrawBorder(Color.Gray, BorderLineStyle.Thin);
+            sheet[3].Height = 36;
+
+            sheet.AutoSizeRowHeight();
+            doc.Save(@"test-auto-size-row-height.xls", new Nix.SpreadSheet.Provider.XlsFileFormatProvider());
         }
 
         public static DataTable BigTestData()
