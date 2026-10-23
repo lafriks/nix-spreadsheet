@@ -263,10 +263,19 @@ namespace Nix.SpreadSheet
         public SKFont ToNativeFont()
         {
             bool bold = this.Weight >= BoldWeight;
-            using (var style = new SKFontStyle(bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal,
-                SKFontStyleWidth.Normal, this.Italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright))
+            var weight = bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
+            var slant = this.Italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
+
+            // Size is stored in twips (1/20 pt).
+            float sizeInPoints = this.Size / 20f;
+
+            using (var style = new SKFontStyle(weight, SKFontStyleWidth.Normal, slant))
             using (var typeface = string.IsNullOrEmpty(this.Name) ? null : SKFontManager.Default.MatchFamily(this.Name, style))
-                return new SKFont(typeface ?? fallbackFonts.Value[(bold ? 1 : 0) + (this.Italic ? 2 : 0)], (float)this.Size / 20);
+            {
+                var fallback = fallbackFonts.Value[(bold ? 1 : 0) + (this.Italic ? 2 : 0)];
+
+                return new SKFont(typeface ?? fallback, sizeInPoints);
+            }
         }
 
         private static SKTypeface[] LoadFallbackFonts()
