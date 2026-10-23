@@ -19,6 +19,7 @@
 
 using System;
 using System.Drawing;
+using SkiaSharp;
 
 namespace Nix.SpreadSheet
 {
@@ -27,6 +28,8 @@ namespace Nix.SpreadSheet
     /// </summary>
     public class Font : IEquatable<Font>, ICloneable
     {
+        private static readonly Lazy<SKTypeface[]> fallbackFonts = new Lazy<SKTypeface[]>(LoadFallbackFonts);
+
         /// <summary>
         /// Normal weight constant.
         /// </summary>
@@ -254,78 +257,40 @@ namespace Nix.SpreadSheet
         #endregion
 
         #region C# native font object
-        public System.Drawing.Font ToNativeFont()
+        /// <summary>
+        /// Creates a font in points using the system font manager or an embedded fallback. The caller must dispose it.
+        /// </summary>
+        public SKFont ToNativeFont()
         {
-            FontStyle fs = FontStyle.Regular;
-            if (this.Italic)
-                fs |= FontStyle.Italic;
-            if (this.Weight >= BoldWeight)
-                fs |= FontStyle.Bold;
-            if (this.Strikeout)
-                fs |= FontStyle.Strikeout;
-            if (this.UnderlineStyle != SpreadSheet.UnderlineStyle.None)
-                fs |= FontStyle.Underline;
-            byte gdiCharset;
-            switch (this.CharSet)
+            bool bold = this.Weight >= BoldWeight;
+            var weight = bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
+            var slant = this.Italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
+
+            // Size is stored in twips (1/20 pt).
+            float sizeInPoints = this.Size / 20f;
+
+            using (var style = new SKFontStyle(weight, SKFontStyleWidth.Normal, slant))
+            using (var typeface = string.IsNullOrEmpty(this.Name) ? null : SKFontManager.Default.MatchFamily(this.Name, style))
             {
-                default:
-                case SpreadSheet.CharSet.Ansi:
-                    gdiCharset = 0;
-                    break;
-                case SpreadSheet.CharSet.Arabic:
-                    gdiCharset = 178;
-                    break;
-                case SpreadSheet.CharSet.Baltic:
-                    gdiCharset = 186;
-                    break;
-                case SpreadSheet.CharSet.ChineseBig5:
-                    gdiCharset = 136;
-                    break;
-                case SpreadSheet.CharSet.Default:
-                    gdiCharset = 1;
-                    break;
-                case SpreadSheet.CharSet.EastEurope:
-                    gdiCharset = 238;
-                    break;
-                case SpreadSheet.CharSet.GB2312:
-                    gdiCharset = 134;
-                    break;
-                case SpreadSheet.CharSet.Greek:
-                    gdiCharset = 161;
-                    break;
-                case SpreadSheet.CharSet.Hangeul:
-                    gdiCharset = 129;
-                    break;
-                case SpreadSheet.CharSet.Hebrew:
-                    gdiCharset = 177;
-                    break;
-                case SpreadSheet.CharSet.Johab:
-                    gdiCharset = 130;
-                    break;
-                case SpreadSheet.CharSet.MAC:
-                    gdiCharset = 77;
-                    break;
-                case SpreadSheet.CharSet.OEM:
-                    gdiCharset = 255;
-                    break;
-                case SpreadSheet.CharSet.Russian:
-                    gdiCharset = 204;
-                    break;
-                case SpreadSheet.CharSet.Shiftjis:
-                    gdiCharset = 128;
-                    break;
-                case SpreadSheet.CharSet.Symbol:
-                    gdiCharset = 2;
-                    break;
-                case SpreadSheet.CharSet.Thai:
-                    gdiCharset = 222;
-                    break;
-                case SpreadSheet.CharSet.Turkish:
-                    gdiCharset = 162;
-                    break;
+                var fallback = fallbackFonts.Value[(bold ? 1 : 0) + (this.Italic ? 2 : 0)];
+
+                return new SKFont(typeface ?? fallback, sizeInPoints);
             }
-            return new System.Drawing.Font(this.Name, (float)this.Size / 20, fs, GraphicsUnit.Point, gdiCharset);
         }
+
+        private static SKTypeface[] LoadFallbackFonts()
+        {
+            var typefaces = new SKTypeface[4];
+            var assembly = typeof(Font).Assembly;
+            var styles = new[] { "Regular", "Bold", "Italic", "BoldItalic" };
+            for (int i = 0; i < styles.Length; i++)
+            {
+                using (var stream = assembly.GetManifestResourceStream("Nix.SpreadSheet.Fonts.LiberationSans-" + styles[i] + ".ttf"))
+                    typefaces[i] = SKTypeface.FromStream(stream);
+            }
+            return typefaces;
+        }
+
         #endregion
     }
 

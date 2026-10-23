@@ -1,0 +1,68 @@
+name: Tests
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  desktop:
+    name: ${{ matrix.os }} (.NET ${{ matrix.dotnet }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-slim]
+        dotnet: ['net48','6.0', '8.0', '10.0']
+        exclude:
+          - os: ubuntu-slim
+            dotnet: net48
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: ${{ contains(fromJSON('["net48"]'), matrix.dotnet) && '10.x' || format('{0}.x', matrix.dotnet) }}
+      - name: Install Linux font dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libfontconfig1 fonts-liberation fonts-crosextra-carlito
+      - name: Run tests
+        run: bash .github/scripts/test.sh ${{ matrix.dotnet }}
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-${{ matrix.os }}-net${{ matrix.dotnet }}
+          path: SpreadSheet.Tests/TestResults/*.trx
+
+  linux-alpine:
+    name: Linux Alpine (.NET ${{ matrix.dotnet }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        dotnet: ['6.0', '8.0', '10.0']
+    steps:
+      - uses: actions/checkout@v7
+      - name: Run tests in Alpine
+        shell: bash
+        run: |
+          docker run --rm \
+            --volume "$PWD:/src" \
+            --workdir /src \
+            mcr.microsoft.com/dotnet/sdk:${{ matrix.dotnet }}-alpine \
+            sh -c 'apk add --no-cache fontconfig ttf-liberation font-carlito && sh .github/scripts/test.sh ${{ matrix.dotnet }}'
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-alpine-net${{ matrix.dotnet }}
+          path: SpreadSheet.Tests/TestResults/*.trx

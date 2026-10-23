@@ -9,4 +9,9 @@
     <ProjectReference Include="..\SpreadSheet\SpreadSheet.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.153.1" />
+    <PackageReference Include="HarfBuzzSharp.NativeAssets.Linux" Version="14.2.1.301" />
+  </ItemGroup>
+
 </Project>
