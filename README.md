@@ -88,7 +88,7 @@ Cross-platform tests, including automatic row height measurements, run on all
 configured platforms. Tests requiring Windows-installed fonts run only on
 Windows.
 
-The [GitHub Actions workflow](.github/workflows/tests.yml) runs the tests on
+The [GitHub Actions workflow](https://github.com/lafriks/nix-spreadsheet/blob/master/.github/workflows/tests.yml) runs the tests on
 Windows, Ubuntu, and Linux Alpine with .NET 6, 8, and 10, plus .NET Framework 4.8
 on Windows, for pushes to `master` and pull requests. Tests requiring
 Windows-installed fonts are skipped on other platforms. The workflow can also be
@@ -103,10 +103,10 @@ bash .github/scripts/test.sh 10.0
 For legacy validation, run `bash .github/scripts/test.sh 6.0`, or on Windows with
 the .NET Framework 4.8 targeting pack, `bash .github/scripts/test.sh net48`.
 
-See [the test coverage notes](SpreadSheet.Tests/README.md) for the covered scenarios.
+See [the test coverage notes](https://github.com/lafriks/nix-spreadsheet/blob/master/SpreadSheet.Tests/README.md) for the covered scenarios.
 
 ## License
 
 Nix.SpreadSheet and Nix.CompoundFile are licensed under the
-[GNU Lesser General Public License, version 2.1](LICENSE) or (at your option)
-any later version. See [LICENSE](LICENSE) for the full text.
+[GNU Lesser General Public License, version 2.1](https://github.com/lafriks/nix-spreadsheet/blob/master/LICENSE) or (at your option)
+any later version. See [LICENSE](https://github.com/lafriks/nix-spreadsheet/blob/master/LICENSE) for the full text.

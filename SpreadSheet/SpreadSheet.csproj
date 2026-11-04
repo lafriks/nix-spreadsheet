@@ -10,12 +10,17 @@
     <PackageProjectUrl>https://github.com/lafriks/nix-spreadsheet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/lafriks/nix-spreadsheet</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <ProjectGuid>{F552A71A-D3C4-4DEE-9807-650B5BA28AFC}</ProjectGuid>
     <AssemblyName>Nix.SpreadSheet</AssemblyName>
     <RootNamespace>Nix.SpreadSheet</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CompoundFile\CompoundFile.csproj" />
