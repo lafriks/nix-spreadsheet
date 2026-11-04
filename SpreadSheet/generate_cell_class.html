@@ -62,7 +62,7 @@ function generateClass(name, description, parentClass, groups)
 	// Header
 	var gen = "/*\n" +
 	          " * Library for generating spreadsheet documents.\n" +
-	          " * Copyright (C) 2008, Lauris Bukšis-Haberkorns <lauris@nix.lv>\n" +
+	          " * Copyright (C) 2008, Lauris Bukšis <lauris@nix.lv>\n" +
 	          " *\n" +
 	          " * This library is free software; you can redistribute it and/or\n" +
 	          " * modify it under the terms of the GNU Lesser General Public\n" +
@@ -82,7 +82,7 @@ function generateClass(name, description, parentClass, groups)
 	gen += "// WARNING! This class is generated do not edit!\n\n";
 
 	var eqals = "";
-	
+
 	// Usings and namespace
 	gen += "using System;\n" +
 	       "using System.Drawing;\n\n" +
@@ -183,7 +183,7 @@ function generateClass(name, description, parentClass, groups)
 		       "        {\n" +
 		       "            return ! (" + eqals + ");\n" +
 		       "        }\n";
-	
+
 	gen += "    }\n";
 	gen += "}\n";
 	return gen;

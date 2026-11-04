@@ -1,6 +1,6 @@
 ﻿/*
  * Library for generating spreadsheet documents.
- * Copyright (C) 2008, Lauris Bukšis-Haberkorns <lauris@nix.lv>
+ * Copyright (C) 2008, Lauris Bukšis <lauris@nix.lv>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -120,4 +120,3 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF.BIFF5
         }
     }
 }
-

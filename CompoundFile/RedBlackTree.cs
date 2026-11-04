@@ -1,6 +1,6 @@
 /*
  * Library for writing OLE 2 Compount Document file format.
- * Copyright (C) 2007, Lauris Bukšis-Haberkorns <lauris@nix.lv>
+ * Copyright (C) 2007, Lauris Bukšis <lauris@nix.lv>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -144,8 +144,8 @@ namespace Nix.CompoundFile
 
         #region Rotation and color restoration functions
         /// <summary>
-        /// Additions to red-black trees usually destroy the red-black 
-        /// properties. Examine the tree and restore. Rotations are normally 
+        /// Additions to red-black trees usually destroy the red-black
+        /// properties. Examine the tree and restore. Rotations are normally
         /// required to restore it.
         /// </summary>
         /// <param name="x">Node to start from</param>
@@ -156,7 +156,7 @@ namespace Nix.CompoundFile
             // maintain red-black tree properties after adding x
             while (x != this.rbTree && x.Parent.Color == NodeColor.Red)
             {
-                // Parent node is .Colored red; 
+                // Parent node is .Colored red;
                 if (x.Parent == x.Parent.Parent.Left)    // determine traversal path
                 {                                       // is it on the Left or Right subtree?
                     y = x.Parent.Parent.Right;          // get uncle
@@ -165,8 +165,8 @@ namespace Nix.CompoundFile
                         // uncle is red; change x's Parent and uncle to black
                         x.Parent.Color = NodeColor.Black;
                         y.Color = NodeColor.Black;
-                        // grandparent must be red. Why? Every red node that is not 
-                        // a leaf has only black children 
+                        // grandparent must be red. Why? Every red node that is not
+                        // a leaf has only black children
                         x.Parent.Parent.Color = NodeColor.Red;
                         // continue loop with grandparent
                         x = x.Parent.Parent;
@@ -229,7 +229,7 @@ namespace Nix.CompoundFile
         private void RotateLeft(Ole2DirectoryEntry x)
         {
             // pushing node x down and to the Left to balance the tree. x's Right child (y)
-            // replaces x (since y > x), and y's Left child becomes x's Right child 
+            // replaces x (since y > x), and y's Left child becomes x's Right child
             // (since it's < y but > x).
 
             // get x's Right node, this becomes y
@@ -283,7 +283,7 @@ namespace Nix.CompoundFile
         private void RotateRight(Ole2DirectoryEntry x)
         {
             // pushing node x down and to the Right to balance the tree. x's Left child (y)
-            // replaces x (since x < y), and y's Right child becomes x's Left child 
+            // replaces x (since x < y), and y's Right child becomes x's Left child
             // (since it's < x but > y).
 
             // get x's Left node, this becomes y
@@ -468,7 +468,7 @@ namespace Nix.CompoundFile
         /// <param name="z">Node to delete.</param>
         private void Delete(Ole2DirectoryEntry z)
         {
-            // A node to be deleted will be: 
+            // A node to be deleted will be:
             //    1. a leaf with no children
             //    2. have one child
             //    3. have two children
@@ -477,11 +477,11 @@ namespace Nix.CompoundFile
 
             // work node to contain the replacement node
             Ole2DirectoryEntry x;
-            // work node 
+            // work node
             Ole2DirectoryEntry y;
 
-            // find the replacement node (the successor to x) - the node one with 
-            // at *most* one child. 
+            // find the replacement node (the successor to x) - the node one with
+            // at *most* one child.
             if (z.Left == SentinelNode || z.Right == SentinelNode)
             {
                 // node has sentinel as a child
@@ -489,17 +489,17 @@ namespace Nix.CompoundFile
             }
             else
             {
-                // z has two children, find replacement node which will 
+                // z has two children, find replacement node which will
                 // be the leftmost node greater than z
                 y = z.Right;                            // traverse right subtree
                 while (y.Left != SentinelNode)          // to find next node in sequence
                     y = y.Left;
             }
 
-            // at this point, y contains the replacement node. it's content will be copied 
+            // at this point, y contains the replacement node. it's content will be copied
             // to the valules in the node to be deleted
 
-            // x (y's only child) is the node that will be linked to y's old parent. 
+            // x (y's only child) is the node that will be linked to y's old parent.
             if (y.Left != SentinelNode)
                 x = y.Left;
             else
@@ -536,8 +536,8 @@ namespace Nix.CompoundFile
         }
 
         /// <summary>
-        /// Deletions from red-black trees may destroy the red-black 
-        /// properties. Examine the tree and restore. Rotations are normally 
+        /// Deletions from red-black trees may destroy the red-black
+        /// properties. Examine the tree and restore. Rotations are normally
         /// required to restore it
         /// </summary>
         /// <param name="x">Node to start with.</param>
@@ -551,7 +551,7 @@ namespace Nix.CompoundFile
                 // determine sub tree from parent
                 if (x == x.Parent.Left)
                 {
-                    // y is x's sibling 
+                    // y is x's sibling
                     y = x.Parent.Right;
                     if (y.Color == NodeColor.Red)
                     {	// x is black, y is red - make both black and rotate

@@ -1,6 +1,6 @@
 /*
  * Library for writing OLE 2 Compount Document file format.
- * Copyright (C) 2007, Lauris Bukšis-Haberkorns <lauris@nix.lv>
+ * Copyright (C) 2007, Lauris Bukšis <lauris@nix.lv>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -111,9 +111,9 @@ namespace Nix.CompoundFile
             {
                 if (node.Right == RedBlackTree.SentinelNode)
                 {
-                    // yes, top node is lowest node in subtree - pop node off stack 
+                    // yes, top node is lowest node in subtree - pop node off stack
                     Ole2DirectoryEntry tn = (Ole2DirectoryEntry)this.stack.Pop();
-                    // peek at right node's parent 
+                    // peek at right node's parent
                     // get rid of it if it has already been used
                     while (this.stack.Count > 0 && ((Ole2DirectoryEntry)this.stack.Peek()).Right == tn)
                         tn = (Ole2DirectoryEntry)this.stack.Pop();

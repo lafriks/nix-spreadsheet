@@ -1,6 +1,6 @@
 ﻿/*
  * Library for generating spreadsheet documents.
- * Copyright (C) 2012, Lauris Bukšis-Haberkorns <lauris@nix.lv>
+ * Copyright (C) 2012, Lauris Bukšis <lauris@nix.lv>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -153,7 +153,7 @@ namespace Nix.SpreadSheet.Provider.Xls.BIFF
                 options |= 0x0001;
             if (!PageSettings.Landscape)
                 options |= 0x0002;
-            //  Paper size, scaling factor, paper orientation (portrait/landscape), 
+            //  Paper size, scaling factor, paper orientation (portrait/landscape),
             // print resolution and number of copies are not initialised
             //options |= 0x0004;
             if (!PageSettings.PrintColoured)

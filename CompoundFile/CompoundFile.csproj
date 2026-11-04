@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageVersion>0.1.0</PackageVersion>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
-    <FileVersion>0.1.0.0</FileVersion>
-    <Version>0.1.0</Version>
-    <Authors>Lauris Bukšis-Haberkorns</Authors>
+    <Authors>Lauris Bukšis</Authors>
     <Company></Company>
     <Product>Nix.CompoundFile</Product>
     <Description>Library for writing OLE 2 Compount Document file format.</Description>
-    <Copyright>Copyright © 2007-2019, Lauris Bukšis-Haberkorns</Copyright>
+    <Copyright>Copyright © 2007-2019, Lauris Bukšis</Copyright>
+    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/lafriks/nix-spreadsheet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/lafriks/nix-spreadsheet</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <ProjectGuid>{0D21978A-F366-4C06-A6C4-6B754FA14353}</ProjectGuid>

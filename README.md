@@ -104,3 +104,9 @@ For legacy validation, run `bash .github/scripts/test.sh 6.0`, or on Windows wit
 the .NET Framework 4.8 targeting pack, `bash .github/scripts/test.sh net48`.
 
 See [the test coverage notes](SpreadSheet.Tests/README.md) for the covered scenarios.
+
+## License
+
+Nix.SpreadSheet and Nix.CompoundFile are licensed under the
+[GNU Lesser General Public License, version 2.1](LICENSE) or (at your option)
+any later version. See [LICENSE](LICENSE) for the full text.
